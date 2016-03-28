@@ -6,17 +6,32 @@ Direct3D:
     Vendor:   Intel
     VRAM:     1008 MB
 Begin MonoManager ReloadAssembly
-Platform assembly: C:\Users\DET\Desktop\TakeABreath\Build_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading C:\Users\DET\Desktop\TakeABreath\Build_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: C:\Users\DET\Desktop\TakeABreath\Build_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading C:\Users\DET\Desktop\TakeABreath\Build_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: C:\Users\DET\Desktop\TakeABreath\Build_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading C:\Users\DET\Desktop\TakeABreath\Build_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: C:\Users\DET\Desktop\TakeABreath\Build_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading C:\Users\DET\Desktop\TakeABreath\Build_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.224 seconds
-Platform assembly: C:\Users\DET\Desktop\TakeABreath\Build_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: C:\Users\DET\Desktop\TakeABreath\Build_Data\Managed\System.dll (this message is harmless)
+Platform assembly: P:\Mes Documents\Projet_TakeABreath\TakeABreath\Build_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading P:\Mes Documents\Projet_TakeABreath\TakeABreath\Build_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: P:\Mes Documents\Projet_TakeABreath\TakeABreath\Build_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading P:\Mes Documents\Projet_TakeABreath\TakeABreath\Build_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: P:\Mes Documents\Projet_TakeABreath\TakeABreath\Build_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading P:\Mes Documents\Projet_TakeABreath\TakeABreath\Build_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: P:\Mes Documents\Projet_TakeABreath\TakeABreath\Build_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading P:\Mes Documents\Projet_TakeABreath\TakeABreath\Build_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.044 seconds
+Platform assembly: P:\Mes Documents\Projet_TakeABreath\TakeABreath\Build_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: P:\Mes Documents\Projet_TakeABreath\TakeABreath\Build_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 0.850373 ms
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 29a8 -> priority: 1 
+  Thread -> id: 1aa4 -> priority: 1 
+MatchMakingClient Create :https://mm.unet.unity3d.com/json/reply/CreateMatchRequest
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 4.583221 ms
+
+Unloading 6 unused Assets to reduce memory usage. Loaded Objects now: 491.
+Total: 0.468805 ms (FindLiveObjects: 0.074041 ms CreateObjectMapping: 0.023092 ms MarkObjects: 0.346380 ms  DeleteObjects: 0.011729 ms)
+
