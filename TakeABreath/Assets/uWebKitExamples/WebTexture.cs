@@ -1,19 +1,6 @@
-/******************************************
-  * uWebKit 
-  * (c) 2014 THUNDERBEAST GAMES, LLC
-  * http://www.uwebkit.com
-  * sales@uwebkit.com
-*******************************************/
-
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
-/// <summary>
-/// Basic example of using a UWKWebView on a 3D Unity surface
-/// </summary>
- 
-// IMPORTANT: Please see the WebGUI.cs example for 2D support
 
 public class WebTexture : MonoBehaviour
 {
@@ -36,7 +23,7 @@ public class WebTexture : MonoBehaviour
     UWKWebView view;
 
     // Use this for initialization
-    void Start ()
+    void Awake ()
     {
 
         view = gameObject.GetComponent<UWKWebView>();
@@ -58,35 +45,37 @@ public class WebTexture : MonoBehaviour
 
         //Debug.DrawRay(cube1.transform.position, cube2.transform.position, Color.green);
         RaycastHit rcast;
-        if (GameObject.Find("Avatar(Clone)"))
-            cubePos = GameObject.Find("Avatar(Clone)").transform;
-        else
-            cubePos = this.transform;
 
-        editingMode = false;
-        Debug.DrawRay(cubePos.transform.position, cubePos.forward, Color.green);
-        if (Physics.Raycast(cubePos.transform.position, cubePos.forward, out rcast))
+        if (!cubePos)
         {
-            if (rcast.collider != GetComponent<MeshCollider>())
-                return;
+            if (GameObject.Find("Avatar(Clone)"))
+                cubePos = GameObject.Find("Avatar(Clone)").transform;
 
-            int x = (int)(rcast.textureCoord.x * (float)view.MaxWidth);
-            int y = view.MaxHeight - (int)(rcast.textureCoord.y * (float)view.MaxHeight);
-
-            Vector3 mousePos = new Vector3();
-            mousePos.x = x;
-            mousePos.y = y;
-            view.ProcessMouse(mousePos);
-            editingMode = true;
         }
+        else
+        {
+            editingMode = false;
+            Debug.DrawRay(cubePos.transform.position, cubePos.forward, Color.green);
+            if (Physics.Raycast(cubePos.transform.position, cubePos.forward, out rcast))
+            {
+                if (rcast.collider != GetComponent<MeshCollider>())
+                    return;
 
+                int x = (int)(rcast.textureCoord.x * (float)view.MaxWidth);
+                int y = view.MaxHeight - (int)(rcast.textureCoord.y * (float)view.MaxHeight);
+
+                Vector3 mousePos = new Vector3();
+                mousePos.x = x;
+                mousePos.y = y;
+                view.ProcessMouse(mousePos);
+                editingMode = true;
+            }
+        }
 
         /*Vector3 mousePos = new Vector3();
         mousePos.x = cubePos.position.x;
         mousePos.y = cubePos.position.y;*/
         //view.ProcessMouse(mousePos);
-
-
     }
         
     void OnGUI ()

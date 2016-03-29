@@ -798,7 +798,7 @@ public class UWKWebView : MonoBehaviour
 			currentHeight = MaxHeight;
 		}
 
-        LoadURL(URL);
+        LoadURL(URL); 
 
     }
 
