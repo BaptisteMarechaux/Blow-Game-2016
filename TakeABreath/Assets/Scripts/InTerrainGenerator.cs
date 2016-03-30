@@ -17,6 +17,7 @@ public class InTerrainGenerator : MonoBehaviour {
     public DrawMode drawMode;
 
     public const int mapChunkSize = 241;
+    public int mapChunkS = 241;
     [Range(0,6)]
     public int editorLevelOfDetail;
     public float noiseScale=1;
@@ -46,9 +47,9 @@ public class InTerrainGenerator : MonoBehaviour {
         if (drawMode == DrawMode.NoiseMap)
             display.DrawTexture(InTextureGenerator.TextureFromHeightMap(terrainData.heightMap));
         else if (drawMode == DrawMode.ColorMap)
-            display.DrawTexture(InTextureGenerator.TextureFromColorMap(terrainData.colorMap, mapChunkSize, mapChunkSize));
+            display.DrawTexture(InTextureGenerator.TextureFromColorMap(terrainData.colorMap, mapChunkS, mapChunkS));
         else if (drawMode == DrawMode.Mesh)
-            display.DrawMesh(InMeshGenerator.GenerateTerrainMesh(terrainData.heightMap, meshHeightMultiplier, meshHeightCurve, editorLevelOfDetail), InTextureGenerator.TextureFromColorMap(terrainData.colorMap, mapChunkSize, mapChunkSize));
+            display.DrawMesh(InMeshGenerator.GenerateTerrainMesh(terrainData.heightMap, meshHeightMultiplier, meshHeightCurve, editorLevelOfDetail), InTextureGenerator.TextureFromColorMap(terrainData.colorMap, mapChunkS, mapChunkS));
 
     }
 
@@ -113,20 +114,20 @@ public class InTerrainGenerator : MonoBehaviour {
 
     TerrainData GenerateTerrainData()
     {
-        float[,] noiseMap = InNoise.GenerateNoiseMap(mapChunkSize, mapChunkSize,seed, noiseScale, octaves, persistance, lacunarity, offset);
+        float[,] noiseMap = InNoise.GenerateNoiseMap(mapChunkS, mapChunkS,seed, noiseScale, octaves, persistance, lacunarity, offset);
 
-        Color[] colorMap = new Color[mapChunkSize * mapChunkSize];
+        Color[] colorMap = new Color[mapChunkS * mapChunkS];
 
-        for(int y = 0; y < mapChunkSize; y++)
+        for(int y = 0; y < mapChunkS; y++)
         {
-            for(int x=0;x<mapChunkSize;x++)
+            for(int x=0;x<mapChunkS;x++)
             {
                 float currentHeight = noiseMap[x, y];
                 for(int i=0;i<regions.Length;i++)
                 {
                     if(currentHeight <= regions[i].height)
                     {
-                        colorMap[y * mapChunkSize + x] = regions[i].color;
+                        colorMap[y * mapChunkS + x] = regions[i].color;
                         break;
                     }
                 }
@@ -143,6 +144,8 @@ public class InTerrainGenerator : MonoBehaviour {
             lacunarity = 1;
         if (octaves < 0)
             octaves = 0;
+
+        
     }
 
     struct TerrainThreadInfo<T>
