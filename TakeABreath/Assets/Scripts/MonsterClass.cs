@@ -1,30 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
-public class CharactereClass : MonoBehaviour {
+public class MonsterClass : MonoBehaviour {
 
     [SerializeField]
     private string _name;
     [SerializeField]
     private int _level = 1;
     [SerializeField]
+    private int _force = 5;
+    [SerializeField]
     private int _intelligence = 5;
     [SerializeField]
-    private int _exp = 0;
+    private int _consistance = 5;
     [SerializeField]
-    private int _expToLvlUp = 50;
+    private int _sante = 50;
     [SerializeField]
-    MonsterClass _monstrePossede;
-
-    private void levelUp()
-    {
-        //faire apparaitre à l'écran une fenêtre pour choisir les stats à up (5-7 points dispo pour up)
-        this._level++;
-        this._exp = this._exp % this._expToLvlUp;
-        this._expToLvlUp *= 2;
-        this._intelligence++;
-    }
+    private CharactereClass _player;
 
 
     public string Name
@@ -53,6 +45,19 @@ public class CharactereClass : MonoBehaviour {
         }
     }
 
+    public int Force
+    {
+        get
+        {
+            return _force;
+        }
+
+        set
+        {
+            _force = value;
+        }
+    }
+
     public int Intelligence
     {
         get
@@ -66,27 +71,42 @@ public class CharactereClass : MonoBehaviour {
         }
     }
 
-    public int addExp(int exp)
+    public int Consistance
     {
-        this._exp += exp;
-        if(this._exp >= this._expToLvlUp)
+        get
         {
-            levelUp();
-            return this._level;
+            return _consistance;
         }
-        return 0;
-    }
 
-    public void essaiPossession(MonsterClass monster)
-    {
-        if(this._intelligence > monster.Intelligence)
+        set
         {
-            this._monstrePossede = monster;
-            monster.Player = this;
+            _consistance = value;
         }
     }
 
+    public int Sante
+    {
+        get
+        {
+            return _sante;
+        }
 
+        set
+        {
+            _sante = value;
+        }
+    }
+
+    public CharactereClass Player
+    {
+        get
+        {
+            return _player;
+        }
+
+        set
+        {
+            _player = value;
+        }
+    }
 }
-
-

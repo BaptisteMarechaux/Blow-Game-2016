@@ -4,9 +4,9 @@ using System.Collections;
 public class ArmorClass : MonoBehaviour {
 
     [SerializeField]
-    private string _name = "Wooden Shield";
+    private string _name = "";
     [SerializeField]
-    private bool _isShield = true;
+    private bool _isShield = false;
     [SerializeField]
     private bool _isHelmet = false;
     [SerializeField]

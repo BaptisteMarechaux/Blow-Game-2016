@@ -5,13 +5,13 @@ public class SpellAttakClass : MonoBehaviour
 {
 
     [SerializeField]
-    private string _name = "Healdoken";
+    private string _name;
     [SerializeField]
     private int _price = 50;
     [SerializeField]
     private int[] _requis = { 1, 0, 0, 0, 0, 0 }; //niveau, force, agi, int, cons, vol
     [SerializeField]
-    private int _degat = 10;
+    private int _degat;
 
     public string Name
     {
