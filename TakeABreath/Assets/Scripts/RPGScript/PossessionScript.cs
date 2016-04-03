@@ -17,6 +17,19 @@ public class PossessionScript : MonoBehaviour {
     private RaycastHit hit;
     private MonsterClass monstre;
 
+    public GameObject Button
+    {
+        get
+        {
+            return _button;
+        }
+
+        set
+        {
+            _button = value;
+        }
+    }
+
     // Update is called once per frame
     void Update () {
 	    if(Input.GetMouseButtonDown(0))
@@ -26,7 +39,7 @@ public class PossessionScript : MonoBehaviour {
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, this._layer))
             {
                 monstre = hit.collider.GetComponent<MonsterClass>();
-                this._button.SetActive(true);
+                this.Button.SetActive(true);
             }
         }
 	}

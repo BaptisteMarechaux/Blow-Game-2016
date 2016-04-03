@@ -12,10 +12,19 @@ public class MonsterClass : MonoBehaviour {
     [SerializeField]
     private int _consistance = 5;
     [SerializeField]
-    private int _sante = 50;
+    private int _santeMax = 50;
+    [SerializeField]
+    private int _exp = 10;
     [SerializeField]
     private CharactereClass _player;
 
+    private int _sante;
+    private bool _isAlive = true;
+
+    void Start()
+    {
+        this._sante = this._santeMax;
+    }
 
     public string Name
     {
@@ -94,4 +103,42 @@ public class MonsterClass : MonoBehaviour {
             _player = value;
         }
     }
+
+    public int Exp
+    {
+        get
+        {
+            return _exp;
+        }
+
+        set
+        {
+            _exp = value;
+        }
+    }
+
+    public bool IsAlive
+    {
+        get
+        {
+            return _isAlive;
+        }
+
+        set
+        {
+            _isAlive = value;
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        this._sante -= damage;
+        Debug.Log(this._sante);
+        if (this._sante <= 0)
+        {
+            this._isAlive = false;
+            this.gameObject.SetActive(false);
+        }
+    }
+
 }
