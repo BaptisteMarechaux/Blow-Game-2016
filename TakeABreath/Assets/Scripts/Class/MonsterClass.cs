@@ -10,8 +10,6 @@ public class MonsterClass : MonoBehaviour {
     [SerializeField]
     private int _force = 5;
     [SerializeField]
-    private int _intelligence = 5;
-    [SerializeField]
     private int _consistance = 5;
     [SerializeField]
     private int _sante = 50;
@@ -55,19 +53,6 @@ public class MonsterClass : MonoBehaviour {
         set
         {
             _force = value;
-        }
-    }
-
-    public int Intelligence
-    {
-        get
-        {
-            return _intelligence;
-        }
-
-        set
-        {
-            _intelligence = value;
         }
     }
 

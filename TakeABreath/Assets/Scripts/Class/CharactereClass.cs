@@ -14,8 +14,6 @@ public class CharactereClass : MonoBehaviour {
     private int _exp = 0;
     [SerializeField]
     private int _expToLvlUp = 50;
-    [SerializeField]
-    MonsterClass _monstrePossede;
 
     private void levelUp()
     {
@@ -53,19 +51,6 @@ public class CharactereClass : MonoBehaviour {
         }
     }
 
-    public int Intelligence
-    {
-        get
-        {
-            return _intelligence;
-        }
-
-        set
-        {
-            _intelligence = value;
-        }
-    }
-
     public int addExp(int exp)
     {
         this._exp += exp;
@@ -76,16 +61,6 @@ public class CharactereClass : MonoBehaviour {
         }
         return 0;
     }
-
-    public void essaiPossession(MonsterClass monster)
-    {
-        if(this._intelligence > monster.Intelligence)
-        {
-            this._monstrePossede = monster;
-            monster.Player = this;
-        }
-    }
-
 
 }
 
