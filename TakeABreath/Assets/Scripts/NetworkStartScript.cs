@@ -12,6 +12,8 @@ public class NetworkStartScript : MonoBehaviour
     [SerializeField]
     NetworkManager mgr;
 
+    bool isHost = false;
+
     void Start()
     {
         //PlayerPrefs.SetString("CloudNetworkingId", "XXXX");
@@ -44,11 +46,13 @@ public class NetworkStartScript : MonoBehaviour
         mgr.StartServer();
         mgr.StopHost();*/
 
+        isHost = true;
         GetComponent<NetworkMatch>().CreateMatch("PJAnn", 4, true, "", "", "", 0, 0, MatchCallback);
     }
 
     public void LaunchClient()
     {
+        isHost = false;
         FindInternetMatch();
     }
 
@@ -110,6 +114,21 @@ public class NetworkStartScript : MonoBehaviour
         else
         {
             Debug.LogError("Join match failed");
+        }
+    }
+
+    public void Quid()
+    {
+        if (isHost)
+        {
+            NetworkManager.singleton.StopHost();
+            NetworkManager.singleton.StopMatchMaker();
+            NetworkManager.singleton.StartMatchMaker();
+        }
+        else{
+            NetworkManager.singleton.StopClient();
+            NetworkManager.singleton.StopMatchMaker();
+            NetworkManager.singleton.StartMatchMaker();
         }
     }
 }

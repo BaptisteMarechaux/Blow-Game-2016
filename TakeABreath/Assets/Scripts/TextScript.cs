@@ -12,11 +12,14 @@ public class TextScript : NetworkBehaviour {
     [SyncVar(hook = "OnStr")]
     string str;
     private bool editingMode;
+    private bool movingMode;
 
     [SerializeField]
     GameObject selectionFeedback;
 
     float pressTime;
+
+    Transform playerPosition;
 
     // Use this for initialization
     void Start () {
@@ -30,6 +33,19 @@ public class TextScript : NetworkBehaviour {
         if (!isClient)
             return;
 
+        if (Input.GetMouseButton(0))
+        {
+            if (playerPosition)
+            {
+                this.transform.position = playerPosition.position;
+                this.transform.rotation = playerPosition.rotation;
+            }
+        }else
+        if (Input.GetMouseButton(1))
+        {
+            Destroy(this.gameObject);
+        }
+        else
         if (editingMode)
         {
             if (Input.GetKeyDown(KeyCode.Backspace))
@@ -65,10 +81,17 @@ public class TextScript : NetworkBehaviour {
     {
         if (other.tag == "Zone")
         {
-            GetComponent<NetworkIdentity>().RemoveClientAuthority(GetComponent<NetworkIdentity>().clientAuthorityOwner);
-            GetComponent<NetworkIdentity>().AssignClientAuthority(other.GetComponentInParent<Move>().connectionToClient); //other.GetComponentInParent<Move>().connectionToClient
-            editingMode = true;
-            selectionFeedback.SetActive(true);
+
+            if (!other.GetComponentInParent<ToolsForPlayer>().IsInSelectionMode())
+            {
+                GetComponent<NetworkIdentity>().RemoveClientAuthority(GetComponent<NetworkIdentity>().clientAuthorityOwner);
+                GetComponent<NetworkIdentity>().AssignClientAuthority(other.GetComponentInParent<Move>().connectionToClient); //other.GetComponentInParent<Move>().connectionToClient
+                other.GetComponentInParent<ToolsForPlayer>().TurnPlayerToSelection(true);
+                playerPosition = other.transform;
+                editingMode = true;
+                selectionFeedback.SetActive(true);
+            }
+
         }
     }
 
@@ -76,8 +99,14 @@ public class TextScript : NetworkBehaviour {
     {
         if (other.tag == "Zone")
         {
-            editingMode = false;
-            selectionFeedback.SetActive(false);
+            if (editingMode == true)
+            {
+                other.GetComponentInParent<ToolsForPlayer>().TurnPlayerToSelection(false);
+                editingMode = false;
+                playerPosition = null;
+                selectionFeedback.SetActive(false);
+                CmdChangeText(tx.text);
+            }
         }
     }
 

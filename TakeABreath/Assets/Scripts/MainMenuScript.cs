@@ -1,70 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour {
 
     [SerializeField]
-    Toggle fullscreenToggle;
+    GameObject helperPanel;
+
+    [SerializeField]
+    GameObject menuPanel;
 
     // Use this for initialization
     void Start()
     {
-        if (Screen.fullScreen == true)
-        {
-            this.fullscreenToggle.isOn = true;
-        }
 
-        this.volumeSlider.minValue = 0f;
-        this.volumeSlider.maxValue = 1f;
-        if (PlayerPrefs.HasKey("Volume"))
-        {
-            this.RetrieveVolume();
-        }
-    }
-
-    // Méthode de définition du mode grand écran
-    public void FullScreenSet()
-    {
-        if (this.fullscreenToggle.isOn == true)
-        {
-            Screen.fullScreen = true;
-        }
-        else
-        {
-            Screen.fullScreen = false;
-        }
     }
 
     // Update is called once per frame
-    void Update () {
-	
-	}
-
-    // Méthode appellée pour quitter l'application
-    public void Exit()
+    void Update()
     {
-        // Le jeu se ferme
-        Application.Quit();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (menuPanel)
+                menuPanel.SetActive(!menuPanel.activeSelf);
+            Cursor.visible = !Cursor.visible;
+        }
+        //print(Input.inputString);
+    }
+    public void HideHelperPanel()
+    {
+        if (helperPanel)
+            helperPanel.SetActive(!helperPanel.activeSelf);
     }
 
-    [SerializeField]
-    Slider volumeSlider;
-
-    // Méthode de réglage de volume
-    public void SetVolume()
+    public void ReturnToMenu()
     {
-        // Le volume du jeu devient la valeur du slider
-        AudioListener.volume = this.volumeSlider.value;
-    }
-
-    public void SaveVolume()
-    {
-        PlayerPrefs.SetFloat("Volume", this.volumeSlider.value);
-    }
-
-    public void RetrieveVolume()
-    {
-        this.volumeSlider.value = PlayerPrefs.GetFloat("Volume");
+         GameObject.Find("NetworkManager").GetComponent<NetworkStartScript>().Quid();
+        SceneManager.LoadScene("TitleScene");
     }
 }

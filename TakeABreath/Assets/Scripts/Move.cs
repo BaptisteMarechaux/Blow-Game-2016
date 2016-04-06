@@ -8,11 +8,10 @@ public class Move : NetworkBehaviour {
     private float yaw = 0.0f;
     private float pitch = 0.0f;
 
-    Rigidbody rg;
-
     [SerializeField] Camera mainCamera;
+    [SerializeField]AudioListener audioLis;
 
-    Text tx;
+    Rigidbody rg;
 
     [SyncVar(hook = "OnColor")]
     public Color myColor;
@@ -42,10 +41,11 @@ public class Move : NetworkBehaviour {
 
     void FixedUpdate()
     {
-        rg.AddForce(Input.GetAxis("Vertical") * this.transform.forward * 500 * Time.deltaTime, ForceMode.Acceleration);
-        rg.AddForce(Input.GetAxis("Horizontal") * this.transform.right * 500 * Time.deltaTime, ForceMode.Acceleration);
-
-        rg.velocity = Vector3.Lerp(rg.velocity, Vector3.zero, Time.deltaTime * 0.5f);
+        rg.AddForce(Input.GetAxis("Vertical") * this.transform.forward * 5 * Time.deltaTime, ForceMode.VelocityChange);
+        rg.AddForce(Input.GetAxis("Horizontal") * this.transform.right * 5 * Time.deltaTime, ForceMode.VelocityChange);
+        //rg.AddForce(Input.GetAxis("Horizontal") * this.transform.right * 500 * Time.deltaTime, ForceMode.Impulse);
+        if (Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
+            rg.velocity = Vector3.Lerp(rg.velocity, Vector3.zero, Time.deltaTime * 10f);
     }
 
     public override void OnStartLocalPlayer()
@@ -66,6 +66,8 @@ public class Move : NetworkBehaviour {
     {
         myColor = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
         GetComponent<Renderer>().material.color = myColor;
+        if (!isLocalPlayer)
+            audioLis.enabled = false;
     }
 
 }
