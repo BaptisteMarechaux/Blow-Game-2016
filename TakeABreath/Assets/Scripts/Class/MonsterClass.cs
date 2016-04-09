@@ -20,6 +20,7 @@ public class MonsterClass : MonoBehaviour {
     [SerializeField]
     private CharactereClass _player;
 
+
     //private NetworkPlayer _playerId;
 
 

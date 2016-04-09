@@ -42,11 +42,18 @@ public class AttackScript : MonoBehaviour {
     public void Attaque()
     {
         //if(this._target.PlayerId != this._player.PlayerId)
-        this._target.TakeDamage(this._player.getForce());
-        if(!this._target.IsAlive)
+        if (Vector3.Distance(this.transform.position, _target.transform.position) <= 3)
         {
-            this._player.Me.addExp(this._target.Exp);
-            this._attackButon.SetActive(false);
+            this._target.TakeDamage(this._player.getForce());
+            if (!this._target.IsAlive)
+            {
+                this._player.Me.addExp(this._target.Exp);
+                this._attackButon.SetActive(false);
+            }
+        }
+        else
+        {
+            this._player.InfoText.text = "Cible trop loin.";
         }
     }
 }

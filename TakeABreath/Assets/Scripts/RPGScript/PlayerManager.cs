@@ -50,6 +50,19 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    public Text InfoText
+    {
+        get
+        {
+            return _infoText;
+        }
+
+        set
+        {
+            _infoText = value;
+        }
+    }
+
 
     // Use this for initialization
     void Start()
@@ -64,6 +77,7 @@ public class PlayerManager : MonoBehaviour
             this._myhp.text = this._monstrePossede.Sante + " / " + this.MonstrePossede.SanteMax;
             if (this._monstrePossede.Sante <= 0)
             {
+                this._monstrePossede = null;
                 this._myhp.text = " - ";
                 inPossession = false;
                 this._butonPossession.Button.SetActive(true);
@@ -74,9 +88,10 @@ public class PlayerManager : MonoBehaviour
 
     public void essaiPossession(MonsterClass monster)
     {
+        Debug.Log(Vector3.Distance(this.transform.position, monster.transform.position));
         if (Me.Level >= monster.Level && monster.Player == null && MonstrePossede == null)
         {
-            this._infoText.text = "";
+            this.InfoText.text = "";
             this.MonstrePossede = monster;
             monster.Player = Me;
             inPossession = true;
@@ -89,7 +104,7 @@ public class PlayerManager : MonoBehaviour
         else if (Me.Level < monster.Level)
         {
             //mettre un timer pour ce texte
-            this._infoText.text = "Niveau du monstre trop élevé!";
+            this.InfoText.text = "Niveau du monstre trop élevé!";
         }
         /*
         //ajouter la condition dans le if du dessus
