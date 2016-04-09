@@ -9,22 +9,12 @@ public class CharactereClass : MonoBehaviour {
     [SerializeField]
     private int _level = 1;
     [SerializeField]
-    private int _intelligence = 5;
-    [SerializeField]
     private int _exp = 0;
     [SerializeField]
     private int _expToLvlUp = 50;
 
-    private void levelUp()
-    {
-        //faire apparaitre à l'écran une fenêtre pour choisir les stats à up (5-7 points dispo pour up)
-        this._level++;
-        this._exp = this._exp % this._expToLvlUp;
-        this._expToLvlUp *= 2;
-        this._intelligence++;
-    }
-
-
+    //private NetworkPlayer _playerId;
+    
     public string Name
     {
         get
@@ -62,6 +52,13 @@ public class CharactereClass : MonoBehaviour {
         return 0;
     }
 
+    private void levelUp()
+    {
+        //faire apparaitre à l'écran une fenêtre pour choisir les stats à up (5-7 points dispo pour up)
+        this._level++;
+        this._exp = this._exp % this._expToLvlUp;
+        this._expToLvlUp *= 2;
+    }
 }
 
 

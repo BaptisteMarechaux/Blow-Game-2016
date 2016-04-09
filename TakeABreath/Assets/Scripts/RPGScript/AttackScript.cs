@@ -29,14 +29,23 @@ public class AttackScript : MonoBehaviour {
                 this._attackButon.SetActive(true);
             }
         }
+        if (this._target != null)
+        {
+            if (this._target.Sante == 0 || this._player.MonstrePossede.Sante == 0)
+            {
+                this._target = null;
+                this._attackButon.SetActive(false);
+            }
+        }
     }
 
     public void Attaque()
     {
-        _target.TakeDamage(this._player.getForce());
-        if(!_target.IsAlive)
+        //if(this._target.PlayerId != this._player.PlayerId)
+        this._target.TakeDamage(this._player.getForce());
+        if(!this._target.IsAlive)
         {
-            this._player.Me.addExp(_target.Exp);
+            this._player.Me.addExp(this._target.Exp);
             this._attackButon.SetActive(false);
         }
     }

@@ -16,14 +16,19 @@ public class MonsterClass : MonoBehaviour {
     [SerializeField]
     private int _exp = 10;
     [SerializeField]
+    private int _expToPossess = 5;
+    [SerializeField]
     private CharactereClass _player;
+
+    //private NetworkPlayer _playerId;
+
 
     private int _sante;
     private bool _isAlive = true;
 
     void Start()
     {
-        this._sante = this._santeMax;
+        this._sante = this.SanteMax;
     }
 
     public string Name
@@ -127,6 +132,32 @@ public class MonsterClass : MonoBehaviour {
         set
         {
             _isAlive = value;
+        }
+    }
+
+    public int SanteMax
+    {
+        get
+        {
+            return _santeMax;
+        }
+
+        set
+        {
+            _santeMax = value;
+        }
+    }
+
+    public int ExpToPossess
+    {
+        get
+        {
+            return _expToPossess;
+        }
+
+        set
+        {
+            _expToPossess = value;
         }
     }
 
