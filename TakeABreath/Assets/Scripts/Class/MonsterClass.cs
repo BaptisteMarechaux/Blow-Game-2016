@@ -6,6 +6,8 @@ public class MonsterClass : MonoBehaviour {
     [SerializeField]
     private string _name;
     [SerializeField]
+    private int _type;
+    [SerializeField]
     private int _level = 1;
     [SerializeField]
     private int _force = 5;
@@ -19,6 +21,8 @@ public class MonsterClass : MonoBehaviour {
     private int _expToPossess = 5;
     [SerializeField]
     private CharactereClass _player;
+    [SerializeField]
+    private TextMesh _textExp;
 
 
     //private NetworkPlayer _playerId;
@@ -168,6 +172,7 @@ public class MonsterClass : MonoBehaviour {
         Debug.Log(this._sante);
         if (this._sante <= 0)
         {
+            this._textExp.text = this._exp + " exp";
             this._isAlive = false;
             this.gameObject.SetActive(false);
         }

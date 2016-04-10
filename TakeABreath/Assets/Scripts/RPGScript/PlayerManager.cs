@@ -23,6 +23,7 @@ public class PlayerManager : MonoBehaviour
     Text _myhp;
 
     private bool inPossession = false;
+    private float rate = 10;
 
     public MonsterClass MonstrePossede
     {
@@ -82,6 +83,15 @@ public class PlayerManager : MonoBehaviour
                 inPossession = false;
                 this._butonPossession.Button.SetActive(true);
                 this._butonPossession.enabled = true;
+            }
+        }
+        if(this.InfoText.text != "")
+        {
+            rate -= Time.deltaTime;
+            if (rate <= 0)
+            {
+                this.InfoText.text = " ";
+                rate = 10;
             }
         }
     }
