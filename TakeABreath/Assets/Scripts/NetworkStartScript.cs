@@ -8,46 +8,27 @@ using System.Collections.Generic;
 
 public class NetworkStartScript : MonoBehaviour
 {
-    //private NetworkMatch networkMatch;
     [SerializeField]
     NetworkManager mgr;
+
+    public string matchName = "PJAnn";
 
     bool isHost = false;
 
     void Start()
     {
-        //PlayerPrefs.SetString("CloudNetworkingId", "XXXX");
-        //mgr.matchMaker.SetProgramAppID((AppID)XXXX);
-
         NetworkManager.singleton.StartMatchMaker();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        /*if (networkMatch == null)
-        {
-            var nm = GetComponent<NetworkMatch>();
-            if (nm != null)
-            {
-                networkMatch = nm as NetworkMatch;
-                UnityEngine.Networking.Types.AppID appid;
-                //appid = 94451;
-                networkMatch.SetProgramAppID(appid);
-            }
-        }*/
+
     }
 
     public void LaunchServer()
     {
-        /*mgr.StartMatchMaker();
-        mgr.StartHost();
-
-        mgr.StartServer();
-        mgr.StopHost();*/
-
         isHost = true;
-        GetComponent<NetworkMatch>().CreateMatch("PJAnn", 4, true, "", "", "", 0, 0, MatchCallback);
+        GetComponent<NetworkMatch>().CreateMatch(matchName, 4, true, "", "", "", 0, 0, MatchCallback);
     }
 
     public void LaunchClient()
@@ -60,8 +41,6 @@ public class NetworkStartScript : MonoBehaviour
     {
         if (responseData != null && success)
         {
-            //Debug.Log("Create match succeeded");
-
             MatchInfo hostInfo = responseData;
             NetworkServer.Listen(hostInfo, 9000);
 
@@ -73,13 +52,9 @@ public class NetworkStartScript : MonoBehaviour
         }
     }
 
-    //public virtual void OnMatchCreate(CreateMatchResponse matchInfo)
-
-
-    //call this method to find a match through the matchmaker
     public void FindInternetMatch()
     {
-        NetworkManager.singleton.matchMaker.ListMatches(0, 20, "PJAnn", false, 0, 0, OnInternetMatchList);
+        NetworkManager.singleton.matchMaker.ListMatches(0, 20, matchName, false, 0, 0, OnInternetMatchList);
     }
 
     private void OnInternetMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> responseData)
@@ -105,9 +80,6 @@ public class NetworkStartScript : MonoBehaviour
     {
         if (success)
         {
-            //Debug.Log("Able to join a match");
-
-
             MatchInfo hostInfo = responseData;
             NetworkManager.singleton.StartClient(hostInfo);
         }

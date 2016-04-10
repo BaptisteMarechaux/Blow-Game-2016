@@ -17,6 +17,10 @@ public class TitleMenuScript : MonoBehaviour {
     [SerializeField]
     NetworkStartScript nss;
 
+
+    [SerializeField]
+    InputField inputFieldMatcName;
+
     // Use this for initialization
     void Start()
     {
@@ -39,6 +43,7 @@ public class TitleMenuScript : MonoBehaviour {
             btHost.onClick.AddListener(delegate { nss.LaunchServer(); });
             btClient.onClick.AddListener(delegate { nss.LaunchClient(); });
         }
+        inputFieldMatcName.onValueChanged.AddListener(ValueChangeCheck);
     }
 
     // Méthode de définition du mode grand écran
@@ -84,5 +89,14 @@ public class TitleMenuScript : MonoBehaviour {
     public void RetrieveVolume()
     {
         this.volumeSlider.value = PlayerPrefs.GetFloat("Volume");
+    }
+
+
+    public void ValueChangeCheck(string value)
+    {
+        if (value == "")
+            nss.matchName = "PJAnn";
+        else
+            nss.matchName = value;
     }
 }

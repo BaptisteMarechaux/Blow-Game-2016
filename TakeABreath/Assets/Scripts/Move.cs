@@ -10,6 +10,10 @@ public class Move : NetworkBehaviour {
 
     [SerializeField] Camera mainCamera;
     [SerializeField]AudioListener audioLis;
+    [SerializeField]
+    Transform mainCameraTransform;
+    [SerializeField]
+    GameObject shape;
 
     Rigidbody rg;
 
@@ -33,19 +37,22 @@ public class Move : NetworkBehaviour {
         yaw += 2 * Input.GetAxis("Mouse X");
         pitch -= 2 * Input.GetAxis("Mouse Y");
 
-        transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
-
-        //if (Input.GetKeyDown(KeyCode.Space))
+        // transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+        if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0) 
+        {
+            shape.transform.rotation = Quaternion.Lerp(shape.transform.rotation, mainCameraTransform.rotation, Time.deltaTime * 4.0f);
+        }
 
     }
 
     void FixedUpdate()
     {
-        rg.AddForce(Input.GetAxis("Vertical") * this.transform.forward * 5 * Time.deltaTime, ForceMode.VelocityChange);
-        rg.AddForce(Input.GetAxis("Horizontal") * this.transform.right * 5 * Time.deltaTime, ForceMode.VelocityChange);
+        rg.AddForce(Input.GetAxis("Vertical") * mainCameraTransform.forward * 5 * Time.deltaTime, ForceMode.VelocityChange);
+        rg.AddForce(Input.GetAxis("Horizontal") * mainCameraTransform.right * 5 * Time.deltaTime, ForceMode.VelocityChange);
         //rg.AddForce(Input.GetAxis("Horizontal") * this.transform.right * 500 * Time.deltaTime, ForceMode.Impulse);
         if (Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
             rg.velocity = Vector3.Lerp(rg.velocity, Vector3.zero, Time.deltaTime * 10f);
+        rg.angularVelocity = Vector3.Lerp(rg.angularVelocity, Vector3.zero, Time.deltaTime * 10f);
     }
 
     public override void OnStartLocalPlayer()
