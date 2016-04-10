@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class AttackScript : MonoBehaviour {
@@ -11,6 +12,8 @@ public class AttackScript : MonoBehaviour {
     private LayerMask _layer;
     [SerializeField]
     private GameObject _attackButon;
+    [SerializeField]
+    private Text _hpEnemy;
 
     private Ray ray;
     private RaycastHit hit;
@@ -26,6 +29,7 @@ public class AttackScript : MonoBehaviour {
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, this._layer))
             {
                 this._target = hit.collider.GetComponent<MonsterClass>();
+                this._hpEnemy.text = this._target.Sante.ToString();
                 this._attackButon.SetActive(true);
             }
         }
@@ -45,8 +49,10 @@ public class AttackScript : MonoBehaviour {
         if (Vector3.Distance(this.transform.position, _target.transform.position) <= 3)
         {
             this._target.TakeDamage(this._player.getForce());
+            this._hpEnemy.text = this._target.Sante.ToString();
             if (!this._target.IsAlive)
             {
+                this._hpEnemy.text = "-";
                 this._player.Me.addExp(this._target.Exp);
                 this._attackButon.SetActive(false);
             }
