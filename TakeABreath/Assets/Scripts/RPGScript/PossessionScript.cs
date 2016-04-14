@@ -23,11 +23,6 @@ public class PossessionScript : MonoBehaviour {
         {
             return _button;
         }
-
-        set
-        {
-            _button = value;
-        }
     }
 
     // Update is called once per frame

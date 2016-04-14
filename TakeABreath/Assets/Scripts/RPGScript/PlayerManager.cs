@@ -15,12 +15,20 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private PossessionScript _butonPossession;
 
+
     //private NetworkPlayer _playerId;
 
     [SerializeField]
     Text _infoText;
     [SerializeField]
     Text _myhp;
+    [SerializeField]
+    Image _healthBar;
+    [SerializeField]
+    Image _expBar;
+    [SerializeField]
+    Text _expText;
+
 
     private bool inPossession = false;
     private float rate = 10;
@@ -64,25 +72,30 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    public PossessionScript ButonPossession
+    {
+        get
+        {
+            return _butonPossession;
+        }
+    }
 
     // Use this for initialization
     void Start()
     {
         this._nameFlottant.text = Me.Name;
+        this._expText.text = this._me.Exp + " / " + this._me.ExpToLvlUp + " EXP";
     }
 
     void Update()
     {
+        expBarInfo();
         if (inPossession)
         {
-            this._myhp.text = this._monstrePossede.Sante + " / " + this.MonstrePossede.SanteMax;
+            healthBarInfo();
             if (this._monstrePossede.Sante <= 0)
             {
-                this._monstrePossede = null;
-                this._myhp.text = " - ";
-                inPossession = false;
-                this._butonPossession.Button.SetActive(true);
-                this._butonPossession.enabled = true;
+                noBody();
             }
         }
         if(this.InfoText.text != "")
@@ -96,6 +109,49 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+
+    private void expBarInfo()
+    {
+        float myexp = (float)this._me.Exp / (float)this._me.ExpToLvlUp; //<== valeur entre 0 et 1
+        this._expBar.transform.localScale = new Vector3(Mathf.Clamp(myexp, 0f, 1f), this._expBar.transform.localScale.y, this._expBar.transform.localScale.z);
+
+        string information = this._me.Exp + " / " + this._me.ExpToLvlUp + " EXP";
+        if (myexp >= 0.35f && myexp < 0.4f)
+        {
+            information = "<color=black>"+this._me.Exp + "</color> / " + this._me.ExpToLvlUp + " EXP";
+        }
+        else if(myexp > 0.41f && myexp <= .45f)
+        {
+            information = "<color=black>" + this._me.Exp + " / </color>" + this._me.ExpToLvlUp + " EXP";
+        }
+        else if (myexp > 0.45f && myexp <= .55f)
+        {
+            information = "<color=black>" + this._me.Exp + " / " + this._me.ExpToLvlUp + "</color> EXP";
+        }
+        else if (myexp > .55f)
+        {
+            this._expText.text = "<color=black>"+information+"</color>";
+        }
+        this._expText.text = information;
+    }
+
+    private void healthBarInfo()
+    {
+        this._myhp.text = this._monstrePossede.Sante + " / " + this.MonstrePossede.SanteMax;
+        float mylife = (float)this._monstrePossede.Sante / (float)this.MonstrePossede.SanteMax; //<== valeur entre 0 et 1
+        this._healthBar.transform.localScale = new Vector3(Mathf.Clamp(mylife,0f,1f), this._healthBar.transform.localScale.y, this._healthBar.transform.localScale.z) ;
+    }
+
+    private void noBody()
+    {
+        this._monstrePossede = null;
+        this._myhp.text = " - ";
+        inPossession = false;
+        this.ButonPossession.Button.SetActive(true);
+        this.ButonPossession.enabled = true;
+
+    }
+
     public void essaiPossession(MonsterClass monster)
     {
         Debug.Log(Vector3.Distance(this.transform.position, monster.transform.position));
@@ -107,8 +163,8 @@ public class PlayerManager : MonoBehaviour
             inPossession = true;
             this._myhp.text = this._monstrePossede.Sante + " / " + this.MonstrePossede.SanteMax;
             this._myTransform.position = monster.transform.position;
-            this._butonPossession.Button.SetActive(false);
-            this._butonPossession.enabled = false;
+            this.ButonPossession.Button.SetActive(false);
+            this.ButonPossession.enabled = false;
             this._me.addExp(this._monstrePossede.ExpToPossess);
         }
         else if (Me.Level < monster.Level)

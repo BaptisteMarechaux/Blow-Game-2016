@@ -14,10 +14,14 @@ public class AttackScript : MonoBehaviour {
     private GameObject _attackButon;
     [SerializeField]
     private Text _hpEnemy;
+    [SerializeField]
+    Image _healthBar;
+    [SerializeField]
+    GameObject _lifeBarObject;
 
     private Ray ray;
     private RaycastHit hit;
-    private MonsterClass _target;
+    private MonsterClass _target = null;
     
 
 	// Update is called once per frame
@@ -28,20 +32,32 @@ public class AttackScript : MonoBehaviour {
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, this._layer))
             {
+                this._player.ButonPossession.Button.SetActive(false);
                 this._target = hit.collider.GetComponent<MonsterClass>();
-                this._hpEnemy.text = this._target.Sante.ToString();
                 this._attackButon.SetActive(true);
+                this._lifeBarObject.SetActive(true);
             }
         }
+
         if (this._target != null)
         {
+            healthBarTargetInfo();
             if (this._target.Sante == 0 || this._player.MonstrePossede.Sante == 0)
             {
                 this._target = null;
+                this._lifeBarObject.SetActive(false);
                 this._attackButon.SetActive(false);
             }
         }
     }
+
+    private void healthBarTargetInfo()
+    {
+        this._hpEnemy.text = this._target.Sante.ToString();
+        float itlife = (float)this._target.Sante / (float)this._target.SanteMax; //<== valeur entre 0 et 1
+        this._healthBar.transform.localScale = new Vector3(Mathf.Clamp(itlife, 0f, 1f), this._healthBar.transform.localScale.y, this._healthBar.transform.localScale.z);
+    }
+
 
     public void Attaque()
     {

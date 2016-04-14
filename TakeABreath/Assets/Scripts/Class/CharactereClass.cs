@@ -41,10 +41,26 @@ public class CharactereClass : MonoBehaviour {
         }
     }
 
+    public int Exp
+    {
+        get
+        {
+            return _exp;
+        }
+    }
+
+    public int ExpToLvlUp
+    {
+        get
+        {
+            return _expToLvlUp;
+        }
+    }
+
     public int addExp(int exp)
     {
         this._exp += exp;
-        if(this._exp >= this._expToLvlUp)
+        if(this.Exp >= this.ExpToLvlUp)
         {
             levelUp();
             return this._level;
@@ -56,8 +72,10 @@ public class CharactereClass : MonoBehaviour {
     {
         //faire apparaitre à l'écran une fenêtre pour choisir les stats à up (5-7 points dispo pour up)
         this._level++;
-        this._exp = this._exp % this._expToLvlUp;
+        this._exp = this.Exp % this.ExpToLvlUp;
         this._expToLvlUp *= 2;
+        if (this.Exp >= this.ExpToLvlUp)
+            levelUp();
     }
 }
 
