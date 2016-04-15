@@ -88,7 +88,7 @@ public class PlayerManager : MonoBehaviour
             {
                 //faire apparaitre bouton attaque et barre de vie enemy
                 this._myUI.ButtonAttackEnable();
-                this._myUI.LifeTargetEnable();
+                this._myUI.LifeTargetEnable(Target);
             }
             if (this._monstrePossede.Sante <= 0)
             {
@@ -109,9 +109,9 @@ public class PlayerManager : MonoBehaviour
 
     private void noBody()
     {
-        this._myUI.HealthBarUpdate();
-        this._monstrePossede = null;
-        inPossession = false;
+        Debug.Log("YOU'RE DIE!");
+        Depossession();
+
     }
 
     public void Depossession()

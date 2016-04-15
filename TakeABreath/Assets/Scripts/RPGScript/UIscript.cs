@@ -7,6 +7,8 @@ public class UIscript : MonoBehaviour {
     [SerializeField]
     PlayerManager _player;
     [SerializeField]
+    Text _targetName;
+    [SerializeField]
     Text _infoText;
     [SerializeField]
     Text _lvlText;
@@ -134,10 +136,14 @@ public class UIscript : MonoBehaviour {
     {
         this._healthTargetObject.gameObject.SetActive(false);
     }
-    public void LifeTargetEnable()
+    public void LifeTargetEnable(MonsterClass target)
     {
         this._healthTargetObject.gameObject.SetActive(true);
         this.healthBarTargetInfo();
+        if (target.Player == null)
+            this._targetName.text = target.Name;
+        else
+            this._targetName.text = target.Player.Name;
     }
 
     public void healthBarTargetInfo()

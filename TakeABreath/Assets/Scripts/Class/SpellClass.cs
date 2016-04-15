@@ -7,9 +7,9 @@ public class SpellAttakClass : MonoBehaviour
     [SerializeField]
     private string _name;
     [SerializeField]
-    private int _price = 50;
+    private int _range = 10;
     [SerializeField]
-    private int[] _requis = { 1, 0, 0, 0, 0, 0 }; //niveau, force, agi, int, cons, vol
+    private int _timer = 5; 
     [SerializeField]
     private int _degat;
 
@@ -25,33 +25,7 @@ public class SpellAttakClass : MonoBehaviour
             _name = value;
         }
     }
-
-    public int Price
-    {
-        get
-        {
-            return _price;
-        }
-
-        set
-        {
-            _price = value;
-        }
-    }
-
-    public int[] Requis
-    {
-        get
-        {
-            return _requis;
-        }
-
-        set
-        {
-            _requis = value;
-        }
-    }
-
+    
     public int Degat
     {
         get
@@ -64,5 +38,30 @@ public class SpellAttakClass : MonoBehaviour
             _degat = value;
         }
     }
-    
+
+    public int Range
+    {
+        get
+        {
+            return _range;
+        }
+
+        set
+        {
+            _range = value;
+        }
+    }
+
+    public int Timer
+    {
+        get
+        {
+            return _timer;
+        }
+
+        set
+        {
+            _timer = value;
+        }
+    }
 }
