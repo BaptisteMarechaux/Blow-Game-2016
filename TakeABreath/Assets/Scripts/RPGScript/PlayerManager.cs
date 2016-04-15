@@ -11,25 +11,17 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private TextMesh _nameFlottant;
     [SerializeField]
-    private Transform _myTransform;
+    private UIscript _myUI;
     [SerializeField]
-    private PossessionScript _butonPossession;
+    private LayerMask _layer;
+    [SerializeField]
+    private Camera _cam;
 
+    private Ray _ray;
+    private RaycastHit _hit;
+    private MonsterClass _target;
 
     //private NetworkPlayer _playerId;
-
-    [SerializeField]
-    Text _infoText;
-    [SerializeField]
-    Text _myhp;
-    [SerializeField]
-    Image _healthBar;
-    [SerializeField]
-    Image _expBar;
-    [SerializeField]
-    Text _expText;
-
-
     private bool inPossession = false;
     private float rate = 10;
 
@@ -59,130 +51,115 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public Text InfoText
+    public MonsterClass Target
     {
         get
         {
-            return _infoText;
-        }
-
-        set
-        {
-            _infoText = value;
+            return _target;
         }
     }
 
-    public PossessionScript ButonPossession
-    {
-        get
-        {
-            return _butonPossession;
-        }
-    }
 
     // Use this for initialization
     void Start()
     {
         this._nameFlottant.text = Me.Name;
-        this._expText.text = this._me.Exp + " / " + this._me.ExpToLvlUp + " EXP";
+        this._myUI.levelUpdate();
+        this._myUI.expBarInfo();
     }
 
     void Update()
     {
-        expBarInfo();
+        if (Input.GetMouseButtonDown(0))
+        {
+            _ray = _cam.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._layer))
+            {
+                _target = _hit.collider.GetComponent<MonsterClass>();
+                Debug.Log(Vector3.Distance(this.transform.position, _target.transform.position));
+            }
+        }
+        
         if (inPossession)
         {
-            healthBarInfo();
+            this._myUI.HealthBarUpdate();
+            if (this._target != null)
+            {
+                //faire apparaitre bouton attaque et barre de vie enemy
+                this._myUI.ButtonAttackEnable();
+                this._myUI.LifeTargetEnable();
+            }
             if (this._monstrePossede.Sante <= 0)
             {
                 noBody();
             }
         }
-        if(this.InfoText.text != "")
+        else if(_target!=null && !inPossession)
         {
-            rate -= Time.deltaTime;
-            if (rate <= 0)
-            {
-                this.InfoText.text = " ";
-                rate = 10;
-            }
+            //faire apparaitre bouton possession
+            this._myUI.ButtonPossessEnable();
+            this._myUI.ButtonAttackDisable();
         }
-    }
-
-
-    private void expBarInfo()
-    {
-        float myexp = (float)this._me.Exp / (float)this._me.ExpToLvlUp; //<== valeur entre 0 et 1
-        this._expBar.transform.localScale = new Vector3(Mathf.Clamp(myexp, 0f, 1f), this._expBar.transform.localScale.y, this._expBar.transform.localScale.z);
-
-        string information = this._me.Exp + " / " + this._me.ExpToLvlUp + " EXP";
-        if (myexp >= 0.35f && myexp < 0.4f)
-        {
-            information = "<color=black>"+this._me.Exp + "</color> / " + this._me.ExpToLvlUp + " EXP";
-        }
-        else if(myexp > 0.41f && myexp <= .45f)
-        {
-            information = "<color=black>" + this._me.Exp + " / </color>" + this._me.ExpToLvlUp + " EXP";
-        }
-        else if (myexp > 0.45f && myexp <= .55f)
-        {
-            information = "<color=black>" + this._me.Exp + " / " + this._me.ExpToLvlUp + "</color> EXP";
-        }
-        else if (myexp > .55f)
-        {
-            this._expText.text = "<color=black>"+information+"</color>";
-        }
-        this._expText.text = information;
-    }
-
-    private void healthBarInfo()
-    {
-        this._myhp.text = this._monstrePossede.Sante + " / " + this.MonstrePossede.SanteMax;
-        float mylife = (float)this._monstrePossede.Sante / (float)this.MonstrePossede.SanteMax; //<== valeur entre 0 et 1
-        this._healthBar.transform.localScale = new Vector3(Mathf.Clamp(mylife,0f,1f), this._healthBar.transform.localScale.y, this._healthBar.transform.localScale.z) ;
     }
 
     private void noBody()
     {
+        this._myUI.HealthBarUpdate();
         this._monstrePossede = null;
-        this._myhp.text = " - ";
         inPossession = false;
-        this.ButonPossession.Button.SetActive(true);
-        this.ButonPossession.enabled = true;
-
     }
 
-    public void essaiPossession(MonsterClass monster)
+    public void essaiPossession()
     {
-        Debug.Log(Vector3.Distance(this.transform.position, monster.transform.position));
-        if (Me.Level >= monster.Level && monster.Player == null && MonstrePossede == null)
+        if (Me.Level >= _target.Level && _target.Player == null && MonstrePossede == null)
         {
-            this.InfoText.text = "";
-            this.MonstrePossede = monster;
-            monster.Player = Me;
-            inPossession = true;
-            this._myhp.text = this._monstrePossede.Sante + " / " + this.MonstrePossede.SanteMax;
-            this._myTransform.position = monster.transform.position;
-            this.ButonPossession.Button.SetActive(false);
-            this.ButonPossession.enabled = false;
+            this.MonstrePossede = this._target;
+            this._target = null;
+
+            this.MonstrePossede.Player = Me;
+            this.inPossession = true;
+            this.transform.position = this.MonstrePossede.transform.position;
             this._me.addExp(this._monstrePossede.ExpToPossess);
+
+            //UI
+            this._myUI.InfoTextUpdate("");
+            this._myUI.expBarInfo();
+            this._myUI.HealthBarUpdate();
+            this._myUI.ButtonPossessDisable();
         }
-        else if (Me.Level < monster.Level)
+        else if (Me.Level < this._target.Level)
         {
-            //mettre un timer pour ce texte
-            this.InfoText.text = "Niveau du monstre trop élevé!";
+            this._myUI.InfoTextUpdate("Niveau du monstre trop élevé!");
         }
         /*
         //ajouter la condition dans le if du dessus
         else if(monster.PlayerId != null)
         {
-            this._infoText.text = "Créature déjà possédée!";
+            this._myUI.InfoTextUpdate("Créature déjà possédée!");
         }
         */
     }
-
-    public int getForce()
+    
+    public void Attack()
     {
-        return this._monstrePossede.Force;
+        if (Vector3.Distance(this.transform.position, _target.transform.position) <= this._monstrePossede.Attack.Range)
+        {
+            this._monstrePossede.AttackTarget(this._target);
+            if (this._target.Sante <= 0)
+            {
+                this._me.addExp(this._target.Exp);
+                this._target = null;
+                this._myUI.ButtonAttackDisable();
+                this._myUI.expBarInfo();
+                this._myUI.levelUpdate();
+                this._myUI.LifeTargetDisable();
+            }
+        }
+        else
+        {
+            this._myUI.InfoTextUpdate("Cible trop loin!");
+        }
     }
+
 }

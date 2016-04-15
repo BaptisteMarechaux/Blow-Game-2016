@@ -5,6 +5,31 @@ using System.Collections;
 public class AttackScript : MonoBehaviour {
 
     [SerializeField]
+    private float _range = 3f;
+
+    public float Range
+    {
+        get
+        {
+            return _range;
+        }
+    }
+
+    public int Attack(MonsterClass target,int force)
+    {
+        if(Vector3.Distance(this.transform.position, target.transform.position) <= this.Range)
+        {
+            target.TakeDamage(force);
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    /*
+    [SerializeField]
     private PlayerManager _player;
     [SerializeField]
     private Camera _cam;
@@ -23,7 +48,6 @@ public class AttackScript : MonoBehaviour {
     private RaycastHit hit;
     private MonsterClass _target = null;
     
-
 	// Update is called once per frame
 	void Update () {
         if (Input.GetMouseButtonDown(0) && _player.MonstrePossede != null)
@@ -59,7 +83,7 @@ public class AttackScript : MonoBehaviour {
     }
 
 
-    public void Attaque()
+    public void Attaque(MonsterClass target, int force)
     {
         //if(this._target.PlayerId != this._player.PlayerId)
         if (Vector3.Distance(this.transform.position, _target.transform.position) <= 3)
@@ -77,5 +101,5 @@ public class AttackScript : MonoBehaviour {
         {
             this._player.InfoText.text = "Cible trop loin.";
         }
-    }
+    }*/
 }

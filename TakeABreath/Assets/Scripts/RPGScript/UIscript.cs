@@ -1,0 +1,139 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class UIscript : MonoBehaviour {
+
+    [SerializeField]
+    PlayerManager _player;
+    [SerializeField]
+    Text _infoText;
+    [SerializeField]
+    Text _lvlText;
+    [SerializeField]
+    Text _myhp;
+    [SerializeField]
+    Image _healthBar;
+    [SerializeField]
+    Text _healthTargetText;
+    [SerializeField]
+    Image _healthTargetBar;
+    [SerializeField]
+    GameObject _healthTargetObject;
+    [SerializeField]
+    Text _expText;
+    [SerializeField]
+    Image _expBar;
+
+    [SerializeField]
+    private GameObject _butonPossession;
+    [SerializeField]
+    private GameObject _butonAttack;
+
+    private float rate = 3.5f;
+
+    void Update()
+    {
+        if (this._infoText.text != "")
+        {
+            rate -= Time.deltaTime;
+            if (rate <= 0)
+            {
+                this._infoText.text = " ";
+                rate = 3.5f;
+            }
+        }
+    }
+
+    public void ButtonPossessEnable()
+    {
+        this._butonPossession.SetActive(true);
+    }
+    public void ButtonPossessDisable()
+    {
+        this._butonPossession.SetActive(false);
+    }
+
+    public void ButtonAttackEnable()
+    {
+        this._butonAttack.SetActive(true);
+    }
+    public void ButtonAttackDisable()
+    {
+        this._butonAttack.SetActive(false);
+    }
+
+
+    public void InfoTextUpdate(string str)
+    {
+        this._infoText.text = str;
+    }
+
+    public void levelUpdate()
+    {
+        _lvlText.text = _player.Me.Level.ToString();
+    }
+
+    public void expBarInfo()
+    {
+        float myexp = (float)this._player.Me.Exp / (float)this._player.Me.ExpToLvlUp; //<== valeur entre 0 et 1
+        this._expBar.transform.localScale = new Vector3(Mathf.Clamp(myexp, 0f, 1f), this._expBar.transform.localScale.y, this._expBar.transform.localScale.z);
+
+        Debug.Log(myexp);
+        Debug.Log(myexp > 0.55f);
+        string information = "";
+        if (myexp >= 0.3f && myexp < 0.4f)
+        {
+            information = "<color=black>" + this._player.Me.Exp + "</color> / " + this._player.Me.ExpToLvlUp + " EXP";
+        }
+        else if (myexp >= 0.4f && myexp <= 0.45f)
+        {
+            information = "<color=black>" + this._player.Me.Exp + " / </color>" + this._player.Me.ExpToLvlUp + " EXP";
+        }
+        else if (myexp > 0.45f && myexp <= 0.55f)
+        {
+            information = "<color=black>" + this._player.Me.Exp + " / " + this._player.Me.ExpToLvlUp + "</color> EXP";
+        }
+        else if (myexp > 0.55f)
+        {
+            information = "<color=black>" + this._player.Me.Exp + " / " + this._player.Me.ExpToLvlUp + " EXP</color>";
+        }
+        else if(myexp < 0.3f)
+        {
+            information = this._player.Me.Exp + " / " + this._player.Me.ExpToLvlUp + " EXP";
+        }
+        this._expText.text = information;
+    }
+
+    public void HealthBarDisable()
+    {
+        this._myhp.text = " - ";
+    }
+
+    public void HealthBarUpdate()
+    {
+        this._myhp.text = this._player.MonstrePossede.Sante + " / " + this._player.MonstrePossede.SanteMax;
+        float mylife = (float)this._player.MonstrePossede.Sante / (float)this._player.MonstrePossede.SanteMax; //<== valeur entre 0 et 1
+        this._healthBar.transform.localScale = new Vector3(Mathf.Clamp(mylife, 0f, 1f), this._healthBar.transform.localScale.y, this._healthBar.transform.localScale.z);
+    }
+
+    public void LifeTargetDisable()
+    {
+        this._healthTargetObject.gameObject.SetActive(false);
+    }
+    public void LifeTargetEnable()
+    {
+        this._healthTargetObject.gameObject.SetActive(true);
+        this.healthBarTargetInfo();
+    }
+
+    public void healthBarTargetInfo()
+    {
+        this._healthTargetText.text = this._player.Target.Sante.ToString();
+        float itlife = (float)this._player.Target.Sante / (float)this._player.Target.SanteMax; //<== valeur entre 0 et 1
+        this._healthTargetBar.transform.localScale = new Vector3(Mathf.Clamp(itlife, 0f, 1f), this._healthTargetBar.transform.localScale.y, this._healthTargetBar.transform.localScale.z);
+    }
+
+
+
+}
