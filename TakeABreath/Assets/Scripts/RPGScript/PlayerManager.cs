@@ -160,7 +160,7 @@ public class PlayerManager : MonoBehaviour
     
     public void Attack()
     {
-        if (Vector3.Distance(this.transform.position, _target.transform.position) <= this._monstrePossede.Attack.Range)
+        if (Vector3.Distance(this.transform.position, _target.transform.position) <= this._monstrePossede.Attack.Range && this._monstrePossede.Attack.Ready)
         {
             this._monstrePossede.AttackTarget(this._target);
             if (this._target.Sante <= 0)
@@ -172,6 +172,10 @@ public class PlayerManager : MonoBehaviour
                 this._myUI.levelUpdate();
                 this._myUI.LifeTargetDisable();
             }
+        }
+        else if(!this._monstrePossede.Attack.Ready)
+        {
+            this._myUI.InfoTextUpdate("Attaque non prête!");
         }
         else
         {
