@@ -28,6 +28,8 @@ public class UIscript : MonoBehaviour {
     [SerializeField]
     private GameObject _butonPossession;
     [SerializeField]
+    private GameObject _butonDepossession;
+    [SerializeField]
     private GameObject _butonAttack;
 
     private float rate = 3.5f;
@@ -52,6 +54,15 @@ public class UIscript : MonoBehaviour {
     public void ButtonPossessDisable()
     {
         this._butonPossession.SetActive(false);
+    }
+
+    public void ButtonDepossessEnable()
+    {
+        this._butonDepossession.SetActive(true);
+    }
+    public void ButtonDepossessDisable()
+    {
+        this._butonDepossession.SetActive(false);
     }
 
     public void ButtonAttackEnable()
@@ -108,6 +119,8 @@ public class UIscript : MonoBehaviour {
     public void HealthBarDisable()
     {
         this._myhp.text = " - ";
+        this._healthBar.transform.localScale = new Vector3(0.0f, this._healthBar.transform.localScale.y, this._healthBar.transform.localScale.z);
+        this._player.transform.position = new Vector3(0, 0.4f, 0);
     }
 
     public void HealthBarUpdate()

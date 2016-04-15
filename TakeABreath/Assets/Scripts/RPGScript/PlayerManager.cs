@@ -101,6 +101,10 @@ public class PlayerManager : MonoBehaviour
             this._myUI.ButtonPossessEnable();
             this._myUI.ButtonAttackDisable();
         }
+        else if (_target != null && !inPossession)
+        {
+            this._myUI.ButtonPossessDisable();
+        }
     }
 
     private void noBody()
@@ -108,6 +112,18 @@ public class PlayerManager : MonoBehaviour
         this._myUI.HealthBarUpdate();
         this._monstrePossede = null;
         inPossession = false;
+    }
+
+    public void Depossession()
+    {
+        //faire fuir le monstre
+        this._monstrePossede.Player = null;
+        this._monstrePossede = null;
+        this.inPossession = false;
+        
+        //UI
+        this._myUI.HealthBarDisable();
+        this._myUI.ButtonDepossessDisable();
     }
 
     public void essaiPossession()
@@ -127,6 +143,7 @@ public class PlayerManager : MonoBehaviour
             this._myUI.expBarInfo();
             this._myUI.HealthBarUpdate();
             this._myUI.ButtonPossessDisable();
+            this._myUI.ButtonDepossessEnable();
         }
         else if (Me.Level < this._target.Level)
         {
