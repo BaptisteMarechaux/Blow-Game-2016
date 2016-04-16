@@ -37,7 +37,8 @@ public class MonsterClass : MonoBehaviour {
     private bool _isAlive = true;
     private Vector3 _startPos = new Vector3(0,0,0);
     private float timer = 0;
-
+    private bool _isHunted = false;
+    private MonsterClass _target = null;
 
     public string Name
     {
@@ -134,6 +135,18 @@ public class MonsterClass : MonoBehaviour {
         }
     }
 
+    public bool IsHunted
+    {
+        get
+        {
+            return _isHunted;
+        }
+
+        set
+        {
+            _isHunted = value;
+        }
+    }
 
     void Start()
     {
@@ -158,6 +171,7 @@ public class MonsterClass : MonoBehaviour {
     public void AttackTarget(MonsterClass target)
     {
         this._attack.Attack(target,this._force);
+        target.IsHunted = true;
         if (!target.IsAlive)
         {
             target = null;
