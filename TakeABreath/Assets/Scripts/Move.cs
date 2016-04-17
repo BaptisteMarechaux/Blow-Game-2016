@@ -14,15 +14,26 @@ public class Move : NetworkBehaviour {
     Transform mainCameraTransform;
     [SerializeField]
     GameObject shape;
+    [SerializeField]
+    Renderer headRenderer;
 
     Rigidbody rg;
 
     [SyncVar(hook = "OnColor")]
     public Color myColor;
 
+    [SyncVar(hook = "OnRotate")]
+    public Quaternion myRotation;
+
     // Use this for initialization
     void Start () {
         rg = this.GetComponent<Rigidbody>();
+        if (!isLocalPlayer /*&& !isServer*/)
+        {
+            audioLis.enabled = false;
+            mainCamera.enabled = false;
+        }
+        headRenderer.material.color = myColor;
     }
 	
 	// Update is called once per frame
@@ -30,7 +41,6 @@ public class Move : NetworkBehaviour {
 
         if (!isLocalPlayer)
         {
-            mainCamera.enabled = false;
             return;
         }
 
@@ -41,12 +51,29 @@ public class Move : NetworkBehaviour {
         if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0) 
         {
             shape.transform.rotation = Quaternion.Lerp(shape.transform.rotation, mainCameraTransform.rotation, Time.deltaTime * 4.0f);
+            myRotation = shape.transform.rotation;
         }
 
+        if (Input.GetMouseButton(1))
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            // Hide cursor when locking
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     void FixedUpdate()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
         rg.AddForce(Input.GetAxis("Vertical") * mainCameraTransform.forward * 5 * Time.deltaTime, ForceMode.VelocityChange);
         rg.AddForce(Input.GetAxis("Horizontal") * mainCameraTransform.right * 5 * Time.deltaTime, ForceMode.VelocityChange);
         //rg.AddForce(Input.GetAxis("Horizontal") * this.transform.right * 500 * Time.deltaTime, ForceMode.Impulse);
@@ -58,23 +85,22 @@ public class Move : NetworkBehaviour {
     public override void OnStartLocalPlayer()
     {
         //base.OnStartLocalPlayer();
-        Cursor.lockState = CursorLockMode.Confined;
-        // Hide cursor when locking
-        Cursor.visible = false;
     }
 
     void OnColor(Color newColor)
     {
-        GetComponent<Renderer>().material.color = newColor;
+        headRenderer.material.color = newColor;
         myColor = newColor;
+    }
+
+    void OnRotate(Quaternion newRotation)
+    {
+        shape.transform.rotation = newRotation;
     }
 
     public override void OnStartClient()
     {
-        myColor = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
-        GetComponent<Renderer>().material.color = myColor;
-        if (!isLocalPlayer)
-            audioLis.enabled = false;
+        //shape.GetComponent<Renderer>().material.color = myColor;
     }
 
 }

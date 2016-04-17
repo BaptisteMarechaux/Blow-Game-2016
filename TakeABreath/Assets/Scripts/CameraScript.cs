@@ -10,21 +10,24 @@ public class CameraScript : MonoBehaviour {
 
     void FixedUpdate()
     {
-        transform.Translate(transform.worldToLocalMatrix.MultiplyVector(transform.forward) * fav * sensitivity);
-        transform.LookAt(target);
-        transform.RotateAround(target.position, Vector3.up, Input.GetAxis("Mouse X") * speed);
-        transform.RotateAround(target.position, this.transform.right, Input.GetAxis("Mouse Y") * -speed);
-        if (Vector3.Distance(new Vector3(transform.position.x, transform.position.z), new Vector3(target.position.x, target.position.z)) < 1f)
-            transform.RotateAround(target.position, this.transform.right, Input.GetAxis("Mouse Y") * speed);
-        transform.eulerAngles = new Vector3(ClampAngle(transform.eulerAngles.x, -90, 90), transform.eulerAngles.y, transform.eulerAngles.z);
-        /*if(transform.position.y < target.position.y)
+            transform.Translate(transform.worldToLocalMatrix.MultiplyVector(transform.forward) * fav * sensitivity);
+            transform.LookAt(target);
+        if (Input.GetMouseButton(1))
         {
-            transform.position = new Vector3(transform.position.x, target.position.y, transform.position.z);
-        }*/
-        /*if((transform.eulerAngles.x < 90 || transform.eulerAngles.x > 270) && transform.eulerAngles.x > 180 && transform.eulerAngles.x -360 > -30)
-        {
-            transform.RotateAround(target.position, this.transform.right, Input.GetAxis("Mouse Y") * speed);
-        }*/
+            transform.RotateAround(target.position, Vector3.up, Input.GetAxis("Mouse X") * speed);
+            transform.RotateAround(target.position, this.transform.right, Input.GetAxis("Mouse Y") * -speed);
+            if (Vector3.Distance(new Vector3(transform.position.x, transform.position.z), new Vector3(target.position.x, target.position.z)) < 1f)
+                transform.RotateAround(target.position, this.transform.right, Input.GetAxis("Mouse Y") * speed);
+            transform.eulerAngles = new Vector3(ClampAngle(transform.eulerAngles.x, -90, 90), transform.eulerAngles.y, transform.eulerAngles.z);
+            /*if(transform.position.y < target.position.y)
+            {
+                transform.position = new Vector3(transform.position.x, target.position.y, transform.position.z);
+            }*/
+            /*if((transform.eulerAngles.x < 90 || transform.eulerAngles.x > 270) && transform.eulerAngles.x > 180 && transform.eulerAngles.x -360 > -30)
+            {
+                transform.RotateAround(target.position, this.transform.right, Input.GetAxis("Mouse Y") * speed);
+            }*/
+        }
     }
 
     float ClampAngle(float angle, float min, float max)
@@ -41,7 +44,7 @@ public class CameraScript : MonoBehaviour {
  
     void Update()
     {
-        if((Input.GetAxis("Mouse ScrollWheel") >= 0 && Vector3.Distance(transform.position, target.position) > 3) || (Input.GetAxis("Mouse ScrollWheel") <= 0 && Vector3.Distance(transform.position, target.position) < 15))
+        if ((Input.GetAxis("Mouse ScrollWheel") >= 0 && Vector3.Distance(transform.position, target.position) > 3) || (Input.GetAxis("Mouse ScrollWheel") <= 0 && Vector3.Distance(transform.position, target.position) < 15))
             fav += Input.GetAxis("Mouse ScrollWheel");
         fav = Mathf.Lerp(fav, 0.0f, Time.deltaTime * 5f);
         fav = Mathf.Clamp(fav, -1.0f, 1.0f);

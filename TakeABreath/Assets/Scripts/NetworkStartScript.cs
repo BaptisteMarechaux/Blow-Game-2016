@@ -15,9 +15,19 @@ public class NetworkStartScript : MonoBehaviour
 
     bool isHost = false;
 
+    public static NetworkStartScript singleton;
+
+    void Awake()
+    {
+        if (!singleton)
+            singleton = this;
+        else
+            Destroy(this.gameObject);
+    }
+
     void Start()
     {
-        NetworkManager.singleton.StartMatchMaker();
+        NetworkManagerCustom.singleton.StartMatchMaker();
     }
 
     void Update()

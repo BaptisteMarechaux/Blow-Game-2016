@@ -26,6 +26,9 @@ public class ToolsForPlayer : NetworkBehaviour
     [SerializeField]
     GameObject sphere;
 
+    [SerializeField]
+    GameObject shape;
+
     Text tx;
 
     ToolMode previousTm = ToolMode.nothing;
@@ -33,6 +36,8 @@ public class ToolsForPlayer : NetworkBehaviour
     void Start()
     {
         tm = ToolMode.nothing;
+        if (isLocalPlayer)
+            GameObject.Find("ChatInputField").GetComponent<TchatScript>().AssigAuthority(connectionToServer);
     }
 
     // Update is called once per frame
@@ -58,6 +63,7 @@ public class ToolsForPlayer : NetworkBehaviour
             {
                 tm = ToolMode.text;
                 box.SetActive(true);
+                CmdShowColliderCube();
             }
             else
             if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -68,7 +74,9 @@ public class ToolsForPlayer : NetworkBehaviour
             else
             {
                 box.SetActive(false);
+                CmdHideColliderCube();
             }
+
 
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
@@ -158,30 +166,42 @@ public class ToolsForPlayer : NetworkBehaviour
     }
 
     [Command]
+    void CmdShowColliderCube()
+    {
+        box.SetActive(true);
+    }
+
+    [Command]
+    void CmdHideColliderCube()
+    {
+        box.SetActive(false);
+    }
+
+    [Command]
     void CmdSpawnCube()
     {
-        NetworkServer.Spawn(Instantiate(prefab1, this.transform.position + this.transform.forward * 2.5f, this.transform.rotation) as GameObject);
+        NetworkServer.Spawn(Instantiate(prefab1, shape.transform.position + shape.transform.forward * 2.5f, shape.transform.rotation) as GameObject);
     }
 
     [Command]
     void CmdSpawnText()
     {
-        GameObject g = (Instantiate(prefab2, this.transform.position + this.transform.forward * 2.5f, this.transform.rotation) as GameObject);
+        GameObject g = (Instantiate(prefab2, shape.transform.position + shape.transform.forward * 2.5f, shape.transform.rotation) as GameObject);
         NetworkServer.SpawnWithClientAuthority(g, this.gameObject);
     }
 
     [Command]
     void CmdSpawnImage()
     {
-        GameObject g = (Instantiate(prefab3, this.transform.position + this.transform.forward * 3, this.transform.rotation) as GameObject);
+        GameObject g = (Instantiate(prefab3, shape.transform.position + shape.transform.forward * 3, shape.transform.rotation) as GameObject);
         NetworkServer.Spawn(g);
     }
 
     [Command]
     void CmdSpawnSphere()
     {
-        GameObject g = (Instantiate(prefab4, this.transform.position + this.transform.forward * 1, this.transform.rotation) as GameObject);
-        g.GetComponent<Rigidbody>().velocity = this.GetComponent<Rigidbody>().velocity + this.transform.forward * 10;
+        GameObject g = (Instantiate(prefab4, shape.transform.position + shape.transform.forward * 1, shape.transform.rotation) as GameObject);
+        g.GetComponent<Rigidbody>().velocity = this.GetComponent<Rigidbody>().velocity + shape.transform.forward * 10;
         Destroy(g, 8f);
         NetworkServer.Spawn(g);
     }

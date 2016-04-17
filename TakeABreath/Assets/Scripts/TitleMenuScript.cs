@@ -24,6 +24,9 @@ public class TitleMenuScript : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         if (Screen.fullScreen == true)
         {
             this.fullscreenToggle.isOn = true;
@@ -36,8 +39,9 @@ public class TitleMenuScript : MonoBehaviour {
             this.RetrieveVolume();
         }
 
-        if(!nss)
-            nss = GameObject.Find("NetworkManager").GetComponent<NetworkStartScript>();
+        if (!nss)
+            //nss = GameObject.Find("NetworkManager").GetComponent<NetworkStartScript>();
+            nss = NetworkStartScript.singleton;
         if (nss && btClient && btHost)
         {
             btHost.onClick.AddListener(delegate { nss.LaunchServer(); });

@@ -23,7 +23,7 @@ public class MainMenuScript : MonoBehaviour {
         {
             if (menuPanel)
                 menuPanel.SetActive(!menuPanel.activeSelf);
-            Cursor.visible = !Cursor.visible;
+            //Cursor.visible = !Cursor.visible;
         }
         //print(Input.inputString);
     }

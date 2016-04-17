@@ -41,13 +41,14 @@ public class TextScript : NetworkBehaviour {
                 this.transform.rotation = playerPosition.rotation;
             }
         }else
-        if (Input.GetMouseButton(1))
-        {
-            Destroy(this.gameObject);
-        }
-        else
         if (editingMode)
         {
+            if (Input.GetMouseButton(1))
+            {
+                this.transform.position = new Vector3(100, 100, 100);
+                Destroy(this.gameObject, 1f);
+            }
+
             if (Input.GetKeyDown(KeyCode.Backspace))
             {
                 if (tx.text.Length > 0)
@@ -84,8 +85,10 @@ public class TextScript : NetworkBehaviour {
 
             if (!other.GetComponentInParent<ToolsForPlayer>().IsInSelectionMode())
             {
-                GetComponent<NetworkIdentity>().RemoveClientAuthority(GetComponent<NetworkIdentity>().clientAuthorityOwner);
-                GetComponent<NetworkIdentity>().AssignClientAuthority(other.GetComponentInParent<Move>().connectionToClient); //other.GetComponentInParent<Move>().connectionToClient
+                if (isServer) {
+                    GetComponent<NetworkIdentity>().RemoveClientAuthority(GetComponent<NetworkIdentity>().clientAuthorityOwner);
+                    GetComponent<NetworkIdentity>().AssignClientAuthority(other.GetComponentInParent<Move>().connectionToClient); //other.GetComponentInParent<Move>().connectionToClient
+                }
                 other.GetComponentInParent<ToolsForPlayer>().TurnPlayerToSelection(true);
                 playerPosition = other.transform;
                 editingMode = true;
