@@ -13,6 +13,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private UIscript _myUI;
     [SerializeField]
+    private GameObject _myLevelUI;
+    [SerializeField]
     private LayerMask _layer;
     [SerializeField]
     private Camera _cam;
@@ -24,6 +26,7 @@ public class PlayerManager : MonoBehaviour
     //private NetworkPlayer _playerId;
     private bool inPossession = false;
     private float rate = 10;
+    private int _vieTotal = 10;
 
     public MonsterClass MonstrePossede
     {
@@ -165,11 +168,15 @@ public class PlayerManager : MonoBehaviour
             this._monstrePossede.AttackTarget(this._target);
             if (this._target.Sante <= 0)
             {
-                this._me.addExp(this._target.Exp);
+                this._myUI.levelUpdate();
+                if (this._me.addExp(this._target.Exp) > 0)
+                {
+                    this._myLevelUI.SetActive(true);
+                }
+
                 this._target = null;
                 this._myUI.ButtonAttackDisable();
                 this._myUI.expBarInfo();
-                this._myUI.levelUpdate();
                 this._myUI.LifeTargetDisable();
             }
         }

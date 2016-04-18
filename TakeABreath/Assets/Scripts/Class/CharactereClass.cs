@@ -12,9 +12,20 @@ public class CharactereClass : MonoBehaviour {
     private int _exp = 0;
     [SerializeField]
     private int _expToLvlUp = 50;
+    [SerializeField]
+    private int _sante = 10;
+    [SerializeField]
+    private int _force = 1;
+    [SerializeField]
+    private int _intel = 1; //up les sorts
+    [SerializeField]
+    private int _volonte = 1; //diminue dégats des sorts
+    [SerializeField]
+    private int _defense = 1;
 
+    private int _santeMax = 10;
     //private NetworkPlayer _playerId;
-    
+
     public string Name
     {
         get
@@ -56,6 +67,86 @@ public class CharactereClass : MonoBehaviour {
             return _expToLvlUp;
         }
     }
+
+    public int Force
+    {
+        get
+        {
+            return _force;
+        }
+
+        set
+        {
+            _force = value;
+        }
+    }
+
+    public int Intel
+    {
+        get
+        {
+            return _intel;
+        }
+
+        set
+        {
+            _intel = value;
+        }
+    }
+
+    public int Volonte
+    {
+        get
+        {
+            return _volonte;
+        }
+
+        set
+        {
+            _volonte = value;
+        }
+    }
+
+    public int Defense
+    {
+        get
+        {
+            return _defense;
+        }
+
+        set
+        {
+            _defense = value;
+        }
+    }
+
+    public int Sante
+    {
+        get
+        {
+            return _sante;
+        }
+
+        set
+        {
+            _sante = value;
+        }
+    }
+
+    public int SanteMax
+    {
+        get
+        {
+            return _santeMax;
+        }
+
+        set
+        {
+            _santeMax = value;
+        }
+    }
+
+
 
     public int addExp(int exp)
     {

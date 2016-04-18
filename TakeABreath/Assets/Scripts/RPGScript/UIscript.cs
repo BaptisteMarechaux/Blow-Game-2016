@@ -127,7 +127,7 @@ public class UIscript : MonoBehaviour {
 
     public void HealthBarUpdate()
     {
-        this._myhp.text = this._player.MonstrePossede.Sante + " / " + this._player.MonstrePossede.SanteMax;
+        this._myhp.text = this._player.MonstrePossede.Sante + " / " + this._player.MonstrePossede.SanteMax ;
         float mylife = (float)this._player.MonstrePossede.Sante / (float)this._player.MonstrePossede.SanteMax; //<== valeur entre 0 et 1
         this._healthBar.transform.localScale = new Vector3(Mathf.Clamp(mylife, 0f, 1f), this._healthBar.transform.localScale.y, this._healthBar.transform.localScale.z);
     }
