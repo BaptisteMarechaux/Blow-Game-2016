@@ -235,15 +235,8 @@ public class PlayerManager : MonoBehaviour
             this.inPossession = true;
             this.transform.position = this.MonstrePossede.transform.position;
             this._me.addExp(this._monstrePossede.ExpToPossess);
-            
 
-            this.VieTotal = Me.Sante + MonstrePossede.Sante;
-            this.VieMaxTotal = Me.SanteMax + MonstrePossede.SanteMax;
-            this.ForceTotal = Me.Force + MonstrePossede.Force;
-            this.ConsTotal = Me.Defense + MonstrePossede.Defense;
-            this.IntTotal = Me.Intel + MonstrePossede.Intel;
-            this.VolTotal = Me.Volonte + MonstrePossede.Volonte;
-            
+            StatUpdateWithMonster();
 
             //UI
             this._myUI.InfoTextUpdate("");
@@ -265,6 +258,16 @@ public class PlayerManager : MonoBehaviour
         */
     }
     
+    public void StatUpdateWithMonster()
+    {
+        this.VieTotal = Me.Sante + MonstrePossede.Sante;
+        this.VieMaxTotal = Me.SanteMax + MonstrePossede.SanteMax;
+        this.ForceTotal = Me.Force + MonstrePossede.Force;
+        this.ConsTotal = Me.Defense + MonstrePossede.Defense;
+        this.IntTotal = Me.Intel + MonstrePossede.Intel;
+        this.VolTotal = Me.Volonte + MonstrePossede.Volonte;
+    }
+
     public void Attack()
     {
         if (Vector3.Distance(this.transform.position, _target.transform.position) <= this._monstrePossede.Attack.Range && this._monstrePossede.Attack.Ready)
@@ -277,7 +280,6 @@ public class PlayerManager : MonoBehaviour
                 {
                     this._myLevelUI.SetActive(true);
                 }
-
                 this._target = null;
                 this._myUI.ButtonAttackDisable();
                 this._myUI.expBarInfo();

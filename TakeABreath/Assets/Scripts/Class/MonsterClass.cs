@@ -223,9 +223,10 @@ public class MonsterClass : MonoBehaviour {
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage,int def)
     {
-        this._sante -= damage;
+
+        this._sante -= damage - (def/3);
 
         if (this._sante <= 0)
         {
