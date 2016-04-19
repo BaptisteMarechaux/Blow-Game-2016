@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -24,6 +25,18 @@ public class PlayerManager : MonoBehaviour
     //private NetworkPlayer _playerId;
     private bool inPossession = false;
     private float rate = 10;
+
+    public delegate void monsterPossessed();
+    public static event monsterPossessed OnMonsterPossessed;
+
+    public delegate void monsterReleased();
+    public static event monsterReleased OnMonsterReleased;
+
+    public delegate void monsterMouseEnter();
+    public static event monsterMouseEnter OnMonsterMouseEnter;
+
+    public delegate void monsterMouseLeave();
+    public static event monsterMouseLeave OnMonsterMouseLeave;
 
     public MonsterClass MonstrePossede
     {
@@ -70,16 +83,20 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
+
             _ray = _cam.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._layer))
             {
                 _target = _hit.collider.GetComponent<MonsterClass>();
                 Debug.Log(Vector3.Distance(this.transform.position, _target.transform.position));
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    
+                }
             }
-        }
+
         
         if (inPossession)
         {
@@ -144,6 +161,9 @@ public class PlayerManager : MonoBehaviour
             this._myUI.HealthBarUpdate();
             this._myUI.ButtonPossessDisable();
             this._myUI.ButtonDepossessEnable();
+
+            OnMonsterPossessed();
+
         }
         else if (Me.Level < this._target.Level)
         {
