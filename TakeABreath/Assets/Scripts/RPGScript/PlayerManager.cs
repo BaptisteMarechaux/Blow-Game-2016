@@ -14,6 +14,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private UIscript _myUI;
     [SerializeField]
+    private GameObject _myLevelUI;
+    [SerializeField]
     private LayerMask _layer;
     [SerializeField]
     private Camera _cam;
@@ -25,6 +27,12 @@ public class PlayerManager : MonoBehaviour
     //private NetworkPlayer _playerId;
     private bool inPossession = false;
     private float rate = 10;
+    private int _vieTotal = 10;
+    private int _vieMaxTotal = 10;
+    private int _forceTotal = 1;
+    private int _consTotal = 1;
+    private int _intTotal = 1;
+    private int _volTotal = 1;
 
     public delegate void monsterPossessed();
     public static event monsterPossessed OnMonsterPossessed;
@@ -72,6 +80,84 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    public int VieTotal
+    {
+        get
+        {
+            return _vieTotal;
+        }
+
+        set
+        {
+            _vieTotal = value;
+        }
+    }
+
+    public int VieMaxTotal
+    {
+        get
+        {
+            return _vieMaxTotal;
+        }
+
+        set
+        {
+            _vieMaxTotal = value;
+        }
+    }
+
+    public int ForceTotal
+    {
+        get
+        {
+            return _forceTotal;
+        }
+
+        set
+        {
+            _forceTotal = value;
+        }
+    }
+
+    public int ConsTotal
+    {
+        get
+        {
+            return _consTotal;
+        }
+
+        set
+        {
+            _consTotal = value;
+        }
+    }
+
+    public int IntTotal
+    {
+        get
+        {
+            return _intTotal;
+        }
+
+        set
+        {
+            _intTotal = value;
+        }
+    }
+
+    public int VolTotal
+    {
+        get
+        {
+            return _volTotal;
+        }
+
+        set
+        {
+            _volTotal = value;
+        }
+    }
+
 
     // Use this for initialization
     void Start()
@@ -79,6 +165,12 @@ public class PlayerManager : MonoBehaviour
         this._nameFlottant.text = Me.Name;
         this._myUI.levelUpdate();
         this._myUI.expBarInfo();
+        this.VieTotal = Me.Sante;
+        this.VieMaxTotal = Me.SanteMax;
+        this.ForceTotal = Me.Force;
+        this.ConsTotal = Me.Defense;
+        this.IntTotal = Me.Intel;
+        this.VolTotal = Me.Volonte;
     }
 
     void Update()
@@ -126,7 +218,6 @@ public class PlayerManager : MonoBehaviour
 
     private void noBody()
     {
-        Debug.Log("YOU'RE DIE!");
         Depossession();
 
     }
@@ -137,7 +228,14 @@ public class PlayerManager : MonoBehaviour
         this._monstrePossede.Player = null;
         this._monstrePossede = null;
         this.inPossession = false;
-        
+
+        this.VieTotal = Me.Sante;
+        this.VieMaxTotal = Me.SanteMax;
+        this.ForceTotal = Me.Force;
+        this.ConsTotal = Me.Defense;
+        this.IntTotal = Me.Intel;
+        this.VolTotal = Me.Volonte;
+
         //UI
         this._myUI.HealthBarDisable();
         this._myUI.ButtonDepossessDisable();
@@ -154,6 +252,8 @@ public class PlayerManager : MonoBehaviour
             this.inPossession = true;
             this.transform.position = this.MonstrePossede.transform.position;
             this._me.addExp(this._monstrePossede.ExpToPossess);
+
+            StatUpdateWithMonster();
 
             //UI
             this._myUI.InfoTextUpdate("");
@@ -178,18 +278,31 @@ public class PlayerManager : MonoBehaviour
         */
     }
     
+    public void StatUpdateWithMonster()
+    {
+        this.VieTotal = Me.Sante + MonstrePossede.Sante;
+        this.VieMaxTotal = Me.SanteMax + MonstrePossede.SanteMax;
+        this.ForceTotal = Me.Force + MonstrePossede.Force;
+        this.ConsTotal = Me.Defense + MonstrePossede.Defense;
+        this.IntTotal = Me.Intel + MonstrePossede.Intel;
+        this.VolTotal = Me.Volonte + MonstrePossede.Volonte;
+    }
+
     public void Attack()
     {
         if (Vector3.Distance(this.transform.position, _target.transform.position) <= this._monstrePossede.Attack.Range && this._monstrePossede.Attack.Ready)
         {
-            this._monstrePossede.AttackTarget(this._target);
+            this._monstrePossede.AttackTarget(this._target,this._forceTotal);
             if (this._target.Sante <= 0)
             {
-                this._me.addExp(this._target.Exp);
+                this._myUI.levelUpdate();
+                if (this._me.addExp(this._target.Exp) > 0)
+                {
+                    this._myLevelUI.SetActive(true);
+                }
                 this._target = null;
                 this._myUI.ButtonAttackDisable();
                 this._myUI.expBarInfo();
-                this._myUI.levelUpdate();
                 this._myUI.LifeTargetDisable();
             }
         }

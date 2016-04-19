@@ -43,7 +43,10 @@ public class AttackScript : MonoBehaviour {
     {
         if(Vector3.Distance(this.transform.position, target.transform.position) <= this.Range)
         {
-            target.TakeDamage(force);
+            if(target.Player == null)
+                target.TakeDamage(force,target.Defense);
+            else
+                target.TakeDamage(force, target.Defense+target.Player.Defense);
             this._timer = 0;
             this._ready = false;
             return 0;
