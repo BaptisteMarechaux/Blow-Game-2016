@@ -12,6 +12,12 @@ public class MonsterClass : MonoBehaviour {
     [SerializeField]
     private int _force = 5;
     [SerializeField]
+    private int _defense = 5;
+    [SerializeField]
+    private int _intel = 5;
+    [SerializeField]
+    private int _volonte = 5;
+    [SerializeField]
     private int _santeMax = 50;
     [SerializeField]
     private int _exp = 10;
@@ -148,6 +154,45 @@ public class MonsterClass : MonoBehaviour {
         }
     }
 
+    public int Defense
+    {
+        get
+        {
+            return _defense;
+        }
+
+        set
+        {
+            _defense = value;
+        }
+    }
+
+    public int Intel
+    {
+        get
+        {
+            return _intel;
+        }
+
+        set
+        {
+            _intel = value;
+        }
+    }
+
+    public int Volonte
+    {
+        get
+        {
+            return _volonte;
+        }
+
+        set
+        {
+            _volonte = value;
+        }
+    }
+
     void Start()
     {
         this._sante = this.SanteMax;
@@ -168,9 +213,9 @@ public class MonsterClass : MonoBehaviour {
     }
 
 
-    public void AttackTarget(MonsterClass target)
+    public void AttackTarget(MonsterClass target, int force)
     {
-        this._attack.Attack(target,this._force);
+        this._attack.Attack(target,force);
         target.IsHunted = true;
         if (!target.IsAlive)
         {

@@ -36,6 +36,11 @@ public class UIscript : MonoBehaviour {
 
     private float rate = 3.5f;
 
+    void Start()
+    {
+        this._myhp.text = this._player.VieTotal + " / " + this._player.VieMaxTotal;
+    }
+
     void Update()
     {
         if (this._infoText.text != "")
@@ -91,9 +96,7 @@ public class UIscript : MonoBehaviour {
     {
         float myexp = (float)this._player.Me.Exp / (float)this._player.Me.ExpToLvlUp; //<== valeur entre 0 et 1
         this._expBar.transform.localScale = new Vector3(Mathf.Clamp(myexp, 0f, 1f), this._expBar.transform.localScale.y, this._expBar.transform.localScale.z);
-
-        Debug.Log(myexp);
-        Debug.Log(myexp > 0.55f);
+        
         string information = "";
         if (myexp >= 0.3f && myexp < 0.4f)
         {
@@ -120,15 +123,15 @@ public class UIscript : MonoBehaviour {
 
     public void HealthBarDisable()
     {
-        this._myhp.text = " - ";
+        this._myhp.text = this._player.VieTotal + " / " + this._player.VieMaxTotal;
         this._healthBar.transform.localScale = new Vector3(0.0f, this._healthBar.transform.localScale.y, this._healthBar.transform.localScale.z);
         this._player.transform.position = new Vector3(0, 0.4f, 0);
     }
 
     public void HealthBarUpdate()
     {
-        this._myhp.text = this._player.MonstrePossede.Sante + " / " + this._player.MonstrePossede.SanteMax ;
-        float mylife = (float)this._player.MonstrePossede.Sante / (float)this._player.MonstrePossede.SanteMax; //<== valeur entre 0 et 1
+        this._myhp.text = this._player.VieTotal + " / " + this._player.VieMaxTotal;
+        float mylife = (float)this._player.VieTotal / (float)this._player.VieMaxTotal; //<== valeur entre 0 et 1
         this._healthBar.transform.localScale = new Vector3(Mathf.Clamp(mylife, 0f, 1f), this._healthBar.transform.localScale.y, this._healthBar.transform.localScale.z);
     }
 
