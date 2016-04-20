@@ -18,7 +18,11 @@ public class InTerrainDisplay : MonoBehaviour {
     public void DrawMesh(MeshData meshData, Texture2D texture)
     {
         meshFilter.sharedMesh = meshData.CreateMesh();
+<<<<<<< HEAD
         //meshRenderer.sharedMaterial.mainTexture = texture;
+=======
+        meshRenderer.sharedMaterial.mainTexture = texture;
+>>>>>>> MultiPart
     }
 
 }

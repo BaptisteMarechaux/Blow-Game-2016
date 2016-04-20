@@ -24,7 +24,10 @@ public class InEndlessTerrain : MonoBehaviour {
         maxViewDist = detailLevels[detailLevels.Length - 1].visibleDistThreshold;
         chunkSize = InTerrainGenerator.mapChunkSize - 1;
         chunksVisibleInViewDist = Mathf.RoundToInt(maxViewDist / chunkSize);
+<<<<<<< HEAD
 
+=======
+>>>>>>> MultiPart
     }
 
     void Update()
@@ -112,7 +115,11 @@ public class InEndlessTerrain : MonoBehaviour {
         {
             this.terrainData = terrainData;
             terrainDataReceived = true;
+<<<<<<< HEAD
             //meshRenderer.material.mainTexture = InTextureGenerator.TextureFromColorMap(terrainData.colorMap, 240, 240);
+=======
+            meshRenderer.material.mainTexture = InTextureGenerator.TextureFromColorMap(terrainData.colorMap, 240, 240);
+>>>>>>> MultiPart
             //terrainGenerator.RequestMeshData(terrainData, LODInfo,  OnMeshDataReceived);
         }
 

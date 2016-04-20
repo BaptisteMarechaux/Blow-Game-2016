@@ -178,16 +178,17 @@ public class PlayerManager : MonoBehaviour
 
             _ray = _cam.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._layer))
+            if (Input.GetMouseButtonDown(0))
             {
-                _target = _hit.collider.GetComponent<MonsterClass>();
-                Debug.Log(Vector3.Distance(this.transform.position, _target.transform.position));
-
-                if (Input.GetMouseButtonDown(0))
+                if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._layer))
                 {
-                    
+                    _target = _hit.collider.GetComponent<MonsterClass>();
+                    Debug.Log(Vector3.Distance(this.transform.position, _target.transform.position));
+
+
                 }
             }
+        
 
         
         if (inPossession)

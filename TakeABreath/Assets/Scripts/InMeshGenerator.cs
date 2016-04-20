@@ -22,7 +22,11 @@ public static class InMeshGenerator {
         {
             for(int x=0;x<width;x+= meshSimplificationIncrement)
             {
+<<<<<<< HEAD
                 meshData.vertices[vertexIndex] = new Vector3(topLeftX + x, heightCurve.Evaluate(heightMap[x, y]) * heightMultiplier - heightMultiplier*0.01f, topLeftZ - y);
+=======
+                meshData.vertices[vertexIndex] = new Vector3(topLeftX + x, heightCurve.Evaluate(heightMap[x, y]) * heightMultiplier, topLeftZ - y);
+>>>>>>> MultiPart
                 meshData.uvs[vertexIndex] = new Vector2(x / (float)width, y/(float)height);
 
                 if(x<width-1 && y < height-1)
