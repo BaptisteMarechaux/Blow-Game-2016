@@ -2,20 +2,30 @@
 using System.Collections;
 
 public static class InNoise {
-    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset)
+    public enum NormalizeMode { Local, Global };
+
+    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset, NormalizeMode normalizeMode)
     {
         float[,] NoiseMap = new float[mapWidth, mapHeight];
 
         System.Random pnrg = new System.Random(seed);
         Vector2[] octaveOffsets = new Vector2[octaves];
-        for(int i=0;i<octaves;i++)
+
+        float maxPossibleHeight = 0;
+        float amplitude = 1;
+        float frequency = 1;
+
+        for (int i=0;i<octaves;i++)
         {
             float offsetX = pnrg.Next(-100000, 100000) + offset.x;
             float offsetY = pnrg.Next(-100000, 100000) + offset.y;
             octaveOffsets[i] = new Vector2(offsetX, offsetY);
+
+            maxPossibleHeight += amplitude;
+            amplitude *= persistance;
         }
 
-        scale = scale < 0 ? 0.0001f : scale;
+        scale = scale <= 0 ? 0.0001f : scale;
 
         float maxNoiseHeight = float.MinValue;
         float minNoiseHeight = float.MaxValue;
@@ -27,8 +37,8 @@ public static class InNoise {
         {
             for(int x = 0;x < mapWidth;x++)
             {
-                float amplitude = 1;
-                float frequency = 1;
+                amplitude = 1;
+                frequency = 1;
                 float noiseHeight = 0;
 
                 for (int i=0;i<octaves;i++)
@@ -58,13 +68,30 @@ public static class InNoise {
             }
         }
 
-        for(int y=0;y<mapHeight;y++)
+        for (int y = 0; y < mapHeight; y++)
+        {
+            for (int x = 0; x < mapWidth; x++)
+            {
+                if (normalizeMode == NormalizeMode.Local)
+                {
+                    NoiseMap[x, y] = Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, NoiseMap[x, y]);
+                }
+                else
+                {
+                    float normalizedHeight = (NoiseMap[x, y] + 1) / (maxPossibleHeight / 0.9f);
+                    NoiseMap[x, y] = Mathf.Clamp(normalizedHeight, 0, int.MaxValue);
+                }
+            }
+        }
+        /*
+        for (int y=0;y<mapHeight;y++)
         {
             for(int x=0;x<mapWidth;x++)
             {
                 NoiseMap[x, y] = Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, NoiseMap[x, y]);
             }
         }
+        */
 
         return NoiseMap;
     } 

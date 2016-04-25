@@ -177,7 +177,6 @@ public class PlayerManager : MonoBehaviour
     {
 
             _ray = _cam.ScreenPointToRay(Input.mousePosition);
-
             if (Input.GetMouseButtonDown(0))
             {
                 if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._layer))
@@ -240,6 +239,9 @@ public class PlayerManager : MonoBehaviour
         //UI
         this._myUI.HealthBarDisable();
         this._myUI.ButtonDepossessDisable();
+
+        //Attribuer le transform
+        this._monstrePossede.transform.parent = null;
     }
 
     public void essaiPossession()
@@ -263,6 +265,7 @@ public class PlayerManager : MonoBehaviour
             this._myUI.ButtonPossessDisable();
             this._myUI.ButtonDepossessEnable();
 
+            this._monstrePossede.transform.parent = Me.transform;
             OnMonsterPossessed();
 
         }

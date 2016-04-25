@@ -22,7 +22,7 @@ public class CharactereClass : MonoBehaviour {
     private int _volonte = 1; //diminue dégats des sorts
     [SerializeField]
     private int _defense = 1;
-
+    [SerializeField]
     private int _santeMax = 10;
     //private NetworkPlayer _playerId;
 

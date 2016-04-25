@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour {
     Camera playerCamera;
     [SerializeField]
     Transform playerTransform;
+    [SerializeField]
+    Transform playerTargetTransform;
 
     [SerializeField]
     float speed = 10;
@@ -29,6 +31,12 @@ public class PlayerController : MonoBehaviour {
         translateVector.x = h*speed;
         translateVector.y = 0;
         translateVector.z = v*speed;
+
         playerTransform.Translate(translateVector*Time.deltaTime);
+
+        playerCamera.transform.position = Vector3.Lerp(playerCamera.transform.position, playerTargetTransform.position, speed * Time.deltaTime);
+
+        //playerCamera.transform.LookAt(playerTransform);
+        
     }
 }

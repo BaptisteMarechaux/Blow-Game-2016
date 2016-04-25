@@ -27,6 +27,8 @@ public class SimpleShpereGeneration : MonoBehaviour {
     public float meshHeightMultiplier = 1;
     public AnimationCurve meshHeightCurve;
 
+    public InNoise.NormalizeMode normalizeMode;
+
     bool drawnMesh;
 
     void Start()
@@ -57,65 +59,8 @@ public class SimpleShpereGeneration : MonoBehaviour {
     {
         float[,] NoiseMap = new float[nbLat + 1 + nbLat / 2, nbLong + 1 + nbLong / 2];
 
-        System.Random pnrg = new System.Random(seed);
-        Vector2[] octaveOffsets = new Vector2[octaves];
-        for (int a = 0; a < octaves; a++)
-        {
-            float offsetX = pnrg.Next(-100000, 100000) + offset.x;
-            float offsetY = pnrg.Next(-100000, 100000) + offset.y;
-            octaveOffsets[a] = new Vector2(offsetX, offsetY);
-        }
-
-        noiseScale = noiseScale < 0 ? 0.0001f : noiseScale;
-
-        float maxNoiseHeight = float.MinValue;
-        float minNoiseHeight = float.MaxValue;
-
-        float halfWidth = nbLat / 2f;
-        float halfHeight = nbLong / 2f;
-
-        for (int y = 0; y < nbLat + 1 + nbLat/2; y++)
-        {
-            for (int x = 0; x < nbLong + 1 + nbLong/2; x++)
-            {
-                float amplitude = 1;
-                float frequency = 1;
-                float noiseHeight = 0;
-
-                for (int a = 0; a < octaves; a++)
-                {
-                    float sampleX = (x - halfWidth) / noiseScale * frequency + octaveOffsets[a].x;
-                    float sampleY = (y - halfHeight) / noiseScale * frequency + octaveOffsets[a].y;
-
-                    float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
-                    noiseHeight += perlinValue * amplitude;
-                    //NoiseMap[x, y] = perlinValue;
-
-                    amplitude *= persistance;
-                    frequency *= lacunarity;
-                }
-
-                if (noiseHeight > maxNoiseHeight)
-                {
-                    maxNoiseHeight = noiseHeight;
-                }
-                else if (noiseHeight < minNoiseHeight)
-                {
-                    minNoiseHeight = noiseHeight;
-                }
-
-                NoiseMap[x, y] = noiseHeight;
-
-            }
-        }
-
-        for (int y = 0; y < nbLat + 1 + nbLat / 2; y++)
-        {
-            for (int x = 0; x < nbLong + 1 + nbLong / 2; x++)
-            {
-                NoiseMap[x, y] = Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, NoiseMap[x, y]);
-            }
-        }
+        NoiseMap = InNoise.GenerateNoiseMap(nbLat + 1 + nbLat / 2, nbLong + 1 + nbLong / 2, seed, noiseScale, octaves, persistance, lacunarity, offset, normalizeMode);
+      
 
         vertices = new Vector3[(nbLong + 1) * nbLat + 2];
         MeshFilter filter = gameObject.AddComponent<MeshFilter>();
@@ -236,6 +181,8 @@ public class SimpleShpereGeneration : MonoBehaviour {
     {
         float[,] NoiseMap = new float[nbLat + 1 + nbLat / 2, nbLong + 1 + nbLong / 2];
 
+        NoiseMap = InNoise.GenerateNoiseMap(nbLat + 1 + nbLat / 2, nbLong + 1 + nbLong / 2, seed, noiseScale, octaves, persistance, lacunarity, offset, normalizeMode);
+        /*
         System.Random pnrg = new System.Random(seed);
         Vector2[] octaveOffsets = new Vector2[octaves];
         for (int a = 0; a < octaves; a++)
@@ -295,6 +242,7 @@ public class SimpleShpereGeneration : MonoBehaviour {
                 NoiseMap[x, y] = Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, NoiseMap[x, y]);
             }
         }
+        */
 
         float _pi = Mathf.PI;
         float _2pi = _pi * 2f;
