@@ -168,6 +168,10 @@ public class CharactereClass : MonoBehaviour {
             levelUp();
             return this._level;
         }
+        if (PlayerPrefs.GetString("Name") == this._name)
+        {
+            SaveStats();
+        }
         return 0;
     }
 
