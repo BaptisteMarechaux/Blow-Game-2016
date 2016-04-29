@@ -146,7 +146,19 @@ public class CharactereClass : MonoBehaviour {
         }
     }
 
-
+    void OnEnable()
+    {
+        this._name = PlayerPrefs.GetString("Name");
+        this._level = PlayerPrefs.GetInt("Level");
+        this._sante = PlayerPrefs.GetInt("Vie");
+        this._santeMax = PlayerPrefs.GetInt("VieMax");
+        this._exp = PlayerPrefs.GetInt("Exp");
+        this._expToLvlUp = PlayerPrefs.GetInt("ExpMax");
+        this._force = PlayerPrefs.GetInt("Force");
+        this._defense = PlayerPrefs.GetInt("Constitution");
+        this._intel = PlayerPrefs.GetInt("Intelligence");
+        this._volonte = PlayerPrefs.GetInt("Volonte");
+    }
 
     public int addExp(int exp)
     {

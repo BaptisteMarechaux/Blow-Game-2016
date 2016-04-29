@@ -5,7 +5,7 @@ using System.Collections;
 public class UILevelUp : MonoBehaviour {
 
     [SerializeField]
-    CharactereClass _player;
+    PlayerManager _player;
     [SerializeField]
     Text _lvlText;
     [SerializeField]
@@ -30,10 +30,11 @@ public class UILevelUp : MonoBehaviour {
     private int _ptsDefence = 0;
     private int _ptsInt = 0;
     private int _ptsVol = 0;
-
-
+    private CharactereClass _myPlayer;
+    
     public void OnEnable()
     {
+        this._myPlayer = this._player.Me;
         this._ptsForce = 0;
         this._ptsVie = 0;
         this._ptsVol = 0;
@@ -41,7 +42,6 @@ public class UILevelUp : MonoBehaviour {
         this._ptsInt = 0;
         this._pts += this._ptsMax;
         this.UpdateUI();
-        Debug.Log(this._pts);
     }
 
 
@@ -51,8 +51,8 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts--;
             this._ptsVie++;
-            this._player.Sante++;
-            this._player.SanteMax++;
+            this._myPlayer.Sante++;
+            this._myPlayer.SanteMax++;
             this.UpdateUI();
         }
     }
@@ -62,9 +62,9 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts++;
             this._ptsVie--;
-            this._player.SanteMax--;
-            if (this._player.SanteMax > this._player.Sante)
-                this._player.Sante = this._player.SanteMax;
+            this._myPlayer.SanteMax--;
+            if (this._myPlayer.SanteMax > this._myPlayer.Sante)
+                this._myPlayer.Sante = this._myPlayer.SanteMax;
             this.UpdateUI();
         }
     }
@@ -75,7 +75,7 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts--;
             this._ptsForce++;
-            this._player.Force++;
+            this._myPlayer.Force++;
             this.UpdateUI();
         }
     }
@@ -85,7 +85,7 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts++;
             this._ptsForce--;
-            this._player.Force--;
+            this._myPlayer.Force--;
             this.UpdateUI();
         }
     }
@@ -96,7 +96,7 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts--;
             this._ptsDefence++;
-            this._player.Defense++;
+            this._myPlayer.Defense++;
             this.UpdateUI();
         }
     }
@@ -106,7 +106,7 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts++;
             this._ptsDefence--;
-            this._player.Defense--;
+            this._myPlayer.Defense--;
             this.UpdateUI();
         }
     }
@@ -117,7 +117,7 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts--;
             this._ptsInt++;
-            this._player.Intel++;
+            this._myPlayer.Intel++;
             this.UpdateUI();
         }
     }
@@ -127,7 +127,7 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts++;
             this._ptsInt--;
-            this._player.Intel--;
+            this._myPlayer.Intel--;
             this.UpdateUI();
         }
     }
@@ -138,7 +138,7 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts--;
             this._ptsVol++;
-            this._player.Volonte++;
+            this._myPlayer.Volonte++;
             this.UpdateUI();
         }
     }
@@ -148,7 +148,7 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts++;
             this._ptsVol--;
-            this._player.Volonte--;
+            this._myPlayer.Volonte--;
             this.UpdateUI();
         }
     }
@@ -185,17 +185,18 @@ public class UILevelUp : MonoBehaviour {
 
     public void Validate()
     {
+        this._player.StatUpdateWithMonster();
         this._mygameobject.SetActive(false);
     }
 
     private void UpdateUI()
     {
-        this._lvlText.text = this._player.Level.ToString();
+        this._lvlText.text = this._myPlayer.Level.ToString();
         this._points.text = this._pts.ToString();
-        this._vie.text = this._player.SanteMax.ToString();
-        this._force.text = this._player.Force.ToString();
-        this._defense.text = this._player.Defense.ToString();
-        this._intel.text = this._player.Intel.ToString();
-        this._volon.text = this._player.Volonte.ToString();
+        this._vie.text = this._myPlayer.SanteMax.ToString();
+        this._force.text = this._myPlayer.Force.ToString();
+        this._defense.text = this._myPlayer.Defense.ToString();
+        this._intel.text = this._myPlayer.Intel.ToString();
+        this._volon.text = this._myPlayer.Volonte.ToString();
     }
 }

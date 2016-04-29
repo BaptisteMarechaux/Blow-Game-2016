@@ -9,6 +9,8 @@ public class UIscript : MonoBehaviour {
     [SerializeField]
     Text _targetName;
     [SerializeField]
+    Text _playerName;
+    [SerializeField]
     Text _infoText;
     [SerializeField]
     Text _lvlText;
@@ -38,6 +40,7 @@ public class UIscript : MonoBehaviour {
 
     void Start()
     {
+        this._playerName.text = this._player.Me.Name;
         this._myhp.text = this._player.VieTotal + " / " + this._player.VieMaxTotal;
     }
 

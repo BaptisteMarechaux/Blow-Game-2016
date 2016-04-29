@@ -43,12 +43,12 @@ public class BearUI : MonoBehaviour {
         uiExpImage.fillAmount = Mathf.Lerp(uiExpImage.fillAmount, (float)playerManager.Me.Exp / (float)playerManager.Me.ExpToLvlUp, 5*Time.deltaTime);
         if(playerManager.MonstrePossede != null)
         {
-            uiHPImage.fillAmount = Mathf.Lerp(uiHPImage.fillAmount, (float)playerManager.MonstrePossede.Sante / (float)playerManager.MonstrePossede.SanteMax, 5 * Time.deltaTime);
-            uiHP.text = playerManager.MonstrePossede.Sante + "/" + playerManager.MonstrePossede.SanteMax;
+            uiHPImage.fillAmount = Mathf.Lerp(uiHPImage.fillAmount, (float)playerManager.VieTotal / (float)playerManager.VieMaxTotal, 5 * Time.deltaTime);
+            uiHP.text = playerManager.VieTotal + "/" + playerManager.VieMaxTotal;
         }
         else
         {
-            uiHP.text = "--/--";
+            uiHP.text = playerManager.VieTotal + "/" + playerManager.VieMaxTotal;
         }
        
 

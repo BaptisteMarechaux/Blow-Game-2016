@@ -224,6 +224,9 @@ public class PlayerManager : MonoBehaviour
 
     public void Depossession()
     {
+        //Attribuer le transform
+        this._monstrePossede.transform.parent = null;
+
         //faire fuir le monstre
         this._monstrePossede.Player = null;
         this._monstrePossede = null;
@@ -240,8 +243,6 @@ public class PlayerManager : MonoBehaviour
         this._myUI.HealthBarDisable();
         this._myUI.ButtonDepossessDisable();
 
-        //Attribuer le transform
-        this._monstrePossede.transform.parent = null;
     }
 
     public void essaiPossession()
@@ -284,6 +285,7 @@ public class PlayerManager : MonoBehaviour
     
     public void StatUpdateWithMonster()
     {
+        Debug.Log(Me.SanteMax);
         this.VieTotal = Me.Sante + MonstrePossede.Sante;
         this.VieMaxTotal = Me.SanteMax + MonstrePossede.SanteMax;
         this.ForceTotal = Me.Force + MonstrePossede.Force;
