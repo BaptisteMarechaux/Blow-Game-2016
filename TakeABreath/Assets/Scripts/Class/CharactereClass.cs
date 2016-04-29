@@ -179,6 +179,26 @@ public class CharactereClass : MonoBehaviour {
         this._expToLvlUp *= 2;
         if (this.Exp >= this.ExpToLvlUp)
             levelUp();
+        else
+        {
+            if(PlayerPrefs.GetString("Name") == this._name)
+            {
+                SaveStats();
+            }
+        }
+    }
+
+    private void SaveStats()
+    {
+        PlayerPrefs.SetInt("Level", this._level);
+        PlayerPrefs.SetInt("Exp", this._exp);
+        PlayerPrefs.SetInt("ExpMax", this._expToLvlUp);
+        PlayerPrefs.SetInt("Vie", this._sante);
+        PlayerPrefs.SetInt("VieMax", this._santeMax);
+        PlayerPrefs.SetInt("Force", this._force);
+        PlayerPrefs.SetInt("Constitution", this._defense);
+        PlayerPrefs.SetInt("Intelligence", this._intel);
+        PlayerPrefs.SetInt("Volonte", this._volonte);
     }
 }
 
