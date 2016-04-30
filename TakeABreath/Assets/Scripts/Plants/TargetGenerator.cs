@@ -17,7 +17,7 @@ public class TargetGenerator : MonoBehaviour
     /// <param name="nbrTargets"></param>
     /// <param name="displayTargets"></param>
     /// <returns></returns>
-    public List<Target> GenerateTargets ( int nbrTargets , bool displayTargets = false )
+    public virtual List<Target> GenerateTargets ( int nbrTargets , bool displayTargets = false )
     {
         Mesh mesh = this._shape.mesh;
         int nbrvert = mesh.vertexCount;

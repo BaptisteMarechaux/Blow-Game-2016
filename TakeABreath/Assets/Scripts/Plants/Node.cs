@@ -128,7 +128,13 @@ public class Node : MonoBehaviour
 
         this . _targets . Clear ( );
 
-        return this . _origin + distance * n . normalized;
+        Debug . LogFormat ( "Sum : ( {0} , {1} , {2} )" , n . normalized . x , n . normalized . y , n . normalized . z );
+
+        n = this . _origin + distance * n . normalized;
+
+        Debug . LogFormat ( "Sum : ( {0} , {1} , {2} )" , n . x , n . y , n . z );
+
+        return n;
     }
 
 

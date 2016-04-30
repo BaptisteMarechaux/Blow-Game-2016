@@ -91,7 +91,7 @@ public class Tree : MonoBehaviour
     /// </summary>
     private void Loop ( )
     {
-        //Debug . LogFormat ( "Time : {0} ; Step : {1}" , Time . realtimeSinceStartup , this . _generation );
+        Debug . LogFormat ( "Time : {0} ; Step : {1}" , Time . realtimeSinceStartup , this . _generation );
 
         AssignTargets ( );
 
