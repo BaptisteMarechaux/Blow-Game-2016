@@ -19,13 +19,15 @@ public class TargetGenerator : MonoBehaviour
     /// <returns></returns>
     public List<Target> GenerateTargets ( int nbrTargets , bool displayTargets = false )
     {
+        Mesh mesh = this._shape.mesh;
+        int nbrvert = mesh.vertexCount;
         List<Target> influences = new List<Target> ( );
         List<Vector3> vectors = new List<Vector3> ( );
-        Vector3 center = new Vector3 ( 0, 5, 0 );
-        influences . Add ( CreateTarget ( center , displayTargets ) );
         while ( influences . Count < nbrTargets )
         {
-            Vector3 vec = new Vector3 ( Random.Range ( -2.5f, 2.5f ), Random.Range ( 1f, 5f ), Random.Range ( -2.5f, 2.5f ) );
+            Vector3 vec = Vector3.Lerp (mesh.vertices[Random.Range(0, nbrvert)], mesh.vertices[Random.Range(0, nbrvert)], Random.value);
+            vec . Scale ( this . _shape . transform . localScale );
+            vec += this . _shape . transform . localPosition;
             if ( !vectors . Contains ( vec ) )
             {
                 vectors . Add ( vec );
