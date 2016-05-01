@@ -119,6 +119,7 @@ public class Node : MonoBehaviour
     {
         if ( this . _targets . Count == 0 )
             return Vector3 . zero;
+
         Vector3 n = new Vector3 ( 0, 0, 0 );
 
         for ( int i = 0 ; i < this . _targets . Count ; ++i )
@@ -128,11 +129,7 @@ public class Node : MonoBehaviour
 
         this . _targets . Clear ( );
 
-        Debug . LogFormat ( "Sum : ( {0} , {1} , {2} )" , n . normalized . x , n . normalized . y , n . normalized . z );
-
         n = this . _origin + distance * n . normalized;
-
-        Debug . LogFormat ( "Sum : ( {0} , {1} , {2} )" , n . x , n . y , n . z );
 
         return n;
     }

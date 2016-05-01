@@ -2,7 +2,7 @@
 using System . Collections;
 using System . Collections . Generic;
 
-public class Tree : MonoBehaviour
+public class McTree : MonoBehaviour
 {
     [SerializeField]
     private TargetGenerator _targetGen;
@@ -33,7 +33,7 @@ public class Tree : MonoBehaviour
     /// <param name="nbrTargets"></param>
     /// <param name="G"></param>
     /// <param name="maxGeneration"></param>
-    public Tree ( Vector3 position , float distance , float distanceKill , float distanceInfluence , int nbrTargets , Vector3 G , int maxGeneration , bool displayTargets = false )
+    public McTree ( Vector3 position , float distance , float distanceKill , float distanceInfluence , int nbrTargets , Vector3 G , int maxGeneration , bool displayTargets = false )
     {
         this . Init ( position , distance , distanceKill , distanceInfluence , nbrTargets , G , maxGeneration , displayTargets );
     }
@@ -91,7 +91,7 @@ public class Tree : MonoBehaviour
     /// </summary>
     private void Loop ( )
     {
-        Debug . LogFormat ( "Time : {0} ; Step : {1}" , Time . realtimeSinceStartup , this . _generation );
+        //Debug . LogFormat ( "Time : {0} ; Step : {1}" , Time . realtimeSinceStartup , this . _generation );
 
         AssignTargets ( );
 
