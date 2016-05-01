@@ -46,6 +46,8 @@ public class PlayerManager : MonoBehaviour
     public delegate void monsterMouseLeave();
     public static event monsterMouseLeave OnMonsterMouseLeave;
 
+    public Transform playerPosition;
+
     public MonsterClass MonstrePossede
     {
         get
@@ -176,20 +178,20 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
 
-            _ray = _cam.ScreenPointToRay(Input.mousePosition);
-            if (Input.GetMouseButtonDown(0))
+        _ray = _cam.ScreenPointToRay(Input.mousePosition);
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._layer))
             {
-                if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._layer))
-                {
-                    _target = _hit.collider.GetComponent<MonsterClass>();
-                    Debug.Log(Vector3.Distance(this.transform.position, _target.transform.position));
+                _target = _hit.collider.GetComponent<MonsterClass>();
+                Debug.Log(Vector3.Distance(this.transform.position, _target.transform.position));
 
 
-                }
             }
-        
+        }
 
-        
+
+
         if (inPossession)
         {
             this._myUI.HealthBarUpdate();
@@ -204,7 +206,7 @@ public class PlayerManager : MonoBehaviour
                 noBody();
             }
         }
-        else if(_target!=null && !inPossession)
+        else if (_target != null && !inPossession)
         {
             //faire apparaitre bouton possession
             this._myUI.ButtonPossessEnable();
@@ -213,6 +215,13 @@ public class PlayerManager : MonoBehaviour
         else if (_target != null && !inPossession)
         {
             this._myUI.ButtonPossessDisable();
+        }
+
+
+        if (MonstrePossede != null)
+        {
+            this.MonstrePossede.transform.position = playerPosition.position;
+            this.MonstrePossede.transform.rotation = playerPosition.rotation;
         }
     }
 
@@ -254,7 +263,10 @@ public class PlayerManager : MonoBehaviour
 
             this.MonstrePossede.Player = this;
             this.inPossession = true;
-            this.transform.position = this.MonstrePossede.transform.position;
+            //this.transform.position = this.MonstrePossede.transform.position;
+            this.MonstrePossede.transform.position = playerPosition.position;
+            this.MonstrePossede.transform.rotation = playerPosition.rotation;
+            this.MonstrePossede.transform.parent = playerPosition;
             this._me.addExp(this._monstrePossede.ExpToPossess);
 
             StatUpdateWithMonster();

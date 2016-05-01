@@ -16,7 +16,8 @@ public class SelectPlayer : MonoBehaviour {
     void Start () {
 	    if(PlayerPrefs.HasKey("Name") && !this._delete)
         {
-            SceneManager.LoadScene("RPG UI", LoadSceneMode.Single);
+            //SceneManager.LoadScene("RPG UI", LoadSceneMode.Single);
+
         }
         else 
         {
@@ -50,6 +51,6 @@ public class SelectPlayer : MonoBehaviour {
         PlayerPrefs.SetInt("Constitution", 1);
         PlayerPrefs.SetInt("Intelligence", 1);
         PlayerPrefs.SetInt("Volonte", 1);
-        SceneManager.LoadScene("RPG UI", LoadSceneMode.Single);
+        //SceneManager.LoadScene("RPG UI", LoadSceneMode.Single);
     }
 }
