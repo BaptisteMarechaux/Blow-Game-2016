@@ -23,22 +23,6 @@ public class McTree : MonoBehaviour
     private float _distanceInfluence;
 
     /// <summary>
-    /// Create a tree.
-    /// </summary>
-    /// <param name="position"></param>
-    /// <param name="Origins"></param>
-    /// <param name="distance"></param>
-    /// <param name="distanceKill"></param>
-    /// <param name="distanceInfluence"></param>
-    /// <param name="nbrTargets"></param>
-    /// <param name="G"></param>
-    /// <param name="maxGeneration"></param>
-    public McTree ( Vector3 position , float distance , float distanceKill , float distanceInfluence , int nbrTargets , Vector3 G , int maxGeneration , bool displayTargets = false )
-    {
-        this . Init ( position , distance , distanceKill , distanceInfluence , nbrTargets , G , maxGeneration , displayTargets );
-    }
-
-    /// <summary>
     /// Init a tree.
     /// </summary>
     /// <param name="position"></param>
@@ -49,11 +33,12 @@ public class McTree : MonoBehaviour
     /// <param name="nbrTargets"></param>
     /// <param name="G"></param>
     /// <param name="maxGeneration"></param>
-    public void Init ( Vector3 position , float distance , float distanceKill , float distanceInfluence , int nbrTargets , Vector3 G , int maxGeneration , bool displayTargets = false )
+    public void Init ( Vector3 position , Quaternion rotation , float distance , float distanceKill , float distanceInfluence , int nbrTargets , Vector3 G , int maxGeneration , bool displayTargets = false )
     {
         this . _nodes = new List<Node> ( );
         this . _targets = new List<Target> ( );
         this . transform . localPosition = position;
+        this . transform . localRotation = rotation;
         this . _nodes . Add ( CreateNode ( new Vector3 ( 0 , 0 , 0 ) ) );
         this . _targets . AddRange ( this . _targetGen . GenerateTargets ( nbrTargets , displayTargets ) );
         this . _g = G;

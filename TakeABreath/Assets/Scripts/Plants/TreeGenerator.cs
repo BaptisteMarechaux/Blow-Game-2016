@@ -9,8 +9,12 @@ public class TreeGenerator : MonoBehaviour
     private McTree [] _trees;
     [SerializeField]
     private float [] _percentTrees;
+    //[SerializeField]
+    //int _nbrTrees = 50;
     [SerializeField]
-    int _nbrTrees = 50;
+    private Vector3 [] _positions;
+    [SerializeField]
+    private Quaternion [] _rotation;
     [Header("Paramètres d'initialisation")]
     [Tooltip("Distance entre les noeuds")]
     [SerializeField]
@@ -67,7 +71,7 @@ public class TreeGenerator : MonoBehaviour
     {
         float proba = 0.0f;
         float percent;
-        for ( int i = 0 ; i < this . _nbrTrees ; ++i )
+        for ( int i = 0 ; i < this . _positions . Length ; ++i )
         {
             proba = Random . Range ( 0.0f , 1.0f );
             percent = 0f;
@@ -92,7 +96,7 @@ public class TreeGenerator : MonoBehaviour
     /// <returns></returns>
     private McTree CreateTree ( McTree tree , int id , float percent )
     {
-        McTree t = (( GameObject ) Instantiate ( tree.gameObject, new Vector3 (0,0,0), Quaternion.identity )).GetComponent<McTree>();
+        McTree t = ( ( GameObject ) Instantiate ( tree.gameObject, new Vector3 ( 0 , 0 , 0 ) , Quaternion.identity ) ).GetComponent<McTree> ( );
 
         t . gameObject . name = t . gameObject . name + "_" + id + "_" + percent;
 
@@ -103,10 +107,11 @@ public class TreeGenerator : MonoBehaviour
     /// </summary>
     private void InitialiseTrees ( )
     {
-        float rad = 2f;
-        for ( int i = 0 ; i < this . _instanciatesTrees . Count ; ++i, ++rad )
+        // new Vector3 ( Mathf . Cos ( i ) * rad , 0 , Mathf . Sin ( i ) * rad )
+        //float rad = 2f;
+        for ( int i = 0 ; i < this . _instanciatesTrees . Count ; ++i/*, ++rad*/ )
         {
-            this . _instanciatesTrees [ i ] . Init ( new Vector3 ( Mathf . Cos ( i ) * rad , 0 , Mathf . Sin ( i ) * rad ) , this . _distance , this . _distanceKill , this . _distanceInfluence , Random . Range ( this . _minNbrTargets , this . _maxNbrTargets ) , new Vector3 ( 0 , 0 , 0 ) , this . _maxIteration , true );
+            this . _instanciatesTrees [ i ] . Init ( this . _positions [ i ] , this . _rotation [ i ] , this . _distance , this . _distanceKill , this . _distanceInfluence , Random . Range ( this . _minNbrTargets , this . _maxNbrTargets ) , new Vector3 ( 0 , 0 , 0 ) , this . _maxIteration , true );
         }
     }
 }
