@@ -32,7 +32,7 @@ public class MonsterClass : MonoBehaviour {
     [SerializeField]
     private AttackScript _attack;
     [SerializeField]
-    private MeshRenderer _myMesh;
+    private SkinnedMeshRenderer _myMesh;
     [SerializeField]
     private Collider _myCollier;
 

@@ -19,10 +19,10 @@ public class CameraScript : MonoBehaviour {
             if (Vector3.Distance(new Vector3(transform.position.x, transform.position.z), new Vector3(target.position.x, target.position.z)) < 1f)
                 transform.RotateAround(target.position, this.transform.right, Input.GetAxis("Mouse Y") * speed);
             transform.eulerAngles = new Vector3(ClampAngle(transform.eulerAngles.x, -90, 90), transform.eulerAngles.y, transform.eulerAngles.z);
-            /*if(transform.position.y < target.position.y)
+            if(transform.position.y < target.position.y-2)
             {
-                transform.position = new Vector3(transform.position.x, target.position.y, transform.position.z);
-            }*/
+                transform.position = new Vector3(transform.position.x, target.position.y-2, transform.position.z);
+            }
             /*if((transform.eulerAngles.x < 90 || transform.eulerAngles.x > 270) && transform.eulerAngles.x > 180 && transform.eulerAngles.x -360 > -30)
             {
                 transform.RotateAround(target.position, this.transform.right, Input.GetAxis("Mouse Y") * speed);
