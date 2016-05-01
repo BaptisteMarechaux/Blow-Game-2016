@@ -9,7 +9,7 @@ public class PossessionScript : MonoBehaviour {
         if (player.Me.Level >= monster.Level && monster.Player == null)
         {
             player.MonstrePossede = monster;
-            monster.Player = player.Me;
+            monster.Player = player;
 
             this.transform.position = monster.transform.position;
             player.Me.addExp(player.MonstrePossede.ExpToPossess);

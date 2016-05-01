@@ -26,7 +26,7 @@ public class MonsterClass : MonoBehaviour {
     [SerializeField]
     private float _timerRespawn = 10;
     [SerializeField]
-    private CharactereClass _player;
+    private PlayerManager _player;
     [SerializeField]
     private TextMesh _textExp;
     [SerializeField]
@@ -88,7 +88,7 @@ public class MonsterClass : MonoBehaviour {
         }
     }
 
-    public CharactereClass Player
+    public PlayerManager Player
     {
         get
         {

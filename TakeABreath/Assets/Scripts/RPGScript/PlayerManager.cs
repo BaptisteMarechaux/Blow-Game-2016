@@ -252,7 +252,7 @@ public class PlayerManager : MonoBehaviour
             this.MonstrePossede = this._target;
             this._target = null;
 
-            this.MonstrePossede.Player = Me;
+            this.MonstrePossede.Player = this;
             this.inPossession = true;
             this.transform.position = this.MonstrePossede.transform.position;
             this._me.addExp(this._monstrePossede.ExpToPossess);
@@ -282,16 +282,18 @@ public class PlayerManager : MonoBehaviour
         }
         */
     }
-    
+
     public void StatUpdateWithMonster()
     {
-        Debug.Log(Me.SanteMax);
-        this.VieTotal = Me.Sante + MonstrePossede.Sante;
-        this.VieMaxTotal = Me.SanteMax + MonstrePossede.SanteMax;
-        this.ForceTotal = Me.Force + MonstrePossede.Force;
-        this.ConsTotal = Me.Defense + MonstrePossede.Defense;
-        this.IntTotal = Me.Intel + MonstrePossede.Intel;
-        this.VolTotal = Me.Volonte + MonstrePossede.Volonte;
+        if (this._monstrePossede != null)
+        {
+            this.VieTotal = Me.Sante + MonstrePossede.Sante;
+            this.VieMaxTotal = Me.SanteMax + MonstrePossede.SanteMax;
+            this.ForceTotal = Me.Force + MonstrePossede.Force;
+            this.ConsTotal = Me.Defense + MonstrePossede.Defense;
+            this.IntTotal = Me.Intel + MonstrePossede.Intel;
+            this.VolTotal = Me.Volonte + MonstrePossede.Volonte;
+        }
     }
 
     public void Attack()
@@ -320,6 +322,18 @@ public class PlayerManager : MonoBehaviour
         {
             this._myUI.InfoTextUpdate("Cible trop loin!");
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+
+        this._vieTotal -= damage - (this._consTotal / 3);
+
+        if(this._vieTotal <= this.MonstrePossede.SanteMax)
+        {
+            this.MonstrePossede.TakeDamage(this.MonstrePossede.Sante - this._vieTotal, 0);
+        }
+        
     }
 
 }

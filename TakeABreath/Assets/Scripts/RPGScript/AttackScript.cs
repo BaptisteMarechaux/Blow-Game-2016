@@ -46,7 +46,7 @@ public class AttackScript : MonoBehaviour {
             if(target.Player == null)
                 target.TakeDamage(force,target.Defense);
             else
-                target.TakeDamage(force, target.Defense+target.Player.Defense);
+                target.Player.TakeDamage(force);
             this._timer = 0;
             this._ready = false;
             return 0;

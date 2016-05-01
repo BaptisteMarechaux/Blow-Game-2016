@@ -149,14 +149,24 @@ public class UIscript : MonoBehaviour {
         if (target.Player == null)
             this._targetName.text = target.Name;
         else
-            this._targetName.text = target.Player.Name;
+            this._targetName.text = target.Player.Me.Name;
     }
 
     public void healthBarTargetInfo()
     {
-        this._healthTargetText.text = this._player.Target.Sante.ToString();
-        float itlife = (float)this._player.Target.Sante / (float)this._player.Target.SanteMax; //<== valeur entre 0 et 1
-        this._healthTargetBar.transform.localScale = new Vector3(Mathf.Clamp(itlife, 0f, 1f), this._healthTargetBar.transform.localScale.y, this._healthTargetBar.transform.localScale.z);
+        if (this._player.Target.Player == null)
+        {
+            this._healthTargetText.text = this._player.Target.Sante.ToString();
+            float itlife = (float)this._player.Target.Sante / (float)this._player.Target.SanteMax; //<== valeur entre 0 et 1
+            this._healthTargetBar.transform.localScale = new Vector3(Mathf.Clamp(itlife, 0f, 1f), this._healthTargetBar.transform.localScale.y, this._healthTargetBar.transform.localScale.z);
+        }
+        else
+        {
+            var targetPlayer = this._player.Target.Player;
+            this._healthTargetText.text = targetPlayer.VieTotal.ToString();
+            float itlife = (float)targetPlayer.VieTotal / (float)targetPlayer.VieMaxTotal; //<== valeur entre 0 et 1
+            this._healthTargetBar.transform.localScale = new Vector3(Mathf.Clamp(itlife, 0f, 1f), this._healthTargetBar.transform.localScale.y, this._healthTargetBar.transform.localScale.z);
+        }
     }
 
 
