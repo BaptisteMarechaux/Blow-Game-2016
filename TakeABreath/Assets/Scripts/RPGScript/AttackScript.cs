@@ -47,7 +47,6 @@ public class AttackScript : MonoBehaviour {
         if(Vector3.Distance(this.transform.position, target.transform.position) <= this.Range)
         {
             //on regarde si le monstre est controlé par un joueur
-            Debug.Log(agresseur);
             if(target.Player == null && agresseur != null)
                 target.TakeDamage(force,target.Defense, agresseur);
             else if(target.Player == null && agresseur == null)

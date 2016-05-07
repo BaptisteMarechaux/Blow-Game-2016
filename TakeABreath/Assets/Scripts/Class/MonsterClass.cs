@@ -261,6 +261,7 @@ public class MonsterClass : MonoBehaviour {
     public void Respawn()
     {
         this._isAlive = true;
+        this.MyIA.changeStat();
         this._sante = this._santeMax;
         this.transform.position = this._startPos;
         this._myMesh.enabled = true;
