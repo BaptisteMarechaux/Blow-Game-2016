@@ -35,6 +35,8 @@ public class MonsterClass : MonoBehaviour {
     private SkinnedMeshRenderer _myMesh;
     [SerializeField]
     private Collider _myCollier;
+    [SerializeField]
+    private FoolAIMonster _myIA;
 
 
     //private NetworkPlayer _playerId;
@@ -44,7 +46,7 @@ public class MonsterClass : MonoBehaviour {
     private Vector3 _startPos = new Vector3(0,0,0);
     private float timer = 0;
     private bool _isHunted = false;
-    private MonsterClass _target = null;
+    public MonsterClass _target = null;
 
     public string Name
     {
@@ -193,6 +195,19 @@ public class MonsterClass : MonoBehaviour {
         }
     }
 
+    public FoolAIMonster MyIA
+    {
+        get
+        {
+            return _myIA;
+        }
+
+        set
+        {
+            _myIA = value;
+        }
+    }
+
     void Start()
     {
         this._sante = this.SanteMax;
@@ -215,7 +230,7 @@ public class MonsterClass : MonoBehaviour {
 
     public void AttackTarget(MonsterClass target, int force)
     {
-        this._attack.Attack(target,force);
+        this._attack.Attack(target,force,this);
         target.IsHunted = true;
         if (!target.IsAlive)
         {
@@ -223,10 +238,16 @@ public class MonsterClass : MonoBehaviour {
         }
     }
 
-    public void TakeDamage(int damage,int def)
+    public void TakeDamage(int damage,int def=0,MonsterClass agresseur = null)
     {
-
         this._sante -= damage - (def/3);
+
+        if(this._target == null && agresseur != null)
+        {
+            this._target = agresseur;
+            this.MyIA.changeStat();
+            Debug.Log(this._target);
+        }
 
         if (this._sante <= 0)
         {
@@ -244,5 +265,6 @@ public class MonsterClass : MonoBehaviour {
         this.transform.position = this._startPos;
         this._myMesh.enabled = true;
         this._myCollier.enabled = true;
+        this._target = null;
     }
 }

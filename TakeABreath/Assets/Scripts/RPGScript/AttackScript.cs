@@ -39,14 +39,23 @@ public class AttackScript : MonoBehaviour {
     {
         this._timer = this._cooldown;
     }
-    public int Attack(MonsterClass target,int force)
+
+    //fonction principale
+    public int Attack(MonsterClass target,int force,MonsterClass agresseur)
     {
+        //si on ne dépasse pas la range
         if(Vector3.Distance(this.transform.position, target.transform.position) <= this.Range)
         {
-            if(target.Player == null)
-                target.TakeDamage(force,target.Defense);
+            //on regarde si le monstre est controlé par un joueur
+            Debug.Log(agresseur);
+            if(target.Player == null && agresseur != null)
+                target.TakeDamage(force,target.Defense, agresseur);
+            else if(target.Player == null && agresseur == null)
+                target.TakeDamage(force, target.Defense);
             else
                 target.Player.TakeDamage(force);
+            
+            //cooldown
             this._timer = 0;
             this._ready = false;
             return 0;
@@ -59,6 +68,7 @@ public class AttackScript : MonoBehaviour {
 
     void Update()
     {
+        //si une attaque à déjà eut lieu
         if(this._timer < this._cooldown)
         {
             this._timer += Time.deltaTime;

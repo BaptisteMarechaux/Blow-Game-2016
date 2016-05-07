@@ -10,6 +10,7 @@ public class PossessionScript : MonoBehaviour {
         {
             player.MonstrePossede = monster;
             monster.Player = player;
+            monster.MyIA.enabled = false;
 
             this.transform.position = monster.transform.position;
             player.Me.addExp(player.MonstrePossede.ExpToPossess);

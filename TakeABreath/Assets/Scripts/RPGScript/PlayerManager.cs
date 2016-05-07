@@ -236,7 +236,7 @@ public class PlayerManager : MonoBehaviour
         //Attribuer le transform
         this._monstrePossede.transform.parent = null;
 
-        //faire fuir le monstre
+        this._monstrePossede.MyIA.enabled = true;
         this._monstrePossede.Player = null;
         this._monstrePossede = null;
         this.inPossession = false;
@@ -343,7 +343,7 @@ public class PlayerManager : MonoBehaviour
 
         if(this._vieTotal <= this.MonstrePossede.SanteMax)
         {
-            this.MonstrePossede.TakeDamage(this.MonstrePossede.Sante - this._vieTotal, 0);
+            this.MonstrePossede.TakeDamage(this.MonstrePossede.Sante - this._vieTotal);
         }
         
     }
