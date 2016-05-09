@@ -185,12 +185,8 @@ public class PlayerManager : MonoBehaviour
             {
                 _target = _hit.collider.GetComponent<MonsterClass>();
                 Debug.Log(Vector3.Distance(this.transform.position, _target.transform.position));
-
-
             }
         }
-
-
 
         if (inPossession)
         {
@@ -228,7 +224,6 @@ public class PlayerManager : MonoBehaviour
     private void noBody()
     {
         Depossession();
-
     }
 
     public void Depossession()
@@ -236,7 +231,7 @@ public class PlayerManager : MonoBehaviour
         //Attribuer le transform
         this._monstrePossede.transform.parent = null;
 
-        this._monstrePossede.MyIA.enabled = true;
+        this._monstrePossede.EnableAI();
         this._monstrePossede.Player = null;
         this._monstrePossede = null;
         this.inPossession = false;

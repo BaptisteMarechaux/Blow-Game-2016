@@ -261,11 +261,21 @@ public class MonsterClass : MonoBehaviour {
     public void Respawn()
     {
         this._isAlive = true;
+        EnableAI();
         this.MyIA.changeStat();
         this._sante = this._santeMax;
         this.transform.position = this._startPos;
         this._myMesh.enabled = true;
         this._myCollier.enabled = true;
         this._target = null;
+    }
+
+    public void DisableAI()
+    {
+        this._myIA.enabled = false;
+    }
+    public void EnableAI()
+    {
+        this._myIA.enabled = true;
     }
 }
