@@ -251,6 +251,7 @@ public class MonsterClass : MonoBehaviour {
 
         if (this._sante <= 0)
         {
+            this.DisableAI();
             this._textExp.text = this._exp + " exp";
             this._isAlive = false;
             this._myMesh.enabled = false;
@@ -262,7 +263,9 @@ public class MonsterClass : MonoBehaviour {
     {
         this._isAlive = true;
         EnableAI();
-        this.MyIA.changeStat();
+        if(this.MyIA.EstAgresse)
+            this.MyIA.changeStat();
+
         this._sante = this._santeMax;
         this.transform.position = this._startPos;
         this._myMesh.enabled = true;

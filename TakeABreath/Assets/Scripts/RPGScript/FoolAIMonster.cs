@@ -10,10 +10,19 @@ public class FoolAIMonster : MonoBehaviour {
     float moveSpeed = 4;
 
     private bool estAgresse = false;
-    // Update is called once per frame
-	void FixedUpdate ()
+
+    public bool EstAgresse
     {
-        if (estAgresse)
+        get
+        {
+            return estAgresse;
+        }
+    }
+
+    // Update is called once per frame
+    void FixedUpdate ()
+    {
+        if (EstAgresse)
         {
             me.transform.LookAt(me._target.transform);
             if (me.Attack.Range < Vector3.Distance(this.transform.position, me._target.transform.position))
@@ -31,6 +40,6 @@ public class FoolAIMonster : MonoBehaviour {
 
     public void changeStat()
     {
-        estAgresse = !estAgresse;
+        this.estAgresse = !EstAgresse;
     }
 }
