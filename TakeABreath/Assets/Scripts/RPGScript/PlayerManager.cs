@@ -184,7 +184,7 @@ public class PlayerManager : MonoBehaviour
             if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._layer))
             {
                 _target = _hit.collider.GetComponent<MonsterClass>();
-                Debug.Log(Vector3.Distance(this.transform.position, _target.transform.position));
+                //Debug.Log(Vector3.Distance(this.transform.position, _target.transform.position));
             }
         }
 
@@ -251,35 +251,43 @@ public class PlayerManager : MonoBehaviour
 
     public void essaiPossession()
     {
-        if (Me.Level >= _target.Level && _target.Player == null && MonstrePossede == null)
+        if (Vector3.Distance(this.transform.position, _target.transform.position) <= 5)
         {
-            this.MonstrePossede = this._target;
-            this._target = null;
+            if (Me.Level >= _target.Level && _target.Player == null && MonstrePossede == null)
+            {
+                this.MonstrePossede = this._target;
+                this._target = null;
 
-            this.MonstrePossede.Player = this;
-            this.inPossession = true;
-            //this.transform.position = this.MonstrePossede.transform.position;
-            this.MonstrePossede.transform.position = playerPosition.position;
-            this.MonstrePossede.transform.rotation = playerPosition.rotation;
-            this.MonstrePossede.transform.parent = playerPosition;
-            this._me.addExp(this._monstrePossede.ExpToPossess);
+                this.MonstrePossede.Player = this;
+                this.inPossession = true;
+                //playerPosition.position = this.MonstrePossede.transform.position;
+                this.MonstrePossede.transform.position = playerPosition.position;
+                this.MonstrePossede.transform.rotation = playerPosition.rotation;
+                this.MonstrePossede.transform.parent = playerPosition;
+                this._me.addExp(this._monstrePossede.ExpToPossess);
+                this._monstrePossede.DisableAI();
 
-            StatUpdateWithMonster();
+                StatUpdateWithMonster();
 
-            //UI
-            this._myUI.InfoTextUpdate("");
-            this._myUI.expBarInfo();
-            this._myUI.HealthBarUpdate();
-            this._myUI.ButtonPossessDisable();
-            this._myUI.ButtonDepossessEnable();
+                //UI
+                this._myUI.InfoTextUpdate("");
+                this._myUI.expBarInfo();
+                this._myUI.HealthBarUpdate();
+                this._myUI.ButtonPossessDisable();
+                this._myUI.ButtonDepossessEnable();
 
-            this._monstrePossede.transform.parent = Me.transform;
-            OnMonsterPossessed();
+                this._monstrePossede.transform.parent = Me.transform;
+                OnMonsterPossessed();
 
+            }
+            else if (Me.Level < this._target.Level)
+            {
+                this._myUI.InfoTextUpdate("Niveau du monstre trop élevé!");
+            }
         }
-        else if (Me.Level < this._target.Level)
+        else
         {
-            this._myUI.InfoTextUpdate("Niveau du monstre trop élevé!");
+            this._myUI.InfoTextUpdate("Créature trop loin.");
         }
         /*
         //ajouter la condition dans le if du dessus

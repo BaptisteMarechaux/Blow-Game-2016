@@ -8,12 +8,15 @@ public class PossessionScript : MonoBehaviour {
     {
         if (player.Me.Level >= monster.Level && monster.Player == null)
         {
-            player.MonstrePossede = monster;
-            monster.Player = player;
-            monster.DisableAI();
+            if (Vector3.Distance(player.transform.position, monster.transform.position) <= 5)
+            {
+                player.MonstrePossede = monster;
+                monster.Player = player;
+                monster.DisableAI();
 
-            this.transform.position = monster.transform.position;
-            player.Me.addExp(player.MonstrePossede.ExpToPossess);
+                this.transform.position = monster.transform.position;
+                player.Me.addExp(player.MonstrePossede.ExpToPossess);
+            }
         }
     }
 }
