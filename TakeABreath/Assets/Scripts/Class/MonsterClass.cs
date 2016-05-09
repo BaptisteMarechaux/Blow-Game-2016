@@ -276,11 +276,9 @@ public class MonsterClass : MonoBehaviour {
     public void DisableAI()
     {
         this._myIA.enabled = false;
-        Debug.Log("disable : " + this._myIA.enabled);
     }
     public void EnableAI()
     {
         this._myIA.enabled = true;
-        Debug.Log("enable : " + this._myIA.enabled);
     }
 }
