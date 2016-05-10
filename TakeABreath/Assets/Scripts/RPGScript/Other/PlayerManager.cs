@@ -19,6 +19,8 @@ public class PlayerManager : MonoBehaviour
     private LayerMask _layer;
     [SerializeField]
     private Camera _cam;
+    [SerializeField]
+    private BookQuest _bookQuest;
 
     private Ray _ray;
     private RaycastHit _hit;
@@ -350,5 +352,5 @@ public class PlayerManager : MonoBehaviour
         }
         
     }
-
+    
 }
