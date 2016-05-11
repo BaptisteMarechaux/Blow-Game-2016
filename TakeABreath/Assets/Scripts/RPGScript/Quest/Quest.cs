@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Quest : MonoBehaviour
+public class Quest
 {
 
     private string title;

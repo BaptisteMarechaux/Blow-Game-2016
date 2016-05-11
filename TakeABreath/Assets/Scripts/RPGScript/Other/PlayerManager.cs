@@ -14,6 +14,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private UIscript _myUI;
     [SerializeField]
+    private UIQuest _UIquest;
+    [SerializeField]
     private GameObject _myLevelUI;
     [SerializeField]
     private LayerMask _monstreLayer;
@@ -177,6 +179,15 @@ public class PlayerManager : MonoBehaviour
         this.ConsTotal = Me.Defense;
         this.IntTotal = Me.Intel;
         this.VolTotal = Me.Volonte;
+
+        for (int i = 0; i < _bookQuest.allQuests.Length; i++)
+        {
+            if (_bookQuest.allQuests[i].Number == -1)
+            {
+                Quest q = _bookQuest.allQuests[i];
+                _UIquest.SuiviActivQuest(q.Title,q.Objectif);
+            }
+        }
     }
 
     void Update()
@@ -192,11 +203,8 @@ public class PlayerManager : MonoBehaviour
             else if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._questerLayer))
             {
                 Quester q = _hit.collider.GetComponent<Quester>();
-                Debug.Log("q : " +q);
-                Debug.Log("Quete : " + q.Quete);
-                Debug.Log("Title : " + q.Quete);
                 if(q.Quete != null)
-                    this._myUI.ShowQuest(q.Quete.Title, q.Quete.Description, q.Quete.Objectif);
+                    this._UIquest.ShowQuest(q.Quete.Title, q.Quete.Description, q.Quete.Objectif, q.Quete.NameSave, _bookQuest);
             }
         }
 

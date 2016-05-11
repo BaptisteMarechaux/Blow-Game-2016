@@ -9,7 +9,8 @@ public class Quester : MonoBehaviour {
 
     [SerializeField]
     int ind = 0;
-    
+
+
     private Quest quete;
 
     public Quest Quete
@@ -23,13 +24,10 @@ public class Quester : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        Debug.Log(book.allQuests.Length);
         if (ind < book.allQuests.Length)
         {
-            Debug.Log(book.allQuests[ind]);
             quete = book.allQuests[ind];
-            Debug.Log(quete);
         }
-    }
 
+    }
 }
