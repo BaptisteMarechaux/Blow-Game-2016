@@ -16,7 +16,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private GameObject _myLevelUI;
     [SerializeField]
-    private LayerMask _layer;
+    private LayerMask _monstreLayer;
+    [SerializeField]
+    private LayerMask _questerLayer;
     [SerializeField]
     private Camera _cam;
     [SerializeField]
@@ -183,10 +185,18 @@ public class PlayerManager : MonoBehaviour
         _ray = _cam.ScreenPointToRay(Input.mousePosition);
         if (Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._layer))
+            if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._monstreLayer))
             {
                 _target = _hit.collider.GetComponent<MonsterClass>();
-                //Debug.Log(Vector3.Distance(this.transform.position, _target.transform.position));
+            }
+            else if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._questerLayer))
+            {
+                Quester q = _hit.collider.GetComponent<Quester>();
+                Debug.Log("q : " +q);
+                Debug.Log("Quete : " + q.Quete);
+                Debug.Log("Title : " + q.Quete);
+                if(q.Quete != null)
+                    this._myUI.ShowQuest(q.Quete.Title, q.Quete.Description, q.Quete.Objectif);
             }
         }
 

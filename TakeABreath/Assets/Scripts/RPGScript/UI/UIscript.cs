@@ -30,6 +30,15 @@ public class UIscript : MonoBehaviour {
     Image _expBar;
 
     [SerializeField]
+    GameObject questPannel;
+    [SerializeField]
+    Text questTitle;
+    [SerializeField]
+    Text questDescription;
+    [SerializeField]
+    Text questObjectif;
+
+    [SerializeField]
     private GameObject _butonPossession;
     [SerializeField]
     private GameObject _butonDepossession;
@@ -169,6 +178,14 @@ public class UIscript : MonoBehaviour {
         }
     }
 
+
+    public void ShowQuest(string title, string description, string objectif)
+    {
+        questPannel.SetActive(true);
+        questTitle.text = title;
+        questDescription.text = description;
+        questObjectif.text = objectif;
+    }
 
 
 }

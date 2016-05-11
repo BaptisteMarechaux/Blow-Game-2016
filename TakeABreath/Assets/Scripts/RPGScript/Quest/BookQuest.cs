@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 public class BookQuest : MonoBehaviour {
 
-    public List<Quest> allQuests = new List<Quest>();
-    public int sizeList = 0;
+    public Quest[] allQuests = new Quest[2];
 
     Quest quest_000 = new Quest("Premier corps.", "Quest-PossessionGolem",
         "Avant de vous vengez contre les anciennes Divinités, il faut que vous investissez des petites créature pour vous habituez à la possession.", 
@@ -17,10 +16,12 @@ public class BookQuest : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        allQuests.Add(quest_000);
-        allQuests.Add(quest_001);
+        allQuests[0] = quest_000;
+        allQuests[1] = quest_001;
 
-        sizeList = allQuests.Count;
+        Debug.Log(quest_000);
+        Debug.Log(allQuests.Length);
+        Debug.Log(allQuests[0]);
 
         if (!PlayerPrefs.HasKey("BookQuest"))
         {
