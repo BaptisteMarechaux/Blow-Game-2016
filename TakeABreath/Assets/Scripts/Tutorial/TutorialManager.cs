@@ -22,6 +22,12 @@ public class TutorialManager : MonoBehaviour {
     TutorialState state;
 
     public int readIndex = 0;
+
+    [SerializeField]
+    AudioSource audio;
+    [SerializeField]
+    AudioClip[] clips;
+
 	// Use this for initialization
 	void Start () {
         if(introductionTextList.Length>0)
@@ -56,6 +62,7 @@ public class TutorialManager : MonoBehaviour {
         for (int i = 0; i < readString.Length; i++)
         {
             centralText.text += readString[i];
+            audio.PlayOneShot(clips[Random.Range(0, clips.Length)]);
             yield return new WaitForSeconds(0.06f);
         }
     }
