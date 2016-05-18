@@ -24,6 +24,9 @@ public class CharactereClass : MonoBehaviour {
     private int _defense = 1;
     [SerializeField]
     private int _santeMax = 10;
+    [SerializeField]
+    private PlayerPrefManager ppm;
+
     //private NetworkPlayer _playerId;
 
     public string Name
@@ -148,16 +151,16 @@ public class CharactereClass : MonoBehaviour {
 
     void OnEnable()
     {
-        this._name = PlayerPrefs.GetString("Name");
-        this._level = PlayerPrefs.GetInt("Level");
-        this._sante = PlayerPrefs.GetInt("Vie");
-        this._santeMax = PlayerPrefs.GetInt("VieMax");
-        this._exp = PlayerPrefs.GetInt("Exp");
-        this._expToLvlUp = PlayerPrefs.GetInt("ExpMax");
-        this._force = PlayerPrefs.GetInt("Force");
-        this._defense = PlayerPrefs.GetInt("Constitution");
-        this._intel = PlayerPrefs.GetInt("Intelligence");
-        this._volonte = PlayerPrefs.GetInt("Volonte");
+        this._name = ppm.PlayerName();
+        this._level = ppm.GetValue("Level");
+        this._sante = ppm.GetValue("Vie");
+        this._santeMax = ppm.GetValue("VieMax");
+        this._exp = ppm.GetValue("Exp");
+        this._expToLvlUp = ppm.GetValue("ExpMax");
+        this._force = ppm.GetValue("Force");
+        this._defense = ppm.GetValue("Constitution");
+        this._intel = ppm.GetValue("Intelligence");
+        this._volonte = ppm.GetValue("Volonte");
     }
 
     public int addExp(int exp)
@@ -168,7 +171,7 @@ public class CharactereClass : MonoBehaviour {
             levelUp();
             return this._level;
         }
-        if (PlayerPrefs.GetString("Name") == this._name)
+        if (ppm.PlayerName() == this._name)
         {
             SaveStats();
         }
@@ -185,7 +188,7 @@ public class CharactereClass : MonoBehaviour {
             levelUp();
         else
         {
-            if(PlayerPrefs.GetString("Name") == this._name)
+            if(ppm.PlayerName() == this._name)
             {
                 SaveStats();
             }
@@ -194,15 +197,15 @@ public class CharactereClass : MonoBehaviour {
 
     private void SaveStats()
     {
-        PlayerPrefs.SetInt("Level", this._level);
-        PlayerPrefs.SetInt("Exp", this._exp);
-        PlayerPrefs.SetInt("ExpMax", this._expToLvlUp);
-        PlayerPrefs.SetInt("Vie", this._sante);
-        PlayerPrefs.SetInt("VieMax", this._santeMax);
-        PlayerPrefs.SetInt("Force", this._force);
-        PlayerPrefs.SetInt("Constitution", this._defense);
-        PlayerPrefs.SetInt("Intelligence", this._intel);
-        PlayerPrefs.SetInt("Volonte", this._volonte);
+        ppm.SetValuePlayer("Level", this._level);
+        ppm.SetValuePlayer("Exp", this._exp);
+        ppm.SetValuePlayer("ExpMax", this._expToLvlUp);
+        ppm.SetValuePlayer("Vie", this._sante);
+        ppm.SetValuePlayer("VieMax", this._santeMax);
+        ppm.SetValuePlayer("Force", this._force);
+        ppm.SetValuePlayer("Constitution", this._defense);
+        ppm.SetValuePlayer("Intelligence", this._intel);
+        ppm.SetValuePlayer("Volonte", this._volonte);
     }
 }
 

@@ -14,11 +14,17 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private UIscript _myUI;
     [SerializeField]
+    private UIQuest _UIquest;
+    [SerializeField]
     private GameObject _myLevelUI;
     [SerializeField]
-    private LayerMask _layer;
+    private LayerMask _monstreLayer;
+    [SerializeField]
+    private LayerMask _questerLayer;
     [SerializeField]
     private Camera _cam;
+    [SerializeField]
+    private BookQuest _bookQuest;
 
     private Ray _ray;
     private RaycastHit _hit;
@@ -173,6 +179,15 @@ public class PlayerManager : MonoBehaviour
         this.ConsTotal = Me.Defense;
         this.IntTotal = Me.Intel;
         this.VolTotal = Me.Volonte;
+
+        for (int i = 0; i < _bookQuest.allQuests.Length; i++)
+        {
+            if (_bookQuest.allQuests[i].Number == -1)
+            {
+                Quest q = _bookQuest.allQuests[i];
+                _UIquest.SuiviActivQuest(q.Title,q.Objectif);
+            }
+        }
     }
 
     void Update()
@@ -181,10 +196,15 @@ public class PlayerManager : MonoBehaviour
         _ray = _cam.ScreenPointToRay(Input.mousePosition);
         if (Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._layer))
+            if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._monstreLayer))
             {
                 _target = _hit.collider.GetComponent<MonsterClass>();
-                //Debug.Log(Vector3.Distance(this.transform.position, _target.transform.position));
+            }
+            else if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._questerLayer))
+            {
+                Quester q = _hit.collider.GetComponent<Quester>();
+                if(q.Quete != null)
+                    this._UIquest.ShowQuest(q.Quete.Title, q.Quete.Description, q.Quete.Objectif, q.Quete.NameSave, _bookQuest);
             }
         }
 
@@ -350,5 +370,5 @@ public class PlayerManager : MonoBehaviour
         }
         
     }
-
+    
 }

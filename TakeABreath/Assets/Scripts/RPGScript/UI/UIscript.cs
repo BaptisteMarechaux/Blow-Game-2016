@@ -29,6 +29,7 @@ public class UIscript : MonoBehaviour {
     [SerializeField]
     Image _expBar;
 
+
     [SerializeField]
     private GameObject _butonPossession;
     [SerializeField]
@@ -168,7 +169,5 @@ public class UIscript : MonoBehaviour {
             this._healthTargetBar.transform.localScale = new Vector3(Mathf.Clamp(itlife, 0f, 1f), this._healthTargetBar.transform.localScale.y, this._healthTargetBar.transform.localScale.z);
         }
     }
-
-
-
+    
 }
