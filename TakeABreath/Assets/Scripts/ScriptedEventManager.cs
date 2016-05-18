@@ -42,12 +42,12 @@ public class ScriptedEvent : MonoBehaviour
     ConditionType[] conditionTriggers;
 
 
-    bool VerifyCondition()
-    {
-        var validated = false;
-        for(int i=0;i<conditionTriggers.Length;i++)
-        {
-            if()
-        }
-    }
+    //bool VerifyCondition()
+    //{
+    //    var validated = false;
+    //    for(int i=0;i<conditionTriggers.Length;i++)
+    //    {
+    //        if()
+    //    }
+    //}
 }

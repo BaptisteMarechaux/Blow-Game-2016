@@ -35,6 +35,7 @@ public class UIStats : MonoBehaviour {
 
     public void Display()
     {
+        Debug.Log(panel);
         if(panel.activeSelf)
             panel.SetActive(false);
         else
