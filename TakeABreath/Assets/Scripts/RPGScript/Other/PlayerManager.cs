@@ -16,13 +16,15 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private UIQuest _UIquest;
     [SerializeField]
-    private GameObject _myLevelUI;
+    private UILevelUp _myLevelUI;
     [SerializeField]
     private LayerMask _monstreLayer;
     [SerializeField]
     private LayerMask _questerLayer;
     [SerializeField]
     private Camera _cam;
+    [SerializeField]
+    private Camera _camUI;
     [SerializeField]
     private BookQuest _bookQuest;
 
@@ -194,8 +196,10 @@ public class PlayerManager : MonoBehaviour
     {
 
         _ray = _cam.ScreenPointToRay(Input.mousePosition);
+        Ray ray2 = _camUI.ScreenPointToRay(Input.mousePosition);
         if (Input.GetMouseButtonDown(0))
         {
+            Physics.Raycast(ray2, out _hit, Mathf.Infinity);
             if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._monstreLayer))
             {
                 _target = _hit.collider.GetComponent<MonsterClass>();
@@ -341,7 +345,7 @@ public class PlayerManager : MonoBehaviour
                 this._myUI.levelUpdate();
                 if (this._me.addExp(this._target.Exp) > 0)
                 {
-                    this._myLevelUI.SetActive(true);
+                    this._myLevelUI.Display();
                 }
                 this._target = null;
                 this._myUI.ButtonAttackDisable();

@@ -22,9 +22,10 @@ public class UILevelUp : MonoBehaviour {
     Text _volon;
     [SerializeField]
     GameObject _mygameobject;
+    [SerializeField]
+    private int _ptsMax = 5;
 
     private int _pts = 0;
-    private int _ptsMax = 5;
     private int _ptsVie = 0;
     private int _ptsForce = 0;
     private int _ptsDefence = 0;
@@ -32,9 +33,20 @@ public class UILevelUp : MonoBehaviour {
     private int _ptsVol = 0;
     private CharactereClass _myPlayer;
     
-    public void OnEnable()
+    void Start()
     {
         this._myPlayer = this._player.Me;
+        this._ptsForce = 0;
+        this._ptsVie = 0;
+        this._ptsVol = 0;
+        this._ptsDefence = 0;
+        this._ptsInt = 0;
+        this.UpdateUI();
+    }
+
+    public void Display()
+    {
+        _mygameobject.SetActive(true);
         this._ptsForce = 0;
         this._ptsVie = 0;
         this._ptsVol = 0;
@@ -44,15 +56,12 @@ public class UILevelUp : MonoBehaviour {
         this.UpdateUI();
     }
 
-
     public void AddVie()
     {
         if (this._pts > 0)
         {
             this._pts--;
             this._ptsVie++;
-            this._myPlayer.Sante++;
-            this._myPlayer.SanteMax++;
             this.UpdateUI();
         }
     }
@@ -62,9 +71,6 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts++;
             this._ptsVie--;
-            this._myPlayer.SanteMax--;
-            if (this._myPlayer.SanteMax > this._myPlayer.Sante)
-                this._myPlayer.Sante = this._myPlayer.SanteMax;
             this.UpdateUI();
         }
     }
@@ -75,7 +81,6 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts--;
             this._ptsForce++;
-            this._myPlayer.Force++;
             this.UpdateUI();
         }
     }
@@ -85,7 +90,6 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts++;
             this._ptsForce--;
-            this._myPlayer.Force--;
             this.UpdateUI();
         }
     }
@@ -96,7 +100,6 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts--;
             this._ptsDefence++;
-            this._myPlayer.Defense++;
             this.UpdateUI();
         }
     }
@@ -106,7 +109,6 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts++;
             this._ptsDefence--;
-            this._myPlayer.Defense--;
             this.UpdateUI();
         }
     }
@@ -117,7 +119,6 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts--;
             this._ptsInt++;
-            this._myPlayer.Intel++;
             this.UpdateUI();
         }
     }
@@ -127,7 +128,6 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts++;
             this._ptsInt--;
-            this._myPlayer.Intel--;
             this.UpdateUI();
         }
     }
@@ -138,7 +138,6 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts--;
             this._ptsVol++;
-            this._myPlayer.Volonte++;
             this.UpdateUI();
         }
     }
@@ -148,34 +147,33 @@ public class UILevelUp : MonoBehaviour {
         {
             this._pts++;
             this._ptsVol--;
-            this._myPlayer.Volonte--;
             this.UpdateUI();
         }
     }
 
     public void RemiseAZero()
     {
-        while(this._ptsForce == 0)
+        while(this._ptsForce > 0)
         {
             this._ptsForce--;
             this._pts++;
         }
-        while (this._ptsVie == 0)
+        while (this._ptsVie > 0)
         {
             this._ptsVie--;
             this._pts++;
         }
-        while (this._ptsVol == 0)
+        while (this._ptsVol > 0)
         {
             this._ptsVol--;
             this._pts++;
         }
-        while (this._ptsDefence == 0)
+        while (this._ptsDefence > 0)
         {
             this._ptsDefence--;
             this._pts++;
         }
-        while (this._ptsInt == 0)
+        while (this._ptsInt > 0)
         {
             this._ptsInt--;
             this._pts++;
@@ -185,6 +183,13 @@ public class UILevelUp : MonoBehaviour {
 
     public void Validate()
     {
+        this._myPlayer.Sante += _ptsVie;
+        this._myPlayer.SanteMax += _ptsVie;
+        this._myPlayer.Volonte += _ptsVol;
+        this._myPlayer.Intel += _ptsInt;
+        this._myPlayer.Defense += _ptsDefence;
+        this._myPlayer.Force += _ptsForce;
+
         this._player.StatUpdateWithMonster();
         this._mygameobject.SetActive(false);
     }
@@ -193,10 +198,10 @@ public class UILevelUp : MonoBehaviour {
     {
         this._lvlText.text = this._myPlayer.Level.ToString();
         this._points.text = this._pts.ToString();
-        this._vie.text = this._myPlayer.SanteMax.ToString();
-        this._force.text = this._myPlayer.Force.ToString();
-        this._defense.text = this._myPlayer.Defense.ToString();
-        this._intel.text = this._myPlayer.Intel.ToString();
-        this._volon.text = this._myPlayer.Volonte.ToString();
+        this._vie.text = (_myPlayer.SanteMax + _ptsVie).ToString();
+        this._force.text = (_myPlayer.Force + _ptsForce).ToString();
+        this._defense.text = (_myPlayer.Defense + _ptsDefence).ToString();
+        this._intel.text = (_myPlayer.Intel + _ptsInt).ToString();
+        this._volon.text = (_myPlayer.Volonte + _ptsVol).ToString();
     }
 }
