@@ -5,6 +5,7 @@ using UnityEditor;
 [CustomEditor(typeof(ScriptedEventManager))]
 public class ScriptedEventManagerEditor : Editor {
 
+    /*
 	override public void OnInspectorGUI()
     {
         var scriptedEventManager = target as ScriptedEventManager;
@@ -16,4 +17,5 @@ public class ScriptedEventManagerEditor : Editor {
             scriptedEventManager.i = EditorGUILayout.IntSlider(scriptedEventManager.i, 0, 100);
         }
     }
+    */
 }
