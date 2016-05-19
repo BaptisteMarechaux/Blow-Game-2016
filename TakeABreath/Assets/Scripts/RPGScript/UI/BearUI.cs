@@ -34,13 +34,13 @@ public class BearUI : MonoBehaviour {
     // Use this for initialization
     void Start () {
         uiHPImage.CrossFadeAlpha(0.0f, 0.1f, true);
-        uiLevel.text = "Niv" + playerManager.Me.Level;
+        uiLevel.text = "Niv" + playerManager.PlayerStats.Level;
     }
 	
 	// Update is called once per frame
 	void Update () {
         
-        uiExpImage.fillAmount = Mathf.Lerp(uiExpImage.fillAmount, (float)playerManager.Me.Exp / (float)playerManager.Me.ExpToLvlUp, 5*Time.deltaTime);
+        uiExpImage.fillAmount = Mathf.Lerp(uiExpImage.fillAmount, (float)playerManager.PlayerStats.Exp / (float)playerManager.PlayerStats.ExpToLvlUp, 5*Time.deltaTime);
         if(playerManager.MonstrePossede != null)
         {
             uiHPImage.fillAmount = Mathf.Lerp(uiHPImage.fillAmount, (float)playerManager.VieTotal / (float)playerManager.VieMaxTotal, 5 * Time.deltaTime);
@@ -56,7 +56,7 @@ public class BearUI : MonoBehaviour {
 
     void FixedUpdate()
     {
-        uiLevel.text = "Niv" + playerManager.Me.Level;
+        uiLevel.text = "Niv" + playerManager.PlayerStats.Level;
     }
 
     void PossessMonster()

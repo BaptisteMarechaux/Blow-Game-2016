@@ -6,7 +6,7 @@ public class PossessionScript : MonoBehaviour {
 
     public void Possession(PlayerManager player, MonsterClass monster)
     {
-        if (player.Me.Level >= monster.Level && monster.Player == null)
+        if (player.PlayerStats.Level >= monster.Level && monster.Player == null)
         {
             if (Vector3.Distance(player.transform.position, monster.transform.position) <= 5)
             {
@@ -15,7 +15,7 @@ public class PossessionScript : MonoBehaviour {
                 monster.DisableAI();
 
                 this.transform.position = monster.transform.position;
-                player.Me.addExp(player.MonstrePossede.ExpToPossess);
+                player.PlayerStats.addExp(player.MonstrePossede.ExpToPossess);
             }
         }
     }

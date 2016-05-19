@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class UIStats : MonoBehaviour {
+public class UIStatsMenu : MonoBehaviour {
 
     [SerializeField]
     PlayerPrefManager ppm;

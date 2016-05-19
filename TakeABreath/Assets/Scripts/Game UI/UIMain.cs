@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class UIscript : MonoBehaviour {
+public class UIMain : MonoBehaviour {
 
     [SerializeField]
     PlayerManager _player;
@@ -41,7 +41,7 @@ public class UIscript : MonoBehaviour {
 
     void Start()
     {
-        this._playerName.text = this._player.Me.Name;
+        this._playerName.text = this._player.PlayerStats.Name;
         this._myhp.text = this._player.VieTotal + " / " + this._player.VieMaxTotal;
     }
 
@@ -93,13 +93,13 @@ public class UIscript : MonoBehaviour {
 
     public void levelUpdate()
     {
-        _lvlText.text = _player.Me.Level.ToString();
+        _lvlText.text = _player.PlayerStats.Level.ToString();
     }
 
     public void expBarInfo()
     {
 
-        float myexp = (float)this._player.Me.Exp / (float)this._player.Me.ExpToLvlUp; //<== valeur entre 0 et 1
+        float myexp = (float)this._player.PlayerStats.Exp / (float)this._player.PlayerStats.ExpToLvlUp; //<== valeur entre 0 et 1
         //this._expBar.transform.localScale = new Vector3(Mathf.Clamp(myexp, 0f, 1f), this._expBar.transform.localScale.y, this._expBar.transform.localScale.z);
         _expBar.fillAmount = myexp;
 
@@ -107,25 +107,25 @@ public class UIscript : MonoBehaviour {
         string information = "";
         if (myexp >= 0.3f && myexp < 0.4f)
         {
-            information = "<color=black>" + this._player.Me.Exp + "</color> / " + this._player.Me.ExpToLvlUp + " EXP";
+            information = "<color=black>" + this._player.PlayerStats.Exp + "</color> / " + this._player.PlayerStats.ExpToLvlUp + " EXP";
         }
         else if (myexp >= 0.4f && myexp <= 0.45f)
         {
-            information = "<color=black>" + this._player.Me.Exp + " / </color>" + this._player.Me.ExpToLvlUp + " EXP";
+            information = "<color=black>" + this._player.PlayerStats.Exp + " / </color>" + this._player.PlayerStats.ExpToLvlUp + " EXP";
         }
         else if (myexp > 0.45f && myexp <= 0.55f)
         {
-            information = "<color=black>" + this._player.Me.Exp + " / " + this._player.Me.ExpToLvlUp + "</color> EXP";
+            information = "<color=black>" + this._player.PlayerStats.Exp + " / " + this._player.PlayerStats.ExpToLvlUp + "</color> EXP";
         }
         else if (myexp > 0.55f)
         {
-            information = "<color=black>" + this._player.Me.Exp + " / " + this._player.Me.ExpToLvlUp + " EXP</color>";
+            information = "<color=black>" + this._player.PlayerStats.Exp + " / " + this._player.PlayerStats.ExpToLvlUp + " EXP</color>";
         }
         else if(myexp < 0.3f)
         {
-            information = this._player.Me.Exp + " / " + this._player.Me.ExpToLvlUp + " EXP";
+            information = this._player.PlayerStats.Exp + " / " + this._player.PlayerStats.ExpToLvlUp + " EXP";
         }
-        this._expText.text = information;
+       // this._expText.text = information;
     }
 
     public void HealthBarDisable()
@@ -153,7 +153,7 @@ public class UIscript : MonoBehaviour {
         if (target.Player == null)
             this._targetName.text = target.Name;
         else
-            this._targetName.text = target.Player.Me.Name;
+            this._targetName.text = target.Player.PlayerStats.Name;
     }
 
     public void healthBarTargetInfo()

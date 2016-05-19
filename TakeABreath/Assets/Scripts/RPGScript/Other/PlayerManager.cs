@@ -6,13 +6,13 @@ using System;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField]
-    private CharactereClass _me;
+    private CharactereClass _playerStats;
     [SerializeField]
     private MonsterClass _monstrePossede;
     [SerializeField]
     private TextMesh _nameFlottant;
     [SerializeField]
-    private UIscript _myUI;
+    private UIMain _myUI;
     [SerializeField]
     private UIQuest _UIquest;
     [SerializeField]
@@ -78,16 +78,16 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public CharactereClass Me
+    public CharactereClass PlayerStats
     {
         get
         {
-            return _me;
+            return _playerStats;
         }
 
         set
         {
-            _me = value;
+            _playerStats = value;
         }
     }
 
@@ -181,15 +181,15 @@ public class PlayerManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        _nameFlottant.text = Me.Name;
+        _nameFlottant.text = PlayerStats.Name;
         _myUI.levelUpdate();
         _myUI.expBarInfo();
-        VieTotal = Me.Sante;
-        VieMaxTotal = Me.SanteMax;
-        ForceTotal = Me.Force;
-        ConsTotal = Me.Defense;
-        IntTotal = Me.Intel;
-        VolTotal = Me.Volonte;
+        VieTotal = PlayerStats.Sante;
+        VieMaxTotal = PlayerStats.SanteMax;
+        ForceTotal = PlayerStats.Force;
+        ConsTotal = PlayerStats.Defense;
+        IntTotal = PlayerStats.Intel;
+        VolTotal = PlayerStats.Volonte;
 
         for (int i = 0; i < _bookQuest.allQuests.Length; i++)
         {
@@ -276,12 +276,12 @@ public class PlayerManager : MonoBehaviour
         this._monstrePossede = null;
         this.inPossession = false;
 
-        this.VieTotal = Me.Sante;
-        this.VieMaxTotal = Me.SanteMax;
-        this.ForceTotal = Me.Force;
-        this.ConsTotal = Me.Defense;
-        this.IntTotal = Me.Intel;
-        this.VolTotal = Me.Volonte;
+        this.VieTotal = PlayerStats.Sante;
+        this.VieMaxTotal = PlayerStats.SanteMax;
+        this.ForceTotal = PlayerStats.Force;
+        this.ConsTotal = PlayerStats.Defense;
+        this.IntTotal = PlayerStats.Intel;
+        this.VolTotal = PlayerStats.Volonte;
 
         //UI
         this._myUI.HealthBarDisable();
@@ -293,7 +293,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (Vector3.Distance(this.transform.position, _target.transform.position) <= 5)
         {
-            if (Me.Level >= _target.Level && _target.Player == null && MonstrePossede == null)
+            if (PlayerStats.Level >= _target.Level && _target.Player == null && MonstrePossede == null)
             {
                 this.MonstrePossede = this._target;
                 this._target = null;
@@ -304,7 +304,7 @@ public class PlayerManager : MonoBehaviour
                 this.MonstrePossede.transform.position = playerPosition.position;
                 this.MonstrePossede.transform.rotation = playerPosition.rotation;
                 this.MonstrePossede.transform.parent = playerPosition;
-                this._me.addExp(this._monstrePossede.ExpToPossess);
+                this._playerStats.addExp(this._monstrePossede.ExpToPossess);
                 this._monstrePossede.DisableAI();
 
                 StatUpdateWithMonster();
@@ -316,11 +316,11 @@ public class PlayerManager : MonoBehaviour
                 this._myUI.ButtonPossessDisable();
                 this._myUI.ButtonDepossessEnable();
 
-                this._monstrePossede.transform.parent = Me.transform;
+                this._monstrePossede.transform.parent = PlayerStats.transform;
                 OnMonsterPossessed();
 
             }
-            else if (Me.Level < this._target.Level)
+            else if (PlayerStats.Level < this._target.Level)
             {
                 this._myUI.InfoTextUpdate("Niveau du monstre trop élevé!");
             }
@@ -342,12 +342,12 @@ public class PlayerManager : MonoBehaviour
     {
         if (this._monstrePossede != null)
         {
-            this.VieTotal = Me.Sante + MonstrePossede.Sante;
-            this.VieMaxTotal = Me.SanteMax + MonstrePossede.SanteMax;
-            this.ForceTotal = Me.Force + MonstrePossede.Force;
-            this.ConsTotal = Me.Defense + MonstrePossede.Defense;
-            this.IntTotal = Me.Intel + MonstrePossede.Intel;
-            this.VolTotal = Me.Volonte + MonstrePossede.Volonte;
+            this.VieTotal = PlayerStats.Sante + MonstrePossede.Sante;
+            this.VieMaxTotal = PlayerStats.SanteMax + MonstrePossede.SanteMax;
+            this.ForceTotal = PlayerStats.Force + MonstrePossede.Force;
+            this.ConsTotal = PlayerStats.Defense + MonstrePossede.Defense;
+            this.IntTotal = PlayerStats.Intel + MonstrePossede.Intel;
+            this.VolTotal = PlayerStats.Volonte + MonstrePossede.Volonte;
         }
     }
 
@@ -359,9 +359,10 @@ public class PlayerManager : MonoBehaviour
             if (this._target.Sante <= 0)
             {
                 this._myUI.levelUpdate();
-                if (this._me.addExp(this._target.Exp) > 0)
+                if (this._playerStats.addExp(this._target.Exp) > 0)
                 {
-                    this._myLevelUI.Display();
+                    UIManager.instance.DisplayLevelUp();
+                    //this._myLevelUI.Display();
                 }
                 this._target = null;
                 this._myUI.ButtonAttackDisable();

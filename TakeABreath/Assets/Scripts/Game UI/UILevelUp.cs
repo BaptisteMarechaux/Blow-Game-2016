@@ -35,7 +35,7 @@ public class UILevelUp : MonoBehaviour {
     
     void Start()
     {
-        this._myPlayer = this._player.Me;
+        this._myPlayer = this._player.PlayerStats;
         this._ptsForce = 0;
         this._ptsVie = 0;
         this._ptsVol = 0;
@@ -204,4 +204,5 @@ public class UILevelUp : MonoBehaviour {
         this._intel.text = (_myPlayer.Intel + _ptsInt).ToString();
         this._volon.text = (_myPlayer.Volonte + _ptsVol).ToString();
     }
+
 }
