@@ -32,6 +32,15 @@ public class PlayerManager : MonoBehaviour
     private RaycastHit _hit;
     private MonsterClass _target;
 
+    [SerializeField]
+    float damageDuration;
+    [SerializeField]
+    CameraShake cameraShake;
+    [SerializeField]
+    Renderer playerRenderer;
+
+    Color originalColor;
+
     //private NetworkPlayer _playerId;
     private bool inPossession = false;
     private float rate = 10;
@@ -172,15 +181,15 @@ public class PlayerManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        this._nameFlottant.text = Me.Name;
-        this._myUI.levelUpdate();
-        this._myUI.expBarInfo();
-        this.VieTotal = Me.Sante;
-        this.VieMaxTotal = Me.SanteMax;
-        this.ForceTotal = Me.Force;
-        this.ConsTotal = Me.Defense;
-        this.IntTotal = Me.Intel;
-        this.VolTotal = Me.Volonte;
+        _nameFlottant.text = Me.Name;
+        _myUI.levelUpdate();
+        _myUI.expBarInfo();
+        VieTotal = Me.Sante;
+        VieMaxTotal = Me.SanteMax;
+        ForceTotal = Me.Force;
+        ConsTotal = Me.Defense;
+        IntTotal = Me.Intel;
+        VolTotal = Me.Volonte;
 
         for (int i = 0; i < _bookQuest.allQuests.Length; i++)
         {
@@ -190,6 +199,8 @@ public class PlayerManager : MonoBehaviour
                 _UIquest.SuiviActivQuest(q.Title,q.Objectif);
             }
         }
+
+        originalColor = playerRenderer.materials[0].color;
     }
 
     void Update()
@@ -242,6 +253,11 @@ public class PlayerManager : MonoBehaviour
         {
             this.MonstrePossede.transform.position = playerPosition.position;
             this.MonstrePossede.transform.rotation = playerPosition.rotation;
+        }
+
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            TakeDamage(1);
         }
     }
 
@@ -365,7 +381,9 @@ public class PlayerManager : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-
+        cameraShake.enabled = true;
+        cameraShake.shakeDuration = 0.3f;
+        StartCoroutine("TakeDamageWait");
         this._vieTotal -= damage - (this._consTotal / 3);
 
         if(this._vieTotal <= this.MonstrePossede.SanteMax)
@@ -373,6 +391,15 @@ public class PlayerManager : MonoBehaviour
             this.MonstrePossede.TakeDamage(this.MonstrePossede.Sante - this._vieTotal);
         }
         
+    }
+
+    IEnumerator TakeDamageWait()
+    {
+        playerRenderer.materials[0].color = Color.red;
+        yield return new WaitForSeconds(damageDuration);
+        playerRenderer.materials[0].color = originalColor;
+        StopCoroutine("TakeDamageWait");
+
     }
     
 }

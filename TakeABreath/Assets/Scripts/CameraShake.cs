@@ -41,6 +41,7 @@ public class CameraShake : MonoBehaviour
 		{
 			shakeDuration = 0f;
 			camTransform.localPosition = originalPos;
+            enabled = false;
 		}
 	}
 }

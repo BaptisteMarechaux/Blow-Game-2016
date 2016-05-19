@@ -52,9 +52,9 @@ public class OfflineCharacterController : MonoBehaviour {
         }
 
 
-        //mainCamera.transform.LookAt(transform);
-        var lookRotation = Quaternion.LookRotation(transform.position - mainCamera.transform.position);
-        mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, lookRotation, cameraRotationSpeed * Time.deltaTime);
+        mainCamera.transform.LookAt(transform);
+        //var lookRotation = Quaternion.LookRotation(transform.position - mainCamera.transform.position);
+        //mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, lookRotation, cameraRotationSpeed * Time.deltaTime);
 
        
        

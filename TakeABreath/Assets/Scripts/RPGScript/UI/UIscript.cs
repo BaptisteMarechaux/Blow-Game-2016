@@ -98,9 +98,12 @@ public class UIscript : MonoBehaviour {
 
     public void expBarInfo()
     {
+
         float myexp = (float)this._player.Me.Exp / (float)this._player.Me.ExpToLvlUp; //<== valeur entre 0 et 1
-        this._expBar.transform.localScale = new Vector3(Mathf.Clamp(myexp, 0f, 1f), this._expBar.transform.localScale.y, this._expBar.transform.localScale.z);
-        
+        //this._expBar.transform.localScale = new Vector3(Mathf.Clamp(myexp, 0f, 1f), this._expBar.transform.localScale.y, this._expBar.transform.localScale.z);
+        _expBar.fillAmount = myexp;
+
+
         string information = "";
         if (myexp >= 0.3f && myexp < 0.4f)
         {
