@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class TitleMenuScript : MonoBehaviour {
 
@@ -102,5 +103,15 @@ public class TitleMenuScript : MonoBehaviour {
             nss.matchName = "PJAnn";
         else
             nss.matchName = value;
+    }
+
+    public void StartTutorial()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    public void StartSoloMode()
+    {
+        SceneManager.LoadScene(2);
     }
 }
