@@ -5,8 +5,6 @@ using System.Collections;
 public class UILevelUp : MonoBehaviour {
 
     [SerializeField]
-    PlayerManager _player;
-    [SerializeField]
     Text _lvlText;
     [SerializeField]
     Text _points;
@@ -35,7 +33,7 @@ public class UILevelUp : MonoBehaviour {
     
     void Start()
     {
-        this._myPlayer = this._player.PlayerStats;
+        this._myPlayer = UIManager.instance.playerStatus;
         this._ptsForce = 0;
         this._ptsVie = 0;
         this._ptsVol = 0;
@@ -189,8 +187,7 @@ public class UILevelUp : MonoBehaviour {
         this._myPlayer.Intel += _ptsInt;
         this._myPlayer.Defense += _ptsDefence;
         this._myPlayer.Force += _ptsForce;
-
-        this._player.StatUpdateWithMonster();
+        UIManager.instance.playerManager.StatUpdateWithMonster();
         this._mygameobject.SetActive(false);
     }
 

@@ -12,25 +12,17 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private TextMesh _nameFlottant;
     [SerializeField]
-    private UIMain _myUI;
-    [SerializeField]
-    private UIQuest _UIquest;
-    [SerializeField]
-    private UILevelUp _myLevelUI;
-    [SerializeField]
     private LayerMask _monstreLayer;
     [SerializeField]
     private LayerMask _questerLayer;
     [SerializeField]
     private Camera _cam;
     [SerializeField]
-    private Camera _camUI;
-    [SerializeField]
     private BookQuest _bookQuest;
 
-    private Ray _ray;
-    private RaycastHit _hit;
-    private MonsterClass _target;
+    Ray _ray;
+    RaycastHit _hit;
+    MonsterClass _target;
 
     [SerializeField]
     float damageDuration;
@@ -50,18 +42,6 @@ public class PlayerManager : MonoBehaviour
     private int _consTotal = 1;
     private int _intTotal = 1;
     private int _volTotal = 1;
-
-    public delegate void monsterPossessed();
-    public static event monsterPossessed OnMonsterPossessed;
-
-    public delegate void monsterReleased();
-    public static event monsterReleased OnMonsterReleased;
-
-    public delegate void monsterMouseEnter();
-    public static event monsterMouseEnter OnMonsterMouseEnter;
-
-    public delegate void monsterMouseLeave();
-    public static event monsterMouseLeave OnMonsterMouseLeave;
 
     public Transform playerPosition;
 
@@ -182,8 +162,11 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         _nameFlottant.text = PlayerStats.Name;
-        _myUI.levelUpdate();
-        _myUI.expBarInfo();
+
+        UIManager.instance.UpdateStatusLevel();
+        UIManager.instance.UpdateStatusExp();
+        UIManager.instance.UpdateInfoText("");
+
         VieTotal = PlayerStats.Sante;
         VieMaxTotal = PlayerStats.SanteMax;
         ForceTotal = PlayerStats.Force;
@@ -196,7 +179,7 @@ public class PlayerManager : MonoBehaviour
             if (_bookQuest.allQuests[i].Number == -1)
             {
                 Quest q = _bookQuest.allQuests[i];
-                _UIquest.SuiviActivQuest(q.Title,q.Objectif);
+                UIManager.instance.DisplayActiveQuest(q.Title, q.Objectif);
             }
         }
 
@@ -207,10 +190,8 @@ public class PlayerManager : MonoBehaviour
     {
 
         _ray = _cam.ScreenPointToRay(Input.mousePosition);
-        Ray ray2 = _camUI.ScreenPointToRay(Input.mousePosition);
         if (Input.GetMouseButtonDown(0))
         {
-            Physics.Raycast(ray2, out _hit, Mathf.Infinity);
             if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._monstreLayer))
             {
                 _target = _hit.collider.GetComponent<MonsterClass>();
@@ -218,19 +199,19 @@ public class PlayerManager : MonoBehaviour
             else if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._questerLayer))
             {
                 Quester q = _hit.collider.GetComponent<Quester>();
-                if(q.Quete != null)
-                    this._UIquest.ShowQuest(q.Quete.Title, q.Quete.Description, q.Quete.Objectif, q.Quete.NameSave, _bookQuest);
+                if (q.Quete != null)
+                    UIManager.instance.DisplayQuest(q.Quete.Title, q.Quete.Description, q.Quete.Objectif, q.Quete.NameSave, _bookQuest);
             }
         }
 
         if (inPossession)
         {
-            this._myUI.HealthBarUpdate();
+            //this._myUI.HealthBarUpdate();
             if (this._target != null)
             {
                 //faire apparaitre bouton attaque et barre de vie enemy
-                this._myUI.ButtonAttackEnable();
-                this._myUI.LifeTargetEnable(Target);
+                UIManager.instance.DisplayAttackButton();
+                UIManager.instance.DisplayTargetStatus(Target);
             }
             if (this._monstrePossede.Sante <= 0)
             {
@@ -240,12 +221,12 @@ public class PlayerManager : MonoBehaviour
         else if (_target != null && !inPossession)
         {
             //faire apparaitre bouton possession
-            this._myUI.ButtonPossessEnable();
-            this._myUI.ButtonAttackDisable();
+            UIManager.instance.DisplayPossessButton();
+            UIManager.instance.HideAttackButton();
         }
         else if (_target != null && !inPossession)
         {
-            this._myUI.ButtonPossessDisable();
+            UIManager.instance.HidePossessButton();
         }
 
 
@@ -256,9 +237,9 @@ public class PlayerManager : MonoBehaviour
         }
 
         if(Input.GetKeyDown(KeyCode.K))
-        {
             TakeDamage(1);
-        }
+        if (Input.GetKeyDown(KeyCode.L))
+            AddExp(100);
     }
 
     private void noBody()
@@ -284,8 +265,8 @@ public class PlayerManager : MonoBehaviour
         this.VolTotal = PlayerStats.Volonte;
 
         //UI
-        this._myUI.HealthBarDisable();
-        this._myUI.ButtonDepossessDisable();
+        UIManager.instance.HidePossessButton();
+        UIManager.instance.HideReleaseButton();
 
     }
 
@@ -310,24 +291,22 @@ public class PlayerManager : MonoBehaviour
                 StatUpdateWithMonster();
 
                 //UI
-                this._myUI.InfoTextUpdate("");
-                this._myUI.expBarInfo();
-                this._myUI.HealthBarUpdate();
-                this._myUI.ButtonPossessDisable();
-                this._myUI.ButtonDepossessEnable();
+                UIManager.instance.UpdateInfoText("");
+                UIManager.instance.UpdateStatusExp();
+                UIManager.instance.HidePossessButton();
+                UIManager.instance.DisplayReleaseButton();
 
                 this._monstrePossede.transform.parent = PlayerStats.transform;
-                OnMonsterPossessed();
 
             }
             else if (PlayerStats.Level < this._target.Level)
             {
-                this._myUI.InfoTextUpdate("Niveau du monstre trop élevé!");
+                UIManager.instance.UpdateInfoText("Niveau du monstre trop élevé!");
             }
         }
         else
         {
-            this._myUI.InfoTextUpdate("Créature trop loin.");
+            UIManager.instance.UpdateInfoText("Créature trop loin.");
         }
         /*
         //ajouter la condition dans le if du dessus
@@ -355,28 +334,35 @@ public class PlayerManager : MonoBehaviour
     {
         if (Vector3.Distance(this.transform.position, _target.transform.position) <= this._monstrePossede.Attack.Range && this._monstrePossede.Attack.Ready)
         {
-            this._monstrePossede.AttackTarget(this._target,this._forceTotal);
-            if (this._target.Sante <= 0)
+            _monstrePossede.AttackTarget(_target,_forceTotal);
+            if (_target.Sante <= 0)
             {
-                this._myUI.levelUpdate();
-                if (this._playerStats.addExp(this._target.Exp) > 0)
-                {
-                    UIManager.instance.DisplayLevelUp();
-                    //this._myLevelUI.Display();
-                }
-                this._target = null;
-                this._myUI.ButtonAttackDisable();
-                this._myUI.expBarInfo();
-                this._myUI.LifeTargetDisable();
+                //Victoire contre un monstre
+                AddExp(_target.Exp);
+
+                //Déréférencement du monstre dans le script
+                _target = null;
+                UIManager.instance.HideAttackButton();
+                UIManager.instance.UpdateStatusExp();
+                UIManager.instance.HideTargetStatus();
             }
         }
         else if(!this._monstrePossede.Attack.Ready)
         {
-            this._myUI.InfoTextUpdate("Attaque non prête!");
+            UIManager.instance.UpdateInfoText("Attaque non prête!");
         }
         else
         {
-            this._myUI.InfoTextUpdate("Cible trop loin!");
+            UIManager.instance.UpdateInfoText("Cible trop loin!");
+        }
+    }
+
+    public void AddExp(int amount)
+    {
+        UIManager.instance.UpdateStatusLevel();
+        if (_playerStats.addExp(amount) > 0)
+        {
+            UIManager.instance.DisplayLevelUp();
         }
     }
 

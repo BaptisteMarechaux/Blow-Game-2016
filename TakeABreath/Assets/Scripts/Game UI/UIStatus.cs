@@ -4,14 +4,17 @@ using UnityEngine.UI;
 
 public class UIStatus : MonoBehaviour {
 
+    public GameObject targetCanvas;
+
     [SerializeField]
     Text playerNameText;
     [SerializeField]
     Text playerLevelText;
-    //[SerializeField]
-    //Text playerExpText;
+    [SerializeField]
+    Text playerExpText;
     [SerializeField]
     Image playerExpImage;
+
     [SerializeField]
     Text playerHPText;
     [SerializeField]
@@ -19,7 +22,6 @@ public class UIStatus : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        playerHPImage.CrossFadeAlpha(0.0f, 0.1f, true);
         UpdateStatus();
         
     }
@@ -37,8 +39,18 @@ public class UIStatus : MonoBehaviour {
     {
         playerNameText.text = UIManager.instance.playerStatus.Name;
         playerLevelText.text = "Niv" + UIManager.instance.playerStatus.Level;
-        //playerExpText.text = "";
+        playerExpText.text = UIManager.instance.playerStatus.Exp + "/" + UIManager.instance.playerStatus.ExpToLvlUp;
         
+    }
+
+    public void UpdateLevel()
+    {
+        playerLevelText.text = "Niv" + UIManager.instance.playerStatus.Level;
+    }
+
+    public void UpdateExp()
+    {
+        playerExpText.text = UIManager.instance.playerStatus.Exp + "/" + UIManager.instance.playerStatus.ExpToLvlUp;
     }
 
 }
