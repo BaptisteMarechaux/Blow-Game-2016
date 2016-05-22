@@ -10,7 +10,7 @@ public class CameraScript : MonoBehaviour {
 
     void FixedUpdate()
     {
-            transform.Translate(transform.worldToLocalMatrix.MultiplyVector(transform.forward) * fav * sensitivity);
+        transform.Translate(transform.worldToLocalMatrix.MultiplyVector(transform.forward) * fav * sensitivity);
             transform.LookAt(target);
         if (Input.GetMouseButton(1))
         {

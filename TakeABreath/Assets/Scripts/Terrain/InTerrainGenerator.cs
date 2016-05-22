@@ -11,7 +11,8 @@ public class InTerrainGenerator : MonoBehaviour {
     {
         NoiseMap, 
         ColorMap,
-        Mesh
+        Mesh,
+        FalloffMap
     }
 
     public DrawMode drawMode;
@@ -38,6 +39,10 @@ public class InTerrainGenerator : MonoBehaviour {
 
     public TerrainType[] regions;
 
+    public bool useFalloff;
+
+    float[,] fallOffMap;
+
     Queue<TerrainThreadInfo<TerrainData>> terrainDataThreadInfoQueue = new Queue<TerrainThreadInfo<TerrainData>>();
     Queue<TerrainThreadInfo<MeshData>> meshDataThreadInfoQueue = new Queue<TerrainThreadInfo<MeshData>>();
 
@@ -52,7 +57,8 @@ public class InTerrainGenerator : MonoBehaviour {
             display.DrawTexture(InTextureGenerator.TextureFromColorMap(terrainData.colorMap, mapChunkS, mapChunkS));
         else if (drawMode == DrawMode.Mesh)
             display.DrawMesh(InMeshGenerator.GenerateTerrainMesh(terrainData.heightMap, meshHeightMultiplier, meshHeightCurve, editorLevelOfDetail), InTextureGenerator.TextureFromColorMap(terrainData.colorMap, mapChunkS, mapChunkS));
-
+        else if (drawMode == DrawMode.FalloffMap)
+            display.DrawTexture(InTextureGenerator.TextureFromHeightMap(FalloffGenerator.GenerateFalloffMap(mapChunkSize)));
     }
 
     public void RequestTerrainData(Action<TerrainData> callback)
@@ -124,6 +130,10 @@ public class InTerrainGenerator : MonoBehaviour {
         {
             for(int x=0;x<mapChunkS;x++)
             {
+                if (useFalloff)
+                {
+                    noiseMap[x, y] = noiseMap[x, y] - fallOffMap[x, y];
+                }
                 float currentHeight = noiseMap[x, y];
                 for(int i=0;i<regions.Length;i++)
                 {
@@ -147,6 +157,7 @@ public class InTerrainGenerator : MonoBehaviour {
         if (octaves < 0)
             octaves = 0;
 
+        fallOffMap = FalloffGenerator.GenerateFalloffMap(mapChunkSize);
         
     }
 
