@@ -29,10 +29,13 @@ public class OfflineCharacterController : MonoBehaviour {
     Vector3 lastPos;
     Vector3 lastPosDistance;
 
+    Rigidbody rg;
+
     // Use this for initialization
     void Start () {
         lastPos = transform.position;
-	}
+        rg = GetComponent<Rigidbody>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -46,9 +49,14 @@ public class OfflineCharacterController : MonoBehaviour {
         right = new Vector3(forward.z, 0, -forward.x);
 
         transformPositionVector = (h * right + v * forward) * speed * Time.deltaTime;
-        transformPositionVector.y = 0;
+        //transformPositionVector.y = 0.0f;
+        transformPositionVector.y = 0.1f;
         //mainCamera.transform.Translate(new Vector3(h * speed * Time.deltaTime, 0, v * speed * Time.deltaTime));
-        transform.position = Vector3.MoveTowards(transform.position, transformPositionVector + transform.position, Time.deltaTime * speed);
+        //transform.position = Vector3.MoveTowards(transform.position, transformPositionVector + transform.position, Time.deltaTime * speed);
+        rg.AddForce(transformPositionVector, ForceMode.VelocityChange);
+        if (Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
+            rg.velocity = Vector3.Lerp(rg.velocity, Vector3.zero, Time.deltaTime * 2f);
+        rg.angularVelocity = Vector3.Lerp(rg.angularVelocity, Vector3.zero, Time.deltaTime * 2f);
 
         lastPosDistance = transform.position - lastPos;
 
