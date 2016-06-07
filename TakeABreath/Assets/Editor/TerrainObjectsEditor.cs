@@ -112,7 +112,7 @@ public class TerrainObjectsEditor : EditorWindow {
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Trees Node");
-        _treeNode = (GameObject)EditorGUILayout.ObjectField(_treeNode, typeof(GameObject));
+        _treeNode = (GameObject)EditorGUILayout.ObjectField(_treeNode, typeof(GameObject), true);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
@@ -132,7 +132,7 @@ public class TerrainObjectsEditor : EditorWindow {
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Tree " + i.ToString());
-            _treeTypes[i] = (GameObject)EditorGUILayout.ObjectField(_treeTypes[i], typeof(GameObject));
+            _treeTypes[i] = (GameObject)EditorGUILayout.ObjectField(_treeTypes[i], typeof(GameObject), true);
             EditorGUILayout.EndHorizontal();
         }
 
@@ -143,7 +143,7 @@ public class TerrainObjectsEditor : EditorWindow {
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("High Montain prefab");
-        _mountainprefab = (GameObject)EditorGUILayout.ObjectField(_mountainprefab, typeof(GameObject));
+        _mountainprefab = (GameObject)EditorGUILayout.ObjectField(_mountainprefab, typeof(GameObject), true);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
@@ -160,7 +160,7 @@ public class TerrainObjectsEditor : EditorWindow {
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Moutain " + i.ToString());
-            _mountainTypes[i] = (GameObject)EditorGUILayout.ObjectField(_mountainTypes[i], typeof(GameObject));
+            _mountainTypes[i] = (GameObject)EditorGUILayout.ObjectField(_mountainTypes[i], typeof(GameObject), true);
             EditorGUILayout.EndHorizontal();
         }
 
@@ -532,7 +532,7 @@ public class TerrainObjectsEditor : EditorWindow {
                             if(pos.y - hit.distance > minimumHeight)
                             {
                                 Debug.Log(hit.distance);
-                                GameObject pref = (GameObject)Instantiate(_treeTypes[Random.Range(0, _treeCount)], pos, Quaternion.identity);
+                                GameObject pref = (GameObject)GameObject.Instantiate(_treeTypes[Random.Range(0, _treeCount)], pos, Quaternion.identity);
                                 pref.transform.position = new Vector3(pref.transform.position.x, pref.transform.position.y - hit.distance, pref.transform.position.z);
 
                                 if (_treeNode != null)
@@ -549,4 +549,6 @@ public class TerrainObjectsEditor : EditorWindow {
         }
         
     }
+
+
 }
