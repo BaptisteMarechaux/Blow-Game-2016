@@ -28,7 +28,7 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
 
     // The constant below controls the geometry-awareness of the blur filter.
     // The higher value, the more sensitive it is.
-    static const float kGeometry = 50;
+    static const float kGeom = 50;
 
     // The constants below are used in the AO estimator. Beta is mainly used
     // for suppressing self-shadowing noise, and Epsilon is used to prevent
@@ -40,12 +40,6 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
     // --------
 
     #include "UnityCG.cginc"
-
-    // Source texture type (CameraDepthNormals or G-buffer)
-    #pragma multi_compile _SOURCE_DEPTHNORMALS _SOURCE_GBUFFER
-
-    // Sample count; given-via-uniform (default) or lowest
-    #pragma multi_compile _ _SAMPLECOUNT_LOWEST
 
     #if _SAMPLECOUNT_LOWEST
     static const int _SampleCount = 3;
@@ -59,6 +53,9 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
     sampler2D_float _CameraDepthTexture;
     // float4x4 _WorldToCamera;
     #else
+    #if _SOURCE_DEPTH
+    sampler2D_float _CameraDepthTexture;
+    #endif
     sampler2D_float _CameraDepthNormalsTexture;
     #endif
 
@@ -110,14 +107,19 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
     // (returns a very large value if it lies out of bounds)
     float CheckBounds(float2 uv, float d)
     {
-        float ob = any(uv < 0) + any(uv > 1) + (d >= 0.99999);
+        float ob = any(uv < 0) + any(uv > 1);
+    #if defined(UNITY_REVERSED_Z)
+        ob += (d <= 0.00001);
+    #else
+        ob += (d >= 0.99999);
+    #endif
         return ob * 1e8;
     }
 
     // Depth/normal sampling functions
     float SampleDepth(float2 uv)
     {
-    #if _SOURCE_GBUFFER
+    #if _SOURCE_GBUFFER || _SOURCE_DEPTH
         float d = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv);
         return LinearEyeDepth(d) + CheckBounds(uv, d);
     #else
@@ -140,7 +142,7 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
 
     float SampleDepthNormal(float2 uv, out float3 normal)
     {
-    #if _SOURCE_GBUFFER
+    #if _SOURCE_GBUFFER || _SOURCE_DEPTH
         normal = SampleNormal(uv);
         return SampleDepth(uv);
     #else
@@ -162,7 +164,7 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
     // Normal vector comparer (for geometry-aware weighting)
     half CompareNormal(half3 d1, half3 d2)
     {
-        return pow((dot(d1, d2) + 1) * 0.5, kGeometry);
+        return pow((dot(d1, d2) + 1) * 0.5, kGeom);
     }
 
     // Final combiner function
@@ -216,7 +218,11 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
         for (int s = 0; s < _SampleCount; s++)
         {
             // Sample point
+    #if SHADER_API_D3D11
+            float3 v_s1 = PickSamplePoint(uv, floor(1.0001 * s)); // Nvidia fix
+    #else
             float3 v_s1 = PickSamplePoint(uv, s);
+    #endif
             v_s1 = faceforward(v_s1, -norm_o, v_s1);
             float3 vpos_s1 = vpos_o + v_s1;
 
@@ -243,29 +249,80 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
         return pow(ao * _Intensity / _SampleCount, kContrast);
     }
 
-    // Geometry-aware separable blur filter
-    half SeparableBlur(sampler2D tex, float2 uv, float2 delta)
+    // Geometry-aware separable blur filter (large kernel)
+    half SeparableBlurLarge(sampler2D tex, float2 uv, float2 delta)
     {
+    #if !SHADER_API_MOBILE
+        // 9-tap Gaussian blur with adaptive sampling
+        float2 uv1a = uv - delta;
+        float2 uv1b = uv + delta;
+        float2 uv2a = uv - delta * 2;
+        float2 uv2b = uv + delta * 2;
+        float2 uv3a = uv - delta * 3.2307692308;
+        float2 uv3b = uv + delta * 3.2307692308;
+
         half3 n0 = SampleNormal(uv);
 
-        half2 uv1 = uv - delta;
-        half2 uv2 = uv + delta;
-        half2 uv3 = uv - delta * 2;
-        half2 uv4 = uv + delta * 2;
+        half w0 = 0.37004405286;
+        half w1a = CompareNormal(n0, SampleNormal(uv1a)) * 0.31718061674;
+        half w1b = CompareNormal(n0, SampleNormal(uv1b)) * 0.31718061674;
+        half w2a = CompareNormal(n0, SampleNormal(uv2a)) * 0.19823788546;
+        half w2b = CompareNormal(n0, SampleNormal(uv2b)) * 0.19823788546;
+        half w3a = CompareNormal(n0, SampleNormal(uv3a)) * 0.11453744493;
+        half w3b = CompareNormal(n0, SampleNormal(uv3b)) * 0.11453744493;
 
-        half w0 = 3;
-        half w1 = CompareNormal(n0, SampleNormal(uv1)) * 2;
-        half w2 = CompareNormal(n0, SampleNormal(uv2)) * 2;
-        half w3 = CompareNormal(n0, SampleNormal(uv3));
-        half w4 = CompareNormal(n0, SampleNormal(uv4));
+        half s = tex2D(_MainTex, uv).r * w0;
+        s += tex2D(_MainTex, uv1a).r * w1a;
+        s += tex2D(_MainTex, uv1b).r * w1b;
+        s += tex2D(_MainTex, uv2a).r * w2a;
+        s += tex2D(_MainTex, uv2b).r * w2b;
+        s += tex2D(_MainTex, uv3a).r * w3a;
+        s += tex2D(_MainTex, uv3b).r * w3b;
 
-        half s = tex2D(tex, uv).r * w0;
-        s += tex2D(tex, uv1).r * w1;
-        s += tex2D(tex, uv2).r * w2;
-        s += tex2D(tex, uv3).r * w3;
-        s += tex2D(tex, uv4).r * w4;
+        return s / (w0 + w1a + w1b + w2a + w2b + w3a + w3b);
+    #else
+        // 9-tap Gaussian blur with linear sampling
+        // (less quality but slightly fast)
+        float2 uv1a = uv - delta * 1.3846153846;
+        float2 uv1b = uv + delta * 1.3846153846;
+        float2 uv2a = uv - delta * 3.2307692308;
+        float2 uv2b = uv + delta * 3.2307692308;
 
-        return s / (w0 + w1 + w2 + w3 + w4);
+        half3 n0 = SampleNormal(uv);
+
+        half w0 = 0.2270270270;
+        half w1a = CompareNormal(n0, SampleNormal(uv1a)) * 0.3162162162;
+        half w1b = CompareNormal(n0, SampleNormal(uv1b)) * 0.3162162162;
+        half w2a = CompareNormal(n0, SampleNormal(uv2a)) * 0.0702702703;
+        half w2b = CompareNormal(n0, SampleNormal(uv2b)) * 0.0702702703;
+
+        half s = tex2D(_MainTex, uv).r * w0;
+        s += tex2D(_MainTex, uv1a).r * w1a;
+        s += tex2D(_MainTex, uv1b).r * w1b;
+        s += tex2D(_MainTex, uv2a).r * w2a;
+        s += tex2D(_MainTex, uv2b).r * w2b;
+
+        return s / (w0 + w1a + w1b + w2a + w2b);
+    #endif
+    }
+
+    // Geometry-aware separable blur filter (small kernel)
+    half SeparableBlurSmall(sampler2D tex, float2 uv, float2 delta)
+    {
+        float2 uv1 = uv - delta;
+        float2 uv2 = uv + delta;
+
+        half3 n0 = SampleNormal(uv);
+
+        half w0 = 2;
+        half w1 = CompareNormal(n0, SampleNormal(uv1));
+        half w2 = CompareNormal(n0, SampleNormal(uv2));
+
+        half s = tex2D(_MainTex, uv).r * w0;
+        s += tex2D(_MainTex, uv1).r * w1;
+        s += tex2D(_MainTex, uv2).r * w2;
+
+        return s / (w0 + w1 + w2);
     }
 
     // Pass 0: Occlusion estimation
@@ -274,14 +331,21 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
         return EstimateOcclusion(i.uv);
     }
 
-    // Pass1: Geometry-aware separable blur
-    half4 frag_blur(v2f_img i) : SV_Target
+    // Pass 1: Primary blur filter
+    half4 frag_blur1(v2f_img i) : SV_Target
     {
         float2 delta = _MainTex_TexelSize.xy * _BlurVector;
-        return SeparableBlur(_MainTex, i.uv, delta);
+        return SeparableBlurLarge(_MainTex, i.uv, delta);
     }
 
-    // Pass 2: Combiner for the forward mode
+    // Pass 2: Secondary blur filter
+    half4 frag_blur2(v2f_img i) : SV_Target
+    {
+        float2 delta = _MainTex_TexelSize.xy * _BlurVector;
+        return SeparableBlurSmall(_MainTex, i.uv, delta);
+    }
+
+    // Pass 3: Combiner for the forward mode
     struct v2f_multitex
     {
         float4 pos : SV_POSITION;
@@ -308,14 +372,7 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
         return half4(CombineOcclusion(src.rgb, ao), src.a);
     }
 
-    half4 frag_blit_ao(v2f_multitex i) : SV_Target
-    {
-        half4 src = tex2D(_MainTex, i.uv0);
-        half ao = tex2D(_OcclusionTexture, i.uv1).r;
-        return half4(CombineOcclusion(1, ao), src.a);
-    }
-
-    // Pass 3: Combiner for the ambient-only mode
+    // Pass 4: Combiner for the ambient-only mode
     v2f_img vert_gbuffer(appdata_img v)
     {
         v2f_img o;
@@ -328,10 +385,12 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
         return o;
     }
 
+#if !SHADER_API_GLES // excluding the MRT pass under GLES2
+
     struct CombinerOutput
     {
-        half4 gbuffer0 : COLOR0;
-        half4 gbuffer3 : COLOR1;
+        half4 gbuffer0 : SV_Target0;
+        half4 gbuffer3 : SV_Target1;
     };
 
     CombinerOutput frag_gbuffer_combine(v2f_img i)
@@ -343,6 +402,23 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
         return o;
     }
 
+#else
+
+    fixed4 frag_gbuffer_combine(v2f_img i) : SV_Target0
+    {
+        return 0;
+    }
+
+#endif
+
+    // Pass 5: Debug blit
+    half4 frag_blit_ao(v2f_multitex i) : SV_Target
+    {
+        half4 src = tex2D(_MainTex, i.uv0);
+        half ao = tex2D(_OcclusionTexture, i.uv1).r;
+        return half4(CombineOcclusion(1, ao), src.a);
+    }
+
     ENDCG
 
     SubShader
@@ -351,6 +427,8 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
         {
             ZTest Always Cull Off ZWrite Off
             CGPROGRAM
+            #pragma multi_compile _SOURCE_DEPTH _SOURCE_DEPTHNORMALS _SOURCE_GBUFFER
+            #pragma multi_compile _ _SAMPLECOUNT_LOWEST
             #pragma vertex vert_img
             #pragma fragment frag_ao
             #pragma target 3.0
@@ -360,8 +438,19 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
         {
             ZTest Always Cull Off ZWrite Off
             CGPROGRAM
+            #pragma multi_compile _ _SOURCE_GBUFFER
             #pragma vertex vert_img
-            #pragma fragment frag_blur
+            #pragma fragment frag_blur1
+            #pragma target 3.0
+            ENDCG
+        }
+        Pass
+        {
+            ZTest Always Cull Off ZWrite Off
+            CGPROGRAM
+            #pragma multi_compile _ _SOURCE_GBUFFER
+            #pragma vertex vert_img
+            #pragma fragment frag_blur2
             #pragma target 3.0
             ENDCG
         }

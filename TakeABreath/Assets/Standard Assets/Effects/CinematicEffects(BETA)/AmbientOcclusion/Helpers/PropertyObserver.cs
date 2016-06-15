@@ -8,8 +8,8 @@ namespace UnityStandardAssets.CinematicEffects
         struct PropertyObserver
         {
             // AO properties
-            int _blurIterations;
             bool _downsampling;
+            OcclusionSource _occlusionSource;
             bool _ambientOnly;
 
             // Camera properties
@@ -20,8 +20,8 @@ namespace UnityStandardAssets.CinematicEffects
             public bool CheckNeedsReset(Settings setting, Camera camera)
             {
                 return
-                    _blurIterations != setting.blurIterations ||
                     _downsampling != setting.downsampling ||
+                    _occlusionSource != setting.occlusionSource ||
                     _ambientOnly != setting.ambientOnly ||
                     _pixelWidth != camera.pixelWidth ||
                     _pixelHeight != camera.pixelHeight;
@@ -30,8 +30,8 @@ namespace UnityStandardAssets.CinematicEffects
             // Update the internal state.
             public void Update(Settings setting, Camera camera)
             {
-                _blurIterations = setting.blurIterations;
                 _downsampling = setting.downsampling;
+                _occlusionSource = setting.occlusionSource;
                 _ambientOnly = setting.ambientOnly;
                 _pixelWidth = camera.pixelWidth;
                 _pixelHeight = camera.pixelHeight;

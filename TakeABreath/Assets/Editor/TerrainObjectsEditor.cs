@@ -53,6 +53,9 @@ public class TerrainObjectsEditor : EditorWindow {
     Vector3[] verts;
 
     public Vector2 scrollPosition = Vector2.zero;
+
+    float terrainMaxHeight = 300;
+    float treeMaxHeight=300;
     public void OnGUI()
     {
        
@@ -68,6 +71,14 @@ public class TerrainObjectsEditor : EditorWindow {
 
         EditorGUILayout.BeginHorizontal();
         terrainScale = EditorGUILayout.FloatField("Terrain Scale", terrainScale);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        terrainMaxHeight = EditorGUILayout.FloatField("Terrain Max Height", terrainMaxHeight);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        treeMaxHeight = EditorGUILayout.FloatField("Trees Max Height", treeMaxHeight);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
@@ -526,10 +537,10 @@ public class TerrainObjectsEditor : EditorWindow {
                     {
                         
                         RaycastHit hit;
-                        Vector3 pos = new Vector3(j - terrainSize * terrainScale / 2, 200, i - (terrainSize * terrainScale) / 2);
-                        if (Physics.Raycast(pos, -Vector3.up * 500, out hit))
+                        Vector3 pos = new Vector3(j - terrainSize * terrainScale / 2, terrainMaxHeight, i - (terrainSize * terrainScale) / 2);
+                        if (Physics.Raycast(pos, -Vector3.up * terrainMaxHeight*2, out hit))
                         {
-                            if(pos.y - hit.distance > minimumHeight)
+                            if(pos.y - hit.distance > minimumHeight && pos.y - hit.distance < treeMaxHeight)
                             {
                                 Debug.Log(hit.distance);
                                 GameObject pref = (GameObject)GameObject.Instantiate(_treeTypes[Random.Range(0, _treeCount)], pos, Quaternion.identity);
