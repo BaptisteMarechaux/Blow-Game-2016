@@ -176,11 +176,11 @@ public class PlayerManager : MonoBehaviour
 
         for (int i = 0; i < _bookQuest.allQuests.Length; i++)
         {
-            if (_bookQuest.allQuests[i].Number == -1)
-            {
-                Quest q = _bookQuest.allQuests[i];
-                UIManager.instance.DisplayActiveQuest(q.Title, q.Objectif);
-            }
+            //if (_bookQuest.allQuests[i])
+            //{
+            //    Quest q = _bookQuest.allQuests[i];
+            //    UIManager.instance.DisplayActiveQuest(q.Title, q.Objectif);
+            //}
         }
 
         originalColor = playerRenderer.materials[0].color;
@@ -199,8 +199,8 @@ public class PlayerManager : MonoBehaviour
             else if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._questerLayer))
             {
                 Quester q = _hit.collider.GetComponent<Quester>();
-                if (q.Quete != null)
-                    UIManager.instance.DisplayQuest(q.Quete.Title, q.Quete.Description, q.Quete.Objectif, q.Quete.NameSave, _bookQuest);
+                //if (q.Quete != null)
+                //    UIManager.instance.DisplayQuest(q.Quete.Title, q.Quete.Description, q.Quete.Objectif, q.Quete.NameSave, _bookQuest);
             }
         }
 
@@ -364,6 +364,11 @@ public class PlayerManager : MonoBehaviour
         {
             UIManager.instance.DisplayLevelUp();
         }
+    }
+
+    public void addExp(int exp)
+    {
+        _playerStats.addExp(exp);
     }
 
     public void TakeDamage(int damage)

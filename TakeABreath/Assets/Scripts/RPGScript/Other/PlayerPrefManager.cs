@@ -30,14 +30,14 @@ public class PlayerPrefManager : MonoBehaviour {
     {
         return PlayerPrefs.GetInt(name);
     }
+
+
     //QUEST
     public void CreateDiarieQuest()
-    { PlayerPrefs.SetInt("BookQuest", 1); }
-
-    public void CreateQuest(string name)
     {
-        PlayerPrefs.SetInt(name, -1);
+        PlayerPrefs.SetInt("Quest", 0);
     }
+
 
     public void UpdateQuest(string name, int value)
     {
@@ -48,19 +48,22 @@ public class PlayerPrefManager : MonoBehaviour {
     {
         return PlayerPrefs.HasKey(name);
     }
-
-
+    
+    //SAUVEGARDE....
     public void Save()
     {
         PlayerPrefs.Save();
     }
 
-
+    //CLEANER
     public void CleanBookQuest()
     {
         PlayerPrefs.DeleteKey("Quest-Tuez5Golem");
         PlayerPrefs.DeleteKey("Quest-Tuez5Golem-Avancement");
         PlayerPrefs.DeleteKey("Quest-PossessionGolem");
+
+        PlayerPrefs.DeleteKey("Quest");
+
     }
 
     public void CleanPlayer()

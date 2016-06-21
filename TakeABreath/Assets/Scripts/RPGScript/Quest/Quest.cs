@@ -3,91 +3,21 @@ using System.Collections;
 
 public class Quest
 {
-
-    private string title;
-    private string nameSave;
+    private int id;
+    private string name;
     private string description;
-    private string objectif;
-    private int expReward;
-    private int number;
-    private string cibleName;
+    private int exp;
 
-    public string Title
+    public Quest (int id, string name, string descrition, int exp)
     {
-        get
-        {
-            return title;
-        }
+        this.id = id;
+        this.name = name;
+        this.description = descrition;
+        this.exp = exp;
     }
-
-    public string NameSave
+    
+    public int getExp()
     {
-        get
-        {
-            return nameSave;
-        }
+        return exp;
     }
-
-    public string Description
-    {
-        get
-        {
-            return description;
-        }
-    }
-
-    public string Objectif
-    {
-        get
-        {
-            return objectif;
-        }
-    }
-
-    public int ExpReward
-    {
-        get
-        {
-            return expReward;
-        }
-    }
-
-    public int Number
-    {
-        get
-        {
-            return number;
-        }
-    }
-
-    public string CibleName
-    {
-        get
-        {
-            return cibleName;
-        }
-    }
-
-    public Quest(string n, string ns, string desc, string obj, string monst, int exp, int nb)
-    {
-        this.title = n;
-        this.nameSave = ns;
-        this.description = desc;
-        this.objectif = obj;
-        this.expReward = exp;
-        this.number = nb;
-        this.cibleName = monst;
-    }
-
-    public Quest(string n, string ns, string desc, string obj, string monst, int exp)
-    {
-        this.title = n;
-        this.nameSave = ns;
-        this.description = desc;
-        this.objectif = obj;
-        this.expReward = exp;
-        this.number = -1;
-        this.cibleName = monst;
-    }
-  
 }
