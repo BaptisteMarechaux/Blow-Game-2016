@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class Bestiary : MonoBehaviour {
+    [SerializeField]
     BestiaryMonster[] monsters;
 	// Use this for initialization
 	void Start () {
@@ -22,7 +23,10 @@ public class Bestiary : MonoBehaviour {
 [System.Serializable]
 public struct BestiaryMonster
 {
-    string name;
-    bool discovered;
-    string[] spells;
+    public string name;
+    public string location;
+    public Sprite sprite;
+    public string description;
+    public bool discovered;
+    public string[] spells;
 }
