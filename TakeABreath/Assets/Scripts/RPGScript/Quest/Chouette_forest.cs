@@ -18,6 +18,9 @@ public class Chouette_forest : MonoBehaviour {
     private int questIdMax = 10;
 
     [SerializeField]
+    private UIManager managerUI;
+
+    [SerializeField]
     PlayerPrefManager ppm;
 
     List<Quest> quests = new List<Quest>();
@@ -32,17 +35,18 @@ public class Chouette_forest : MonoBehaviour {
         {
             questId = ppm.GetValue("Quest");
         }
-	}
+        managerUI.DisplayActiveQuest(quests[questId].getTitle(), quests[questId].getDescription());
+    }
 
     void FixedUpdate()
     {
         if (questId == 0)
         {
-            if (Vector3.Distance(transform.position, joueur.position) < 7)
+            if (Vector3.Distance(transform.position, joueur.position) < 7 || Vector3.Distance(zoneQuest0.position, joueur.position)<10 || Vector3.Distance(zoneQuest0.position, joueur.position) <= Vector3.Distance(zoneQuest0.position, transform.position))
             {
                 transform.position = Vector3.Lerp(transform.position, zoneQuest0.position, Time.deltaTime * vitesse);
             }
-            if(Vector3.Distance(transform.position,zoneQuest0.position) <= 1.5)
+            if(Vector3.Distance(transform.position,zoneQuest0.position) <= 1.2f)
             {
                 QuestFinish();
             }
@@ -53,7 +57,7 @@ public class Chouette_forest : MonoBehaviour {
 
    void QuestFinish()
     {
-        //player.addExp(quests[questId].getExp());
+        player.addExp(quests[questId].getExp());
         questId++;
     }
 }

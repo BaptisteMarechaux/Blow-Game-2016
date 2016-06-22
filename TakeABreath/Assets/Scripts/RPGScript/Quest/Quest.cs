@@ -20,4 +20,12 @@ public class Quest
     {
         return exp;
     }
+    public string getTitle()
+    {
+        return name;
+    }
+    public string getDescription()
+    {
+        return description;
+    }
 }

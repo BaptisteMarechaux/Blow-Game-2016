@@ -157,21 +157,6 @@ public class CharactereClass : MonoBehaviour {
         this._volonte = ppm.GetValue("Volonte") != 0 ? ppm.GetValue("Volonte") : 1;
     }
 
-    void Start()
-    {
-        Debug.Log(ppm.PlayerName());
-        this._name = ppm.PlayerName() != "" ? ppm.PlayerName() : "Name";
-        this._level = ppm.GetValue("Level") != 0 ? ppm.GetValue("Level") : 1;
-        this._sante = ppm.GetValue("Vie") != 0 ? ppm.GetValue("Vie") : 5;
-        this._santeMax = ppm.GetValue("VieMax") != 0 ? ppm.GetValue("VieMax") : 10;
-        this._exp = ppm.GetValue("Exp") != 0 ? ppm.GetValue("Exp") : 2;
-        this._expToLvlUp = ppm.GetValue("ExpMax") != 0 ? ppm.GetValue("ExpMax") : 20;
-        this._force = ppm.GetValue("Force") != 0 ? ppm.GetValue("Force") : 2;
-        this._defense = ppm.GetValue("Constitution") != 0 ? ppm.GetValue("Constitution") : 1;
-        this._intel = ppm.GetValue("Intelligence") != 0 ? ppm.GetValue("Intelligence") : 2;
-        this._volonte = ppm.GetValue("Volonte") != 0 ? ppm.GetValue("Volonte") : 1;
-    }
-
 
     public int addExp(int exp)
     {
@@ -181,10 +166,10 @@ public class CharactereClass : MonoBehaviour {
             levelUp();
             return this._level;
         }
-        Debug.Log(ppm);
+        Debug.Log(this.ppm);
         Debug.Log(_name);
 
-        if (ppm.PlayerName() == this._name)
+        if (this.ppm.PlayerName() == this._name)
         {
             SaveStats();
         }
