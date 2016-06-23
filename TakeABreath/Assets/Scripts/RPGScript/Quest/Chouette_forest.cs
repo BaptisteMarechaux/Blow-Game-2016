@@ -26,11 +26,16 @@ public class Chouette_forest : MonoBehaviour {
     List<Quest> quests = new List<Quest>();
 
     Quest quest_001 = new Quest(0, "Suivre le Maitre", "Suivons le maitre, il va m'aider.", 5);
+    Quest quest_002 = new Quest(1, "Insertion", "Posséder un Ilona", 10);
+    Quest quest_003 = new Quest(2, "Tagazog", "EasterEgg", 15);
 
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         quests.Add(quest_001);
+        quests.Add(quest_002);
+        quests.Add(quest_003);
+
         if (ppm.GetValue("Quest") <= questIdMax && ppm.GetValue("Quest") > questId)
         {
             questId = ppm.GetValue("Quest");
@@ -57,7 +62,8 @@ public class Chouette_forest : MonoBehaviour {
 
    void QuestFinish()
     {
-        player.addExp(quests[questId].getExp());
+        player.AddExp(quests[questId].getExp());
         questId++;
+        managerUI.DisplayActiveQuest(quests[questId].getTitle(), quests[questId].getDescription());
     }
 }

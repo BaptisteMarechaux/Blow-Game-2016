@@ -161,6 +161,7 @@ public class PlayerManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        Debug.Log("NomPM :" + _playerStats.Name);
         _nameFlottant.text = PlayerStats.Name;
 
         UIManager.instance.UpdateStatusLevel();
@@ -360,15 +361,11 @@ public class PlayerManager : MonoBehaviour
     public void AddExp(int amount)
     {
         UIManager.instance.UpdateStatusLevel();
+        UIManager.instance.UpdateStatusExp();
         if (_playerStats.addExp(amount) > 0)
         {
             UIManager.instance.DisplayLevelUp();
         }
-    }
-
-    public void addExp(int exp)
-    {
-        _playerStats.addExp(exp);
     }
 
     public void TakeDamage(int damage)
