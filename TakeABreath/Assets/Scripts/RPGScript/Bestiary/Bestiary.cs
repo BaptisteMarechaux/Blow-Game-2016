@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Bestiary : MonoBehaviour {
     [SerializeField]
-    BestiaryMonster[] monsters;
+    public BestiaryMonster[] monsters;
 	// Use this for initialization
 	void Start () {
 	}

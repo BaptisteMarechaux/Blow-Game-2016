@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour {
     UIQuest questUI;
     [SerializeField]
     UIMain mainUI;
+    [SerializeField]
+    BestiaryUI bestiaryUI;
 
     public CharactereClass playerStatus;
     public PlayerManager playerManager;
@@ -63,6 +65,21 @@ public class UIManager : MonoBehaviour {
     public void HideReleaseButton() { mainUI.ButtonDepossessDisable(); }
 
     public void HideTargetStatus() { mainUI.LifeTargetDisable(); }
+
+    public void showBestiary()
+    {
+
+    }
+
+    public void hideBestiary()
+    {
+
+    }
+
+    public void DisplayMonster(int index)
+    {
+
+    }
 
     #endregion
 
