@@ -25,6 +25,7 @@ public class Chouette_forest : MonoBehaviour {
 
     List<Quest> quests = new List<Quest>();
 
+
     Quest quest_001 = new Quest(0, "Suivre le Maitre", "Suivons le maitre, il va m'aider.", 5);
     Quest quest_002 = new Quest(1, "Insertion", "Posséder un Ilona", 10);
     Quest quest_003 = new Quest(2, "Tagazog", "EasterEgg", 15);
@@ -66,4 +67,5 @@ public class Chouette_forest : MonoBehaviour {
         questId++;
         managerUI.DisplayActiveQuest(quests[questId].getTitle(), quests[questId].getDescription());
     }
+
 }
