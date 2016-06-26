@@ -13,19 +13,13 @@ public class BookQuest : MonoBehaviour {
     public Quest[] allQuests = new Quest[2];
 
     Quest quest_000;
-    Quest quest_001;
 
     void Awake()
     {
-        quest_000 = new Quest("Premier corps.", "Quest-PossessionGolem",
-          "Avant de vous vengez contre les anciennes Divinités, il faut que vous investissez des petites créatures pour vous habituez à la possession.",
-          "Prennez possession d'un Golem", "Golem", 30);
-        quest_001 = new Quest("Premier combat.", "Quest-Tuez5Golem",
-            "Maintenant que vous avez cette première créature, attaquez d'autres golems.",
-            "Tuez 5 Golems", "Golem", 100, 5);
+        quest_000 = new Quest(0,"Suivez le maître","Suivre le maître",5);
+
 
         allQuests[0] = quest_000;
-        allQuests[1] = quest_001;
 
         if (erase)
             CleanBookSave();
@@ -47,10 +41,6 @@ public class BookQuest : MonoBehaviour {
         ppm.CreateDiarieQuest();
 
         //Création des autres key de quêtes
-        ppm.UpdateQuest("Quest-PossessionGolem", 0);
-
-        ppm.CreateQuest("Quest-Tuez5Golem");
-        ppm.UpdateQuest("Quest-Tuez5Golem-Avancement", 0);
 
         ppm.Save();
     }
@@ -58,20 +48,11 @@ public class BookQuest : MonoBehaviour {
     //mettre à jour toutes les quêtes du jeu (ajouté les nouvelles)
     private void VerifyExistingQuest()
     {
-        if(!ppm.Existing("Quest-PossessionGolem"))
-            ppm.UpdateQuest("Quest-PossessionGolem", 0);
-
-        if (!ppm.Existing("Quest-Tuez5Golem"))
-        {
-            ppm.CreateQuest("Quest-Tuez5Golem");
-            ppm.UpdateQuest("Quest-Tuez5Golem-Avancement", 0);
-        }
-
         ppm.Save();
     }
     
     //Mettre à jour le playerprefs lorsqu'une quête est finie
-    public void ChageStatQuest(string name, int nb)
+    public void ChangeStatQuest(string name, int nb)
     {
         //-3 = non dispo, -2 = dispo, -1 = activ, 0= fini
         ppm.UpdateQuest(name, nb);

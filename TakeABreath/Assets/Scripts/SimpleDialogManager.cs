@@ -55,4 +55,9 @@ public class SimpleDialogManager : MonoBehaviour {
             yield return new WaitForSeconds(0.03f);
         }
     }
+    [System.Serializable]
+    public struct SimpleDialog
+    {
+        public string[] text;
+    }
 }

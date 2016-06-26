@@ -34,7 +34,7 @@ public class UIQuest : MonoBehaviour {
         questDescription.text = description;
         questObjectif.text = objectif;
         questButton = questButton.GetComponent<Button>();
-        questButton.onClick.AddListener(() => { book.ChageStatQuest(nameSave, 1); questPannel.SetActive(false); });
+        //questButton.onClick.AddListener(() => { book.ChageStatQuest(nameSave, 1); questPannel.SetActive(false); });
     }
 
     public void ShowActiveQuest(string title, string objectif)

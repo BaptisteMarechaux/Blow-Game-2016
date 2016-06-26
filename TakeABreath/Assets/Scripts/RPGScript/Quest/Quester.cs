@@ -10,6 +10,7 @@ public class Quester : MonoBehaviour {
     [SerializeField]
     int ind = 0;
 
+    private bool finish = false;
 
     private Quest quete;
 
@@ -28,6 +29,11 @@ public class Quester : MonoBehaviour {
         {
             quete = book.allQuests[ind];
         }
+        
+    }
 
+    public void Finished()
+    {
+        finish = true;
     }
 }
