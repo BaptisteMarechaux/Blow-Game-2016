@@ -1,31 +1,22 @@
 fileFormatVersion: 2
-guid: 4c1551906c68688489f17ee8095d8a95
-timeCreated: 1466109488
+guid: 872794544724cb7469afaee1c0fd338d
+timeCreated: 1466974281
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Cone001
-    100002: Cone001 1
-    100004: Cone002
-    100006: //RootNode
-    100008: FDirect001
-    100010: FDirect001 1
-    400000: Cone001
-    400002: Cone001 1
-    400004: Cone002
-    400006: //RootNode
-    400008: FDirect001
-    400010: FDirect001 1
-    2300000: Cone001
-    2300002: Cone001 1
-    2300004: Cone002
-    3300000: Cone001
-    3300002: Cone001 1
-    3300004: Cone002
-    4300000: Cone001
-    4300002: Cone001
-    4300004: Cone002
+    100000: Cylinder002
+    100002: Cylinder003
+    100004: //RootNode
+    400000: Cylinder002
+    400002: Cylinder003
+    400004: //RootNode
+    2300000: Cylinder002
+    2300002: Cylinder003
+    3300000: Cylinder002
+    3300002: Cylinder003
+    4300000: Cylinder002
+    4300002: Cylinder003
   materials:
     importMaterials: 1
     materialName: 0
@@ -33,7 +24,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -50,7 +41,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 3
+    globalScale: 8
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
