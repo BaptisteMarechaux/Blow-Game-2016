@@ -51,7 +51,7 @@ public class OfflineCharacterController : MonoBehaviour {
         transformPositionVector = (h * right + v * forward) * speed * Time.deltaTime;
         transformPositionVector.y = 0.0f;
         //transformPositionVector.y = 0.1f;
-        mainCamera.transform.Translate(new Vector3(h * speed * Time.deltaTime, 0, v * speed * Time.deltaTime));
+        //mainCamera.transform.Translate(new Vector3(h * speed * Time.deltaTime, 0, v * speed * Time.deltaTime));
         transform.position = Vector3.MoveTowards(transform.position, transformPositionVector + transform.position, Time.deltaTime * speed);
 
         /*rg.AddForce(transformPositionVector, ForceMode.VelocityChange);
@@ -61,20 +61,20 @@ public class OfflineCharacterController : MonoBehaviour {
         */
 
         lastPosDistance = transform.position - lastPos;
-
+        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + lastPosDistance.x, mainCamera.transform.position.y, mainCamera.transform.position.z + lastPosDistance.z);
         if (h != 0 || v != 0)
         {
             GetRotation(new Vector3(h, 0, v));
-            //mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + lastPosDistance.x, mainCamera.transform.position.y, mainCamera.transform.position.z + lastPosDistance.z);
-            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, new Vector3(transform.position.x, transform.position.y + cameraHeight, transform.position.z - cameraDistance), cameraSpeed * Time.deltaTime);
+           
+            //mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, new Vector3(transform.position.x, transform.position.y + cameraHeight, transform.position.z - cameraDistance), cameraSpeed * Time.deltaTime);
             //mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, new Vector3(transform.position.x, cameraNewPos.y, transform.position.z - cameraDistance), cameraSpeed * Time.deltaTime);
         }
 
 
-        mainCamera.transform.LookAt(transform);
-        var lookRotation = Quaternion.LookRotation(transform.position - mainCamera.transform.position);
-        mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, lookRotation, cameraRotationSpeed * Time.deltaTime);    
-        //lastPos = transform.position;
+        //mainCamera.transform.LookAt(transform);
+        //var lookRotation = Quaternion.LookRotation(transform.position - mainCamera.transform.position);
+        //.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, lookRotation, cameraRotationSpeed * Time.deltaTime);    
+        lastPos = transform.position;
     }
 
     void GetRotation(Vector3 toRotation)
