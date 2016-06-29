@@ -155,7 +155,6 @@ public class CharactereClass : MonoBehaviour {
         this._defense = ppm.GetValue("Constitution") != 0 ? ppm.GetValue("Constitution") : 1;
         this._intel = ppm.GetValue("Intelligence") != 0 ? ppm.GetValue("Intelligence") : 2;
         this._volonte = ppm.GetValue("Volonte") != 0 ? ppm.GetValue("Volonte") : 1;
-        Debug.Log("Nom1 :" + _name);
     }
 
     void Start()
@@ -170,7 +169,6 @@ public class CharactereClass : MonoBehaviour {
         this._defense = ppm.GetValue("Constitution") != 0 ? ppm.GetValue("Constitution") : 1;
         this._intel = ppm.GetValue("Intelligence") != 0 ? ppm.GetValue("Intelligence") : 2;
         this._volonte = ppm.GetValue("Volonte") != 0 ? ppm.GetValue("Volonte") : 1;
-        Debug.Log("Nom :" + _name);
     }
 
     public int addExp(int exp)
@@ -181,8 +179,6 @@ public class CharactereClass : MonoBehaviour {
             levelUp();
             return this._level;
         }
-        Debug.Log(this.ppm);
-        Debug.Log(_name);
 
         if (this.ppm.PlayerName() == this._name)
         {

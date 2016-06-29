@@ -30,6 +30,8 @@ public class PlayerManager : MonoBehaviour
     CameraShake cameraShake;
     [SerializeField]
     GameObject playerRenderer;
+    [SerializeField]
+    UIManager managerUI;
 
     Color originalColor;
 
@@ -161,7 +163,6 @@ public class PlayerManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Debug.Log("NomPM :" + _playerStats.Name);
         _nameFlottant.text = PlayerStats.Name;
 
         UIManager.instance.UpdateStatusLevel();
@@ -196,6 +197,8 @@ public class PlayerManager : MonoBehaviour
             if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._monstreLayer))
             {
                 _target = _hit.collider.GetComponent<MonsterClass>();
+                managerUI.DisplayTargetStatus(_target);
+                managerUI.UpdateStatusTarget(_target);
             }
             else if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._questerLayer))
             {
@@ -291,7 +294,7 @@ public class PlayerManager : MonoBehaviour
                 this._playerStats.addExp(this._monstrePossede.ExpToPossess);
                 this._monstrePossede.DisableAI();
 
-                playerRenderer.SetActive(false);
+                //playerRenderer.SetActive(false);
                 StatUpdateWithMonster();
 
                 //UI
@@ -331,7 +334,6 @@ public class PlayerManager : MonoBehaviour
             this.ConsTotal = PlayerStats.Defense + MonstrePossede.Defense;
             this.IntTotal = PlayerStats.Intel + MonstrePossede.Intel;
             this.VolTotal = PlayerStats.Volonte + MonstrePossede.Volonte;
-            Debug.Log(VieMaxTotal);
         }
     }
 
