@@ -246,7 +246,6 @@ public class MonsterClass : MonoBehaviour {
         {
             this._target = agresseur;
             this.MyIA.changeStat();
-            Debug.Log(this._target);
         }
 
         if (this._sante <= 0)
@@ -255,7 +254,8 @@ public class MonsterClass : MonoBehaviour {
             this._textExp.text = this._exp + " exp";
             this._isAlive = false;
             this._myMesh.enabled = false;
-            this._myCollier.enabled = false;
+			this._myCollier.enabled = false;
+			Debug.Log("vanish");
         }
     }
 

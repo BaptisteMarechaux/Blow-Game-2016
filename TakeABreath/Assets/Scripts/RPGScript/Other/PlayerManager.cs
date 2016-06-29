@@ -294,7 +294,7 @@ public class PlayerManager : MonoBehaviour
                 this._playerStats.addExp(this._monstrePossede.ExpToPossess);
                 this._monstrePossede.DisableAI();
 
-                //playerRenderer.SetActive(false);
+                playerRenderer.SetActive(false);
                 StatUpdateWithMonster();
 
                 //UI
