@@ -29,10 +29,8 @@ public class UIStatus : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate()
     {
-        playerHPText.text = UIManager.instance.playerStatus.Sante + "/" + UIManager.instance.playerStatus.SanteMax;
-        
-        playerHPImage.fillAmount = Mathf.Lerp(playerHPImage.fillAmount, (float)UIManager.instance.playerStatus.Sante / (float)UIManager.instance.playerStatus.SanteMax, 5 * Time.deltaTime);
-        playerExpImage.fillAmount = Mathf.Lerp(playerExpImage.fillAmount, (float)UIManager.instance.playerStatus.Exp / (float)UIManager.instance.playerStatus.ExpToLvlUp, 5 * Time.deltaTime);
+        UpdateExp();
+        UpdateLife();
     }
 
     public void UpdateStatus()
@@ -51,6 +49,13 @@ public class UIStatus : MonoBehaviour {
     public void UpdateExp()
     {
         playerExpText.text = UIManager.instance.playerStatus.Exp + "/" + UIManager.instance.playerStatus.ExpToLvlUp;
+        playerExpImage.fillAmount = Mathf.Lerp(playerExpImage.fillAmount, (float)UIManager.instance.playerStatus.Exp / (float)UIManager.instance.playerStatus.ExpToLvlUp, 5 * Time.deltaTime);
+
     }
 
+    public void UpdateLife()
+    {
+        playerHPImage.fillAmount = Mathf.Lerp(playerHPImage.fillAmount, (float)UIManager.instance.playerManager.VieTotal / (float)UIManager.instance.playerManager.VieMaxTotal, 5 * Time.deltaTime);
+        playerHPText.text = UIManager.instance.playerManager.VieTotal + "/" + UIManager.instance.playerManager.VieMaxTotal;
+    }
 }

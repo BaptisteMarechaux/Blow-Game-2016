@@ -29,7 +29,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     CameraShake cameraShake;
     [SerializeField]
-    Renderer playerRenderer;
+    GameObject playerRenderer;
 
     Color originalColor;
 
@@ -184,7 +184,7 @@ public class PlayerManager : MonoBehaviour
             //}
         }
 
-        originalColor = playerRenderer.materials[0].color;
+        //originalColor = playerRenderer.materials[0].color;
     }
 
     void Update()
@@ -258,6 +258,8 @@ public class PlayerManager : MonoBehaviour
         this._monstrePossede = null;
         this.inPossession = false;
 
+        playerRenderer.SetActive(true);
+
         this.VieTotal = PlayerStats.Sante;
         this.VieMaxTotal = PlayerStats.SanteMax;
         this.ForceTotal = PlayerStats.Force;
@@ -283,12 +285,13 @@ public class PlayerManager : MonoBehaviour
                 this.MonstrePossede.Player = this;
                 this.inPossession = true;
                 //playerPosition.position = this.MonstrePossede.transform.position;
-                this.MonstrePossede.transform.position = playerPosition.position;
+                this.MonstrePossede.transform.position = playerPosition.position+ new Vector3(0,22,0);
                 this.MonstrePossede.transform.rotation = playerPosition.rotation;
                 this.MonstrePossede.transform.parent = playerPosition;
                 this._playerStats.addExp(this._monstrePossede.ExpToPossess);
                 this._monstrePossede.DisableAI();
 
+                playerRenderer.SetActive(false);
                 StatUpdateWithMonster();
 
                 //UI
@@ -328,6 +331,7 @@ public class PlayerManager : MonoBehaviour
             this.ConsTotal = PlayerStats.Defense + MonstrePossede.Defense;
             this.IntTotal = PlayerStats.Intel + MonstrePossede.Intel;
             this.VolTotal = PlayerStats.Volonte + MonstrePossede.Volonte;
+            Debug.Log(VieMaxTotal);
         }
     }
 
@@ -384,9 +388,9 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator TakeDamageWait()
     {
-        playerRenderer.materials[0].color = Color.red;
+        //playerRenderer.materials[0].color = Color.red;
         yield return new WaitForSeconds(damageDuration);
-        playerRenderer.materials[0].color = originalColor;
+        //playerRenderer.materials[0].color = originalColor;
         StopCoroutine("TakeDamageWait");
 
     }
