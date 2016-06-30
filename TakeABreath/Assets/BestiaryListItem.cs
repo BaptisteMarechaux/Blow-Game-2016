@@ -7,6 +7,7 @@ public class BestiaryListItem : MonoBehaviour {
     public Image monsterImage;
     public Text monsterNameText;
     public Button button;
+    public int index;
 
 	// Use this for initialization
 	void Start () {
@@ -18,7 +19,7 @@ public class BestiaryListItem : MonoBehaviour {
 	
 	}
 
-    public void ClickOnMonster(int index)
+    public void ClickOnMonster()
     {
         UIManager.instance.DisplayMonster(index);
     }
