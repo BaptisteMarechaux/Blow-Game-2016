@@ -22,26 +22,33 @@ public class Chouette_forest : MonoBehaviour {
 
     [SerializeField]
     PlayerPrefManager ppm;
+	[SerializeField]
+	List<Collider> zoneQuest3; 
 
     List<Quest> quests = new List<Quest>();
 
+	private int nbzones;
 
     Quest quest_001 = new Quest(0, "Suivre le Maitre", "Suivons le maitre, il va m'aider.", 5);
-    Quest quest_002 = new Quest(1, "Insertion", "Posséder un Ilona", 10);
-    Quest quest_003 = new Quest(2, "Tagazog", "EasterEgg", 15);
+    Quest quest_002 = new Quest(1, "Première Possessin", "Possédez un ilona", 10);
+	Quest quest_003 = new Quest(2, "Première Sensation", "Explorez les zones", 10);
+	Quest quest_004 = new Quest(3, "Dépossession", "Dépossédez l'ilona", 15);
 
 
     // Use this for initialization
     void Start () {
         quests.Add(quest_001);
         quests.Add(quest_002);
-        quests.Add(quest_003);
+		quests.Add(quest_003);
+		quests.Add(quest_004);
 
         if (ppm.GetValue("Quest") <= questIdMax && ppm.GetValue("Quest") > questId)
         {
             questId = ppm.GetValue("Quest");
         }
         managerUI.DisplayActiveQuest(quests[questId].getTitle(), quests[questId].getDescription());
+
+		nbzones = zoneQuest3.Count;
     }
 
     void FixedUpdate()
@@ -56,16 +63,34 @@ public class Chouette_forest : MonoBehaviour {
             {
                 QuestFinish();
             }
-
         }
+		if (questId == 1) 
+		{
+			if (player.MonstrePossede != null && player.MonstrePossede.Name == "Ilona") 
+			{
+				QuestFinish();
+			}
+		}
+		if (questId == 2) 
+		{
+			if (nbzones == 0)
+				QuestFinish ();
+		}
     }
 
+	void DesableZone(int ind)
+	{
+		zoneQuest3 [ind].enabled = false;
+		nbzones--;
+	}
 
-   void QuestFinish()
+   	void QuestFinish()
     {
         player.AddExp(quests[questId].getExp());
         questId++;
-        managerUI.DisplayActiveQuest(quests[questId].getTitle(), quests[questId].getDescription());
+		if(questId < quests.Count)
+        	managerUI.DisplayActiveQuest(quests[questId].getTitle(), quests[questId].getDescription());
+		//ppm.UpdateQuest ("Quest", questId); <== enregistrer la quête actuel
     }
 
 }

@@ -31,7 +31,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     GameObject playerRenderer;
     [SerializeField]
-    UIManager managerUI;
+	UIManager managerUI;
+	[SerializeField]
+	Chouette_forest quester;
 
     Color originalColor;
 
@@ -43,7 +45,9 @@ public class PlayerManager : MonoBehaviour
     private int _forceTotal = 1;
     private int _consTotal = 1;
     private int _intTotal = 1;
-    private int _volTotal = 1;
+	private int _volTotal = 1;
+	private int _ptsMax = 5;
+
 
     public Transform playerPosition;
 
@@ -158,6 +162,19 @@ public class PlayerManager : MonoBehaviour
             _volTotal = value;
         }
     }
+
+	public int PtsMax
+	{
+		get
+		{
+			return _ptsMax;
+		}
+
+		set
+		{
+			_ptsMax = value;
+		}
+	}
 
 
     // Use this for initialization
