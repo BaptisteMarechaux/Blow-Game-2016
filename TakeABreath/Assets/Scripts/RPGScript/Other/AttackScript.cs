@@ -44,6 +44,7 @@ public class AttackScript : MonoBehaviour {
     public int Attack(MonsterClass target,int force,MonsterClass agresseur)
     {
         //si on ne dépasse pas la range
+        print(this.gameObject.name + " " + this.transform.position + " " + this.transform.localPosition);
         if(Vector3.Distance(this.transform.position, target.transform.position) <= this.Range)
         {
             //on regarde si le monstre est controlé par un joueur

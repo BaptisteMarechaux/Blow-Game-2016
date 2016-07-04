@@ -274,6 +274,9 @@ public class PlayerManager : MonoBehaviour
         this._monstrePossede.transform.parent = null;
 
         this._monstrePossede.EnableAI();
+        this._monstrePossede.transform.Translate(this._monstrePossede.Player.transform.up.normalized * 3);
+        //this._monstrePossede.transform.LookAt(this._monstrePossede.Player.transform);
+        this._monstrePossede.GetComponent<CapsuleCollider>().enabled = true;
         this._monstrePossede.Player = null;
         this._monstrePossede = null;
         this.inPossession = false;
@@ -310,6 +313,7 @@ public class PlayerManager : MonoBehaviour
                 this.MonstrePossede.transform.parent = playerPosition;
                 this._playerStats.addExp(this._monstrePossede.ExpToPossess);
                 this._monstrePossede.DisableAI();
+                this._monstrePossede.GetComponent<CapsuleCollider>().enabled = false;
 
                 playerRenderer.SetActive(false);
                 StatUpdateWithMonster();
@@ -363,7 +367,6 @@ public class PlayerManager : MonoBehaviour
             {
                 //Victoire contre un monstre
                 AddExp(_target.Exp);
-
                 //Déréférencement du monstre dans le script
                 _target = null;
                 UIManager.instance.HideAttackButton();
@@ -394,7 +397,7 @@ public class PlayerManager : MonoBehaviour
     public void TakeDamage(int damage)
     {
         cameraShake.enabled = true;
-        cameraShake.shakeDuration = 0.3f;
+        cameraShake.shakeDuration = 0.1f;
         StartCoroutine("TakeDamageWait");
         this._vieTotal -= damage - (this._consTotal / 3);
 
