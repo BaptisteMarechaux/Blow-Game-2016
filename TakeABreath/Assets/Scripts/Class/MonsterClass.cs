@@ -235,6 +235,8 @@ public class MonsterClass : MonoBehaviour {
         if (!target.IsAlive)
         {
             target = null;
+			if (MyIA.EstAgresse)
+				MyIA.changeStat ();
         }
     }
 
