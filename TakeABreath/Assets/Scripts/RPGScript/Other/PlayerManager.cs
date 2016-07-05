@@ -211,18 +211,19 @@ public class PlayerManager : MonoBehaviour
         _ray = _cam.ScreenPointToRay(Input.mousePosition);
         if (Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._monstreLayer))
-            {
-                _target = _hit.collider.GetComponent<MonsterClass>();
-                managerUI.DisplayTargetStatus(_target);
-                managerUI.UpdateStatusTarget(_target);
-            }
-            else if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._questerLayer))
-            {
-                Quester q = _hit.collider.GetComponent<Quester>();
-                //if (q.Quete != null)
-                //    UIManager.instance.DisplayQuest(q.Quete.Title, q.Quete.Description, q.Quete.Objectif, q.Quete.NameSave, _bookQuest);
-            }
+			if (Physics.Raycast (_ray, out _hit, Mathf.Infinity, this._monstreLayer)) {
+				_target = _hit.collider.GetComponent<MonsterClass> ();
+				managerUI.DisplayTargetStatus (_target);
+				managerUI.UpdateStatusTarget (_target);
+			} 
+			else if (Physics.Raycast (_ray, out _hit, Mathf.Infinity, this._questerLayer)) 
+			{
+				Quester q = _hit.collider.GetComponent<Quester> ();
+				if (quester.QuestId == 3) 
+				{
+					quester.Talk();
+				}
+			}
         }
 
         if (inPossession)

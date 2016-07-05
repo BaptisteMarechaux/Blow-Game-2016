@@ -26,7 +26,7 @@ public class Chouette_forest : MonoBehaviour {
 	List<Collider> zoneQuest3; 
 
     List<Quest> quests = new List<Quest>();
-
+	private bool parler = false;
 	private int nbzones;
 
     Quest quest_001 = new Quest(0, "Suivre le Maitre", "Suivons le maitre, il va m'aider.", 5);
@@ -34,6 +34,12 @@ public class Chouette_forest : MonoBehaviour {
 	Quest quest_003 = new Quest(2, "Première Sensation", "Explorez les zones", 10);
 	Quest quest_004 = new Quest(3, "Dépossession", "Dépossédez l'ilona", 15);
 
+	public int QuestId {
+		get
+		{
+			return questId;
+		}
+	}
 
     // Use this for initialization
     void Start () {
@@ -80,15 +86,27 @@ public class Chouette_forest : MonoBehaviour {
 		}
 		if (questId == 2) 
 		{
-			if (nbzones == 0)
-				QuestFinish ();
+			if (nbzones == 0) 
+			{
+				managerUI.DisplayActiveQuest(quests[questId].getTitle(), "Retournez voir le maître");
+				if (parler) 
+				{
+					parler = false;
+					QuestFinish ();
+				}
+			}
 		}
     }
 
 	public void DisableZone(int ind)
 	{
-		zoneQuest3 [ind].enabled = false;
+		zoneQuest3 [ind].gameObject.SetActive(false);
 		nbzones--;
+	}
+
+	public void Talk()
+	{
+		parler = true;
 	}
 
    	void QuestFinish()
