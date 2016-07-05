@@ -6,7 +6,7 @@ public class Chouette_forest : MonoBehaviour {
 
 
     [SerializeField]
-    private Transform zoneQuest0;
+    private List<Transform> zoneQuest0;
     [SerializeField]
     private Transform joueur;
     [SerializeField]
@@ -48,19 +48,26 @@ public class Chouette_forest : MonoBehaviour {
         }
         managerUI.DisplayActiveQuest(quests[questId].getTitle(), quests[questId].getDescription());
 
-		nbzones = zoneQuest3.Count;
+		nbzones = 0;
     }
 
     void FixedUpdate()
     {
         if (questId == 0)
         {
-            if (Vector3.Distance(transform.position, joueur.position) < 7 || Vector3.Distance(zoneQuest0.position, joueur.position)<10 || Vector3.Distance(zoneQuest0.position, joueur.position) <= Vector3.Distance(zoneQuest0.position, transform.position))
+			Transform lastZone = zoneQuest0[zoneQuest0.Count-1];
+
+			if (Vector3.Distance(transform.position, joueur.position) < 7 || Vector3.Distance(lastZone.position, joueur.position)<10 || Vector3.Distance(lastZone.position, joueur.position) <= Vector3.Distance(lastZone.position, transform.position))
             {
-                transform.position = Vector3.Lerp(transform.position, zoneQuest0.position, Time.deltaTime * vitesse);
-            }
-            if(Vector3.Distance(transform.position,zoneQuest0.position) <= 1.2f)
-            {
+				
+				transform.position = Vector3.Lerp(transform.position, zoneQuest0[nbzones].position, Time.deltaTime * vitesse);
+				transform.LookAt(Vector3.Lerp(transform.position, zoneQuest0[nbzones].position, Time.deltaTime * vitesse));
+				if (Vector3.Distance (transform.position, zoneQuest0 [nbzones].position) < 4 && nbzones<zoneQuest0.Count-1)
+					nbzones++;
+			}
+			if(Vector3.Distance(transform.position,lastZone.position) <= 1.2f)
+			{
+				nbzones = zoneQuest3.Count;
                 QuestFinish();
             }
         }

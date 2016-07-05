@@ -396,8 +396,11 @@ public class PlayerManager : MonoBehaviour
 
 	void OnTriggerEnter(Collider col)
 	{
-		if(col.CompareTag("Zone"))
-			quester.DisableZone(col.gameObject.GetComponent<ZoneQuest>.id);
+		if (col.CompareTag ("Zone"))
+		{	
+			Debug.Log (col);
+			quester.DisableZone(col.GetComponent<ZoneQuest>().id);
+		}
 	}
 
 
