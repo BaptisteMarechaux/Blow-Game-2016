@@ -88,5 +88,6 @@ public class UIManager : MonoBehaviour {
     public void UpdateInfoText(string val) { mainUI.InfoTextUpdate(val); }
     public void UpdateStatusLevel() { statusUI.UpdateLevel(); }
     public void UpdateStatusExp() { statusUI.UpdateExp(); }
+    public void UpdateStatusTarget(MonsterClass target) { mainUI.healthBarTargetInfo(target); }
     #endregion
 }

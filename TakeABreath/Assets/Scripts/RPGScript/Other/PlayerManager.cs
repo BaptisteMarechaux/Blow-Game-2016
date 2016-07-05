@@ -29,7 +29,11 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     CameraShake cameraShake;
     [SerializeField]
-    Renderer playerRenderer;
+    GameObject playerRenderer;
+    [SerializeField]
+	UIManager managerUI;
+	[SerializeField]
+	Chouette_forest quester;
 
     Color originalColor;
 
@@ -41,7 +45,9 @@ public class PlayerManager : MonoBehaviour
     private int _forceTotal = 1;
     private int _consTotal = 1;
     private int _intTotal = 1;
-    private int _volTotal = 1;
+	private int _volTotal = 1;
+	private int _ptsMax = 5;
+
 
     public Transform playerPosition;
 
@@ -157,11 +163,23 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+	public int PtsMax
+	{
+		get
+		{
+			return _ptsMax;
+		}
+
+		set
+		{
+			_ptsMax = value;
+		}
+	}
+
 
     // Use this for initialization
     void Start()
     {
-        Debug.Log("NomPM :" + _playerStats.Name);
         _nameFlottant.text = PlayerStats.Name;
 
         UIManager.instance.UpdateStatusLevel();
@@ -184,7 +202,7 @@ public class PlayerManager : MonoBehaviour
             //}
         }
 
-        originalColor = playerRenderer.materials[0].color;
+        //originalColor = playerRenderer.materials[0].color;
     }
 
     void Update()
@@ -196,6 +214,8 @@ public class PlayerManager : MonoBehaviour
             if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._monstreLayer))
             {
                 _target = _hit.collider.GetComponent<MonsterClass>();
+                managerUI.DisplayTargetStatus(_target);
+                managerUI.UpdateStatusTarget(_target);
             }
             else if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._questerLayer))
             {
@@ -258,6 +278,8 @@ public class PlayerManager : MonoBehaviour
         this._monstrePossede = null;
         this.inPossession = false;
 
+        playerRenderer.SetActive(true);
+
         this.VieTotal = PlayerStats.Sante;
         this.VieMaxTotal = PlayerStats.SanteMax;
         this.ForceTotal = PlayerStats.Force;
@@ -283,12 +305,13 @@ public class PlayerManager : MonoBehaviour
                 this.MonstrePossede.Player = this;
                 this.inPossession = true;
                 //playerPosition.position = this.MonstrePossede.transform.position;
-                this.MonstrePossede.transform.position = playerPosition.position;
+                this.MonstrePossede.transform.position = playerPosition.position+ new Vector3(0,22,0);
                 this.MonstrePossede.transform.rotation = playerPosition.rotation;
                 this.MonstrePossede.transform.parent = playerPosition;
                 this._playerStats.addExp(this._monstrePossede.ExpToPossess);
                 this._monstrePossede.DisableAI();
 
+                playerRenderer.SetActive(false);
                 StatUpdateWithMonster();
 
                 //UI
@@ -368,6 +391,14 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+	void OnTriggerEnter(Collider col)
+	{
+		if(col.CompareTag("Zone"))
+			quester.DisableZone(col.gameObject.GetComponent<ZoneQuest>.id);
+	}
+
+
+
     public void TakeDamage(int damage)
     {
         cameraShake.enabled = true;
@@ -384,9 +415,9 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator TakeDamageWait()
     {
-        playerRenderer.materials[0].color = Color.red;
+        //playerRenderer.materials[0].color = Color.red;
         yield return new WaitForSeconds(damageDuration);
-        playerRenderer.materials[0].color = originalColor;
+        //playerRenderer.materials[0].color = originalColor;
         StopCoroutine("TakeDamageWait");
 
     }

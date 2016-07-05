@@ -40,7 +40,7 @@ public class DialogQuestsManager : MonoBehaviour {
         var ind = dialogManager.ReadNextText();
         if (ind > dialogQuest[0].text.Length)
         {
-            
+			ind = dialogManager.ReadNextText();
         }
         else
         {

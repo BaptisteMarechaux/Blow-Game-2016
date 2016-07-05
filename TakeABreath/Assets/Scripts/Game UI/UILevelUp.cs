@@ -50,7 +50,7 @@ public class UILevelUp : MonoBehaviour {
         this._ptsVol = 0;
         this._ptsDefence = 0;
         this._ptsInt = 0;
-        this._pts += this._ptsMax;
+		this._pts += UIManager.instance.playerManager.PtsMax;
         this.UpdateUI();
     }
 
@@ -188,6 +188,8 @@ public class UILevelUp : MonoBehaviour {
         this._myPlayer.Defense += _ptsDefence;
         this._myPlayer.Force += _ptsForce;
         UIManager.instance.playerManager.StatUpdateWithMonster();
+		if (_pts > 0)
+			UIManager.instance.playerManager.PtsMax += _pts;
         this._mygameobject.SetActive(false);
     }
 

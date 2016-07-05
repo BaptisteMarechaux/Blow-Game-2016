@@ -132,20 +132,28 @@ public class UIMain : MonoBehaviour {
     public void LifeTargetEnable(MonsterClass target)
     {
         this._healthTargetObject.gameObject.SetActive(true);
-        this.healthBarTargetInfo();
+        this.healthBarTargetInfo(target);
         if (target.Player == null)
             this._targetName.text = target.Name;
         else
             this._targetName.text = target.Player.PlayerStats.Name;
     }
 
-    public void healthBarTargetInfo()
+    public void healthBarTargetInfo(MonsterClass target)
     {
-        if (this._player.Target.Player == null)
+        if (target.Player == null)
         {
-            this._healthTargetText.text = this._player.Target.Sante.ToString();
-            float itlife = (float)this._player.Target.Sante / (float)this._player.Target.SanteMax; //<== valeur entre 0 et 1
-            this._healthTargetBar.transform.localScale = new Vector3(Mathf.Clamp(itlife, 0f, 1f), this._healthTargetBar.transform.localScale.y, this._healthTargetBar.transform.localScale.z);
+            Debug.Log((float)target.Sante);
+            Debug.Log((float)target.SanteMax);
+
+            this._healthTargetText.text = target.Sante.ToString();
+            float itlife = (float)target.Sante / (float)target.SanteMax; //<== valeur entre 0 et 1
+
+            Debug.Log(itlife);
+
+            _healthTargetBar.fillAmount = Mathf.Lerp(_healthTargetBar.fillAmount, itlife, 5 * Time.deltaTime);
+
+            //this._healthTargetBar.transform.localScale = new Vector3(Mathf.Clamp(itlife, 0f, 1f), this._healthTargetBar.transform.localScale.y, this._healthTargetBar.transform.localScale.z);
         }
         else
         {
