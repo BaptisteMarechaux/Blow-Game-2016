@@ -78,7 +78,7 @@ public class Chouette_forest : MonoBehaviour {
 		}
     }
 
-	void DesableZone(int ind)
+	public void DisableZone(int ind)
 	{
 		zoneQuest3 [ind].enabled = false;
 		nbzones--;

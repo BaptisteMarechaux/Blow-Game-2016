@@ -391,6 +391,14 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+	void OnTriggerEnter(Collider col)
+	{
+		if(col.CompareTag("Zone"))
+			quester.DisableZone(col.gameObject.GetComponent<ZoneQuest>.id);
+	}
+
+
+
     public void TakeDamage(int damage)
     {
         cameraShake.enabled = true;
