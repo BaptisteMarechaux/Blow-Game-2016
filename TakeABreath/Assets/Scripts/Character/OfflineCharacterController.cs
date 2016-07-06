@@ -61,7 +61,7 @@ public class OfflineCharacterController : MonoBehaviour {
         */
 
         lastPosDistance = transform.position - lastPos;
-        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + lastPosDistance.x, mainCamera.transform.position.y, mainCamera.transform.position.z + lastPosDistance.z);
+        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + lastPosDistance.x, mainCamera.transform.position.y + lastPosDistance.y, mainCamera.transform.position.z + lastPosDistance.z);
         if (h != 0 || v != 0)
         {
             GetRotation(new Vector3(h, 0, v));
