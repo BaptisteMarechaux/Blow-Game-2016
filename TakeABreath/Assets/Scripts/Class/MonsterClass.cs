@@ -28,11 +28,9 @@ public class MonsterClass : MonoBehaviour {
     [SerializeField]
     private PlayerManager _player;
     [SerializeField]
-    private TextMesh _textExp;
-    [SerializeField]
     private AttackScript _attack;
     [SerializeField]
-    private SkinnedMeshRenderer _myMesh;
+	private MeshRenderer _myMesh;
     [SerializeField]
     private Collider _myCollier;
     [SerializeField]
@@ -253,11 +251,9 @@ public class MonsterClass : MonoBehaviour {
         if (this._sante <= 0)
         {
             this.DisableAI();
-            this._textExp.text = this._exp + " exp";
             this._isAlive = false;
             this._myMesh.enabled = false;
 			this._myCollier.enabled = false;
-			Debug.Log("vanish");
         }
     }
 

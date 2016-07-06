@@ -27,6 +27,7 @@ public class CharactereClass : MonoBehaviour {
     [SerializeField]
     private PlayerPrefManager ppm;
 
+	private int _ptsMax = 5;
     //private NetworkPlayer _playerId;
 
     public string Name
@@ -35,6 +36,13 @@ public class CharactereClass : MonoBehaviour {
 
         set { _name = value; }
     }
+
+	public PlayerPrefManager PPM
+	{
+		get { return ppm; }
+
+	}
+
 
     public int Level
     {
@@ -143,32 +151,47 @@ public class CharactereClass : MonoBehaviour {
         }
     }
 
+	public int PtsMax
+	{
+		get
+		{
+			return _ptsMax;
+		}
+
+		set
+		{
+			_ptsMax = value;
+		}
+	}
+
     void OnEnable()
     {
         this._name = ppm.PlayerName() != "" ? ppm.PlayerName() : "Name";
         this._level = ppm.GetValue("Level") != 0 ? ppm.GetValue("Level") : 1;
         this._sante = ppm.GetValue("Vie") != 0 ? ppm.GetValue("Vie") : 5;
         this._santeMax = ppm.GetValue("VieMax") != 0 ? ppm.GetValue("VieMax") : 10;
-        this._exp = ppm.GetValue("Exp") != 0 ? ppm.GetValue("Exp") : 2;
-        this._expToLvlUp = ppm.GetValue("ExpMax") != 0 ? ppm.GetValue("ExpMax") : 20;
-        this._force = ppm.GetValue("Force") != 0 ? ppm.GetValue("Force") : 2;
+        this._exp = ppm.GetValue("Exp") != 0 ? ppm.GetValue("Exp") : 0;
+        this._expToLvlUp = ppm.GetValue("ExpMax") != 0 ? ppm.GetValue("ExpMax") : 50;
+        this._force = ppm.GetValue("Force") != 0 ? ppm.GetValue("Force") : 1;
         this._defense = ppm.GetValue("Constitution") != 0 ? ppm.GetValue("Constitution") : 1;
-        this._intel = ppm.GetValue("Intelligence") != 0 ? ppm.GetValue("Intelligence") : 2;
-        this._volonte = ppm.GetValue("Volonte") != 0 ? ppm.GetValue("Volonte") : 1;
+        this._intel = ppm.GetValue("Intelligence") != 0 ? ppm.GetValue("Intelligence") : 1;
+		this._volonte = ppm.GetValue("Volonte") != 0 ? ppm.GetValue("Volonte") : 1;
+		this._ptsMax = ppm.GetValue("PtsMax") != 0 ? ppm.GetValue("PtsMax") : 5;
     }
 
     void Start()
     {
-        this._name = ppm.PlayerName() != "" ? ppm.PlayerName() : "Name";
-        this._level = ppm.GetValue("Level") != 0 ? ppm.GetValue("Level") : 1;
-        this._sante = ppm.GetValue("Vie") != 0 ? ppm.GetValue("Vie") : 5;
-        this._santeMax = ppm.GetValue("VieMax") != 0 ? ppm.GetValue("VieMax") : 10;
-        this._exp = ppm.GetValue("Exp") != 0 ? ppm.GetValue("Exp") : 2;
-        this._expToLvlUp = ppm.GetValue("ExpMax") != 0 ? ppm.GetValue("ExpMax") : 20;
-        this._force = ppm.GetValue("Force") != 0 ? ppm.GetValue("Force") : 2;
-        this._defense = ppm.GetValue("Constitution") != 0 ? ppm.GetValue("Constitution") : 1;
-        this._intel = ppm.GetValue("Intelligence") != 0 ? ppm.GetValue("Intelligence") : 2;
-        this._volonte = ppm.GetValue("Volonte") != 0 ? ppm.GetValue("Volonte") : 1;
+		this._name = ppm.PlayerName() != "" ? ppm.PlayerName() : "Name";
+		this._level = ppm.GetValue("Level") != 0 ? ppm.GetValue("Level") : 1;
+		this._sante = ppm.GetValue("Vie") != 0 ? ppm.GetValue("Vie") : 5;
+		this._santeMax = ppm.GetValue("VieMax") != 0 ? ppm.GetValue("VieMax") : 10;
+		this._exp = ppm.GetValue("Exp") != 0 ? ppm.GetValue("Exp") : 0;
+		this._expToLvlUp = ppm.GetValue("ExpMax") != 0 ? ppm.GetValue("ExpMax") : 50;
+		this._force = ppm.GetValue("Force") != 0 ? ppm.GetValue("Force") : 1;
+		this._defense = ppm.GetValue("Constitution") != 0 ? ppm.GetValue("Constitution") : 1;
+		this._intel = ppm.GetValue("Intelligence") != 0 ? ppm.GetValue("Intelligence") : 1;
+		this._volonte = ppm.GetValue("Volonte") != 0 ? ppm.GetValue("Volonte") : 1;
+		this._ptsMax = ppm.GetValue("PtsMax") != 0 ? ppm.GetValue("PtsMax") : 5;
     }
 
     public int addExp(int exp)
@@ -197,14 +220,11 @@ public class CharactereClass : MonoBehaviour {
             levelUp();
         else
         {
-            if(ppm.PlayerName() == this._name)
-            {
-                SaveStats();
-            }
+            SaveStats();
         }
     }
 
-    private void SaveStats()
+    public void SaveStats()
     {
         ppm.SetValuePlayer("Level", this._level);
         ppm.SetValuePlayer("Exp", this._exp);
@@ -214,7 +234,8 @@ public class CharactereClass : MonoBehaviour {
         ppm.SetValuePlayer("Force", this._force);
         ppm.SetValuePlayer("Constitution", this._defense);
         ppm.SetValuePlayer("Intelligence", this._intel);
-        ppm.SetValuePlayer("Volonte", this._volonte);
+		ppm.SetValuePlayer("Volonte", this._volonte);
+		ppm.SetValuePlayer("PtsMax", this._ptsMax);
     }
 }
 

@@ -10,7 +10,7 @@ public class PlayerPrefManager : MonoBehaviour {
     void Start () {
         if (eraseAllSave)
             PlayerPrefs.DeleteAll();
-    }
+	}
 	
     //PLAYER
     public void SetNamePlayer(string name)
@@ -21,6 +21,21 @@ public class PlayerPrefManager : MonoBehaviour {
     {
         PlayerPrefs.SetInt(name,nb);
     }
+	public void DebugLogPlayer()
+	{
+		Debug.Log (GetValue ("Name"));
+		Debug.Log (GetValue ("Level"));
+		Debug.Log (GetValue ("Exp"));
+		Debug.Log (GetValue ("ExpMax"));
+		Debug.Log (GetValue ("Vie"));
+		Debug.Log (GetValue ("VieMax"));
+		Debug.Log (GetValue ("Force"));
+		Debug.Log (GetValue ("Constitution"));
+		Debug.Log (GetValue ("Intelligence"));
+		Debug.Log (GetValue ("Volonte"));
+		Debug.Log (GetValue ("PtsMax"));
+		Debug.Log (GetValue ("level"));
+	}
 
     public string PlayerName()
     {
@@ -78,6 +93,7 @@ public class PlayerPrefManager : MonoBehaviour {
         PlayerPrefs.DeleteKey("Force");
         PlayerPrefs.DeleteKey("Constitution");
         PlayerPrefs.DeleteKey("Intelligence");
-        PlayerPrefs.DeleteKey("Volonte");
+		PlayerPrefs.DeleteKey("Volonte");
+		PlayerPrefs.DeleteKey("PtsMax");
     }
 }

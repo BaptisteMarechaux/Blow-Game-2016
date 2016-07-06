@@ -46,12 +46,9 @@ public class PlayerManager : MonoBehaviour
     private int _consTotal = 1;
     private int _intTotal = 1;
 	private int _volTotal = 1;
-	private int _ptsMax = 5;
 
 
     public Transform playerPosition;
-
-    public Projector rangeProjector;
 
     public MonsterClass MonstrePossede
     {
@@ -169,12 +166,12 @@ public class PlayerManager : MonoBehaviour
 	{
 		get
 		{
-			return _ptsMax;
+			return _playerStats.PtsMax;
 		}
 
 		set
 		{
-			_ptsMax = value;
+			_playerStats.PtsMax = value;
 		}
 	}
 
@@ -213,18 +210,19 @@ public class PlayerManager : MonoBehaviour
         _ray = _cam.ScreenPointToRay(Input.mousePosition);
         if (Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._monstreLayer))
-            {
-                _target = _hit.collider.GetComponent<MonsterClass>();
-                managerUI.DisplayTargetStatus(_target);
-                managerUI.UpdateStatusTarget(_target);
-            }
-            else if (Physics.Raycast(_ray, out _hit, Mathf.Infinity, this._questerLayer))
-            {
-                Quester q = _hit.collider.GetComponent<Quester>();
-                //if (q.Quete != null)
-                //    UIManager.instance.DisplayQuest(q.Quete.Title, q.Quete.Description, q.Quete.Objectif, q.Quete.NameSave, _bookQuest);
-            }
+			if (Physics.Raycast (_ray, out _hit, Mathf.Infinity, this._monstreLayer)) {
+				_target = _hit.collider.GetComponent<MonsterClass> ();
+				managerUI.DisplayTargetStatus (_target);
+				managerUI.UpdateStatusTarget (_target);
+			} 
+			else if (Physics.Raycast (_ray, out _hit, Mathf.Infinity, this._questerLayer)) 
+			{
+				Quester q = _hit.collider.GetComponent<Quester> ();
+				if (quester != null && quester.QuestId == 2) 
+				{
+					quester.Talk();
+				}
+			}
         }
 
         if (inPossession)
@@ -246,8 +244,6 @@ public class PlayerManager : MonoBehaviour
             //faire apparaitre bouton possession
             UIManager.instance.DisplayPossessButton();
             UIManager.instance.HideAttackButton();
-
-            rangeProjector.orthographicSize = MonstrePossede.Attack.Range;
         }
         else if (_target != null && !inPossession)
         {
@@ -259,15 +255,12 @@ public class PlayerManager : MonoBehaviour
         {
             this.MonstrePossede.transform.position = playerPosition.position;
             this.MonstrePossede.transform.rotation = playerPosition.rotation;
-
-            UIManager.instance.UpdateAttackButton(MonstrePossede.Attack._timer / MonstrePossede.Attack.Cooldown);
         }
 
         if(Input.GetKeyDown(KeyCode.K))
             TakeDamage(1);
         if (Input.GetKeyDown(KeyCode.L))
             AddExp(100);
-
     }
 
     private void noBody()
@@ -276,12 +269,13 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void Depossession()
-    {
+	{
+		this._playerStats.addExp(this._monstrePossede.ExpToPossess);
         //Attribuer le transform
         this._monstrePossede.transform.parent = null;
 
         this._monstrePossede.EnableAI();
-        this._monstrePossede.transform.Translate(this._monstrePossede.Player.transform.up.normalized * 3);
+		this._monstrePossede.transform.Translate(this._monstrePossede.Player.transform.up.normalized * 3);
         //this._monstrePossede.transform.LookAt(this._monstrePossede.Player.transform);
         this._monstrePossede.GetComponent<CapsuleCollider>().enabled = true;
         this._monstrePossede.Player = null;
@@ -297,11 +291,12 @@ public class PlayerManager : MonoBehaviour
         this.IntTotal = PlayerStats.Intel;
         this.VolTotal = PlayerStats.Volonte;
 
-        //UI
+		if (quester != null && quester.QuestId == 3)
+			quester.QuestFinish ();
+        
+		//UI
         UIManager.instance.HidePossessButton();
         UIManager.instance.HideReleaseButton();
-
-        rangeProjector.gameObject.SetActive(false);
 
     }
 
@@ -327,10 +322,7 @@ public class PlayerManager : MonoBehaviour
                 playerRenderer.SetActive(false);
                 StatUpdateWithMonster();
 
-                rangeProjector.gameObject.SetActive(true);
-
                 //UI
-                UIManager.instance.StartPossessAniamtion();
                 UIManager.instance.UpdateInfoText("");
                 UIManager.instance.UpdateStatusExp();
                 UIManager.instance.HidePossessButton();
@@ -408,8 +400,10 @@ public class PlayerManager : MonoBehaviour
 
 	void OnTriggerEnter(Collider col)
 	{
-		if(col.CompareTag("Zone"))
-			quester.DisableZone(col.gameObject.GetComponent<ZoneQuest>().id);
+		if (col.CompareTag ("Zone") && quester != null)
+		{	
+			quester.DisableZone(col.GetComponent<ZoneQuest>().id);
+		}
 	}
 
 

@@ -10,6 +10,12 @@ public class FoolAIMonster : MonoBehaviour {
     float moveSpeed = 4;
 
     private bool estAgresse = false;
+	private float _timer;
+
+	void Start()
+	{
+		_timer = me.Attack.Cooldown;
+	}
 
     public bool EstAgresse
     {
@@ -32,8 +38,18 @@ public class FoolAIMonster : MonoBehaviour {
 
             if (me.Attack.Range >= Vector3.Distance(this.transform.position, me._target.transform.position))
             {
-                if (me.Attack.Ready)
-                    me.AttackTarget(me._target, me.Force);
+				if (this._timer < this.me.Attack.Cooldown + 3) 
+				{
+					this._timer += Time.deltaTime;
+					if (this._timer >= this.me.Attack.Cooldown+ 3) 
+					{
+						if (me.Attack.Ready) 
+						{
+							me.AttackTarget (me._target, me.Force);
+							_timer = 0;
+						}
+					}
+				}
             }
         }
 	}

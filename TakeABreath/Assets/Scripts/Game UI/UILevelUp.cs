@@ -20,10 +20,11 @@ public class UILevelUp : MonoBehaviour {
     Text _volon;
     [SerializeField]
     GameObject _mygameobject;
-    [SerializeField]
-    private int _ptsMax = 5;
+	[SerializeField]
+	Chouette_forest chouette;
 
-    private int _pts = 0;
+	private int _ptsMax = 5;
+	private int _pts = 0;
     private int _ptsVie = 0;
     private int _ptsForce = 0;
     private int _ptsDefence = 0;
@@ -39,6 +40,7 @@ public class UILevelUp : MonoBehaviour {
         this._ptsVol = 0;
         this._ptsDefence = 0;
         this._ptsInt = 0;
+		_ptsMax = _myPlayer.PtsMax;
         this.UpdateUI();
     }
 
@@ -187,14 +189,20 @@ public class UILevelUp : MonoBehaviour {
         this._myPlayer.Intel += _ptsInt;
         this._myPlayer.Defense += _ptsDefence;
         this._myPlayer.Force += _ptsForce;
-        UIManager.instance.playerManager.StatUpdateWithMonster();
+        UIManager.instance.playerManager.StatUpdateWithMonster();			
 		if (_pts > 0)
 			UIManager.instance.playerManager.PtsMax += _pts;
+		_myPlayer.SaveStats();
+		if (chouette != null && chouette.QuestId == 4) 
+		{
+			chouette.QuestFinish ();
+		}
         this._mygameobject.SetActive(false);
     }
 
     private void UpdateUI()
     {
+		UIManager.instance.UpdateStatusUI ();
         this._lvlText.text = this._myPlayer.Level.ToString();
         this._points.text = this._pts.ToString();
         this._vie.text = (_myPlayer.SanteMax + _ptsVie).ToString();
