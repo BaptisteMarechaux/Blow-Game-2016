@@ -20,10 +20,9 @@ public class UILevelUp : MonoBehaviour {
     Text _volon;
     [SerializeField]
     GameObject _mygameobject;
-    [SerializeField]
-    private int _ptsMax = 5;
 
-    private int _pts = 0;
+	private int _ptsMax = 5;
+	private int _pts = 0;
     private int _ptsVie = 0;
     private int _ptsForce = 0;
     private int _ptsDefence = 0;
@@ -39,6 +38,7 @@ public class UILevelUp : MonoBehaviour {
         this._ptsVol = 0;
         this._ptsDefence = 0;
         this._ptsInt = 0;
+		_ptsMax = _myPlayer.PtsMax;
         this.UpdateUI();
     }
 
@@ -188,6 +188,7 @@ public class UILevelUp : MonoBehaviour {
         this._myPlayer.Defense += _ptsDefence;
         this._myPlayer.Force += _ptsForce;
         UIManager.instance.playerManager.StatUpdateWithMonster();
+		UIManager.instance.playerStatus.PPM.Save();
 		if (_pts > 0)
 			UIManager.instance.playerManager.PtsMax += _pts;
         this._mygameobject.SetActive(false);

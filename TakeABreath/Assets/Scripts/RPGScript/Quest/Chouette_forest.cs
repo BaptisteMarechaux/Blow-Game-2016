@@ -33,6 +33,8 @@ public class Chouette_forest : MonoBehaviour {
     Quest quest_002 = new Quest(1, "Première Possessin", "Possédez un ilona", 10);
 	Quest quest_003 = new Quest(2, "Première Sensation", "Explorez les zones", 10);
 	Quest quest_004 = new Quest(3, "Dépossession", "Dépossédez l'ilona", 15);
+	Quest quest_005 = new Quest(4, "Augmentation des compétences", "Augmenter vos stats", 15);
+	Quest quest_006 = new Quest(5, "Devenez agressif", "Posséder un quabi", 15);
 
 	public int QuestId {
 		get
@@ -47,6 +49,8 @@ public class Chouette_forest : MonoBehaviour {
         quests.Add(quest_002);
 		quests.Add(quest_003);
 		quests.Add(quest_004);
+		quests.Add(quest_005);
+		quests.Add(quest_006);
 
         if (ppm.GetValue("Quest") <= questIdMax && ppm.GetValue("Quest") > questId)
         {
@@ -96,6 +100,20 @@ public class Chouette_forest : MonoBehaviour {
 				}
 			}
 		}
+		if (questId == 4) 
+		{
+			if (player.PtsMax < 5) 
+			{
+				QuestFinish();
+			}
+		}
+		if (questId == 5) 
+		{
+			if (player.MonstrePossede != null && player.MonstrePossede.Name == "Quabi") 
+			{
+				QuestFinish();
+			}
+		}
     }
 
 	public void DisableZone(int ind)
@@ -109,7 +127,7 @@ public class Chouette_forest : MonoBehaviour {
 		parler = true;
 	}
 
-   	void QuestFinish()
+   	public void QuestFinish()
     {
         player.AddExp(quests[questId].getExp());
         questId++;

@@ -254,7 +254,6 @@ public class MonsterClass : MonoBehaviour {
             this._isAlive = false;
             this._myMesh.enabled = false;
 			this._myCollier.enabled = false;
-			Debug.Log("vanish");
         }
     }
 

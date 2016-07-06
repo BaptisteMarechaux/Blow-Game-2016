@@ -46,7 +46,6 @@ public class PlayerManager : MonoBehaviour
     private int _consTotal = 1;
     private int _intTotal = 1;
 	private int _volTotal = 1;
-	private int _ptsMax = 5;
 
 
     public Transform playerPosition;
@@ -167,12 +166,12 @@ public class PlayerManager : MonoBehaviour
 	{
 		get
 		{
-			return _ptsMax;
+			return _playerStats.PtsMax;
 		}
 
 		set
 		{
-			_ptsMax = value;
+			_playerStats.PtsMax = value;
 		}
 	}
 
@@ -219,7 +218,7 @@ public class PlayerManager : MonoBehaviour
 			else if (Physics.Raycast (_ray, out _hit, Mathf.Infinity, this._questerLayer)) 
 			{
 				Quester q = _hit.collider.GetComponent<Quester> ();
-				if (quester.QuestId == 3) 
+				if (quester != null && quester.QuestId == 2) 
 				{
 					quester.Talk();
 				}
@@ -270,12 +269,13 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void Depossession()
-    {
+	{
+		this._playerStats.addExp(this._monstrePossede.ExpToPossess);
         //Attribuer le transform
         this._monstrePossede.transform.parent = null;
 
         this._monstrePossede.EnableAI();
-        this._monstrePossede.transform.Translate(this._monstrePossede.Player.transform.up.normalized * 3);
+		this._monstrePossede.transform.Translate(this._monstrePossede.Player.transform.up.normalized * 3);
         //this._monstrePossede.transform.LookAt(this._monstrePossede.Player.transform);
         this._monstrePossede.GetComponent<CapsuleCollider>().enabled = true;
         this._monstrePossede.Player = null;
@@ -291,7 +291,12 @@ public class PlayerManager : MonoBehaviour
         this.IntTotal = PlayerStats.Intel;
         this.VolTotal = PlayerStats.Volonte;
 
-        //UI
+		Debug.Log (quester.QuestId);
+		if (quester != null && quester.QuestId == 3)
+			quester.QuestFinish ();
+		Debug.Log (quester.QuestId);
+        
+		//UI
         UIManager.instance.HidePossessButton();
         UIManager.instance.HideReleaseButton();
 
@@ -397,7 +402,7 @@ public class PlayerManager : MonoBehaviour
 
 	void OnTriggerEnter(Collider col)
 	{
-		if (col.CompareTag ("Zone"))
+		if (col.CompareTag ("Zone") && quester != null)
 		{	
 			Debug.Log (col);
 			quester.DisableZone(col.GetComponent<ZoneQuest>().id);

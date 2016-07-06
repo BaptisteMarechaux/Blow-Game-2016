@@ -10,6 +10,7 @@ public class PlayerPrefManager : MonoBehaviour {
     void Start () {
         if (eraseAllSave)
             PlayerPrefs.DeleteAll();
+		Debug.Log (GetValue ("level"));
     }
 	
     //PLAYER
@@ -78,6 +79,7 @@ public class PlayerPrefManager : MonoBehaviour {
         PlayerPrefs.DeleteKey("Force");
         PlayerPrefs.DeleteKey("Constitution");
         PlayerPrefs.DeleteKey("Intelligence");
-        PlayerPrefs.DeleteKey("Volonte");
+		PlayerPrefs.DeleteKey("Volonte");
+		PlayerPrefs.DeleteKey("PtsMax");
     }
 }
