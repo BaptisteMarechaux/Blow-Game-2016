@@ -188,14 +188,17 @@ public class UILevelUp : MonoBehaviour {
         this._myPlayer.Defense += _ptsDefence;
         this._myPlayer.Force += _ptsForce;
         UIManager.instance.playerManager.StatUpdateWithMonster();
-		UIManager.instance.playerStatus.PPM.Save();
+		_myPlayer.PPM.Save();
 		if (_pts > 0)
 			UIManager.instance.playerManager.PtsMax += _pts;
+		UpdateUI ();
+		_myPlayer.SaveStats();
         this._mygameobject.SetActive(false);
     }
 
     private void UpdateUI()
     {
+		UIManager.instance.UpdateStatusUI ();
         this._lvlText.text = this._myPlayer.Level.ToString();
         this._points.text = this._pts.ToString();
         this._vie.text = (_myPlayer.SanteMax + _ptsVie).ToString();

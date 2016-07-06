@@ -220,14 +220,11 @@ public class CharactereClass : MonoBehaviour {
             levelUp();
         else
         {
-            if(ppm.PlayerName() == this._name)
-            {
-                SaveStats();
-            }
+            SaveStats();
         }
     }
 
-    private void SaveStats()
+    public void SaveStats()
     {
         ppm.SetValuePlayer("Level", this._level);
         ppm.SetValuePlayer("Exp", this._exp);

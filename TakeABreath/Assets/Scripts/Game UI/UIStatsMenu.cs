@@ -46,6 +46,7 @@ public class UIStatsMenu : MonoBehaviour {
     public void UpdateValue()
     {
         nom.text = ppm.PlayerName();
+		niveau.text = ppm.GetValue("Level").ToString();
         vie.text = ppm.GetValue("VieMax").ToString();
         force.text = ppm.GetValue("Force").ToString();
         constitution.text = ppm.GetValue("Constitution").ToString();
