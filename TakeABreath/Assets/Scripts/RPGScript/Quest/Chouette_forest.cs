@@ -35,6 +35,7 @@ public class Chouette_forest : MonoBehaviour {
 	Quest quest_004 = new Quest(3, "Dépossession", "Dépossédez l'ilona", 15);
 	Quest quest_005 = new Quest(4, "Augmentation des compétences", "Augmenter vos stats", 15);
 	Quest quest_006 = new Quest(5, "Devenez agressif", "Posséder un quabi", 15);
+	Quest quest_007 = new Quest(6, "Work in progress", "Ajouter plus de quête !!!", 15);
 
 	public int QuestId {
 		get
@@ -98,13 +99,6 @@ public class Chouette_forest : MonoBehaviour {
 					parler = false;
 					QuestFinish ();
 				}
-			}
-		}
-		if (questId == 4) 
-		{
-			if (player.PtsMax < 5) 
-			{
-				QuestFinish();
 			}
 		}
 		if (questId == 5) 
