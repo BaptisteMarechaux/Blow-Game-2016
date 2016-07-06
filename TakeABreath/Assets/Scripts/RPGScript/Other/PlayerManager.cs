@@ -291,10 +291,8 @@ public class PlayerManager : MonoBehaviour
         this.IntTotal = PlayerStats.Intel;
         this.VolTotal = PlayerStats.Volonte;
 
-		Debug.Log (quester.QuestId);
 		if (quester != null && quester.QuestId == 3)
 			quester.QuestFinish ();
-		Debug.Log (quester.QuestId);
         
 		//UI
         UIManager.instance.HidePossessButton();
@@ -404,7 +402,6 @@ public class PlayerManager : MonoBehaviour
 	{
 		if (col.CompareTag ("Zone") && quester != null)
 		{	
-			Debug.Log (col);
 			quester.DisableZone(col.GetComponent<ZoneQuest>().id);
 		}
 	}
