@@ -25,7 +25,10 @@ public class UIMain : MonoBehaviour {
     [SerializeField]
     private GameObject _butonDepossession;
     [SerializeField]
-    private GameObject _butonAttack;
+    private Image _butonAttack;
+
+    [SerializeField]
+    Text MonsterPossessionBigText; //Texte qui va apparaitre au niveau central quand on possède un monstre pour bien faire comprendre qu'on possède un monstre
 
     private float rate = 3.5f;
 
@@ -68,11 +71,11 @@ public class UIMain : MonoBehaviour {
 
     public void ButtonAttackEnable()
     {
-        this._butonAttack.SetActive(true);
+        this._butonAttack.gameObject.SetActive(true);
     }
     public void ButtonAttackDisable()
     {
-        this._butonAttack.SetActive(false);
+        this._butonAttack.gameObject.SetActive(false);
     }
 
 
@@ -84,6 +87,11 @@ public class UIMain : MonoBehaviour {
     public void levelUpdate()
     {
         UIManager.instance.UpdateStatusLevel();
+    }
+
+    public void UpdateAttackButtonFill(float value)
+    {
+        _butonAttack.fillAmount = value;
     }
 
     public void expBarInfo()
@@ -163,6 +171,28 @@ public class UIMain : MonoBehaviour {
             _healthTargetBar.fillAmount = Mathf.Clamp(itlife, 0f, 1f);
             //this._healthTargetBar.transform.localScale = new Vector3(Mathf.Clamp(itlife, 0f, 1f), this._healthTargetBar.transform.localScale.y, this._healthTargetBar.transform.localScale.z);
         }
+    }
+
+    public void StartPossessAnimation()
+    {
+        MonsterPossessionBigText.gameObject.SetActive(true);
+        // MonsterPossessionBigText.transform.localScale = Vector3.zero;
+        MonsterPossessionBigText.CrossFadeAlpha(0, 0.0f, false);
+
+        StartCoroutine("PossessAnimation");
+    }
+
+    public void StartUnPossessAnimation()
+    {
+
+    }
+
+    IEnumerator PossessAnimation()
+    {
+        MonsterPossessionBigText.CrossFadeAlpha(1, 0.5f, false);
+        yield return new WaitForSeconds(1.5f);
+        MonsterPossessionBigText.CrossFadeAlpha(0, 0.5f, false);
+        yield return null;
     }
     
 }

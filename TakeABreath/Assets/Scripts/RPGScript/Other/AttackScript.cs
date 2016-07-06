@@ -7,9 +7,9 @@ public class AttackScript : MonoBehaviour {
     [SerializeField]
     private float _range = 3f;
     [SerializeField]
-    private float _cooldown = 3f;
+    public float _cooldown = 3f;
 
-    private float _timer;
+    public float _timer;
     private bool _ready = true;
 
     public float Range

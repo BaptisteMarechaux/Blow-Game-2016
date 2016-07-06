@@ -51,6 +51,8 @@ public class PlayerManager : MonoBehaviour
 
     public Transform playerPosition;
 
+    public Projector rangeProjector;
+
     public MonsterClass MonstrePossede
     {
         get
@@ -244,6 +246,8 @@ public class PlayerManager : MonoBehaviour
             //faire apparaitre bouton possession
             UIManager.instance.DisplayPossessButton();
             UIManager.instance.HideAttackButton();
+
+            rangeProjector.orthographicSize = MonstrePossede.Attack.Range;
         }
         else if (_target != null && !inPossession)
         {
@@ -255,12 +259,15 @@ public class PlayerManager : MonoBehaviour
         {
             this.MonstrePossede.transform.position = playerPosition.position;
             this.MonstrePossede.transform.rotation = playerPosition.rotation;
+
+            UIManager.instance.UpdateAttackButton(MonstrePossede.Attack._timer / MonstrePossede.Attack.Cooldown);
         }
 
         if(Input.GetKeyDown(KeyCode.K))
             TakeDamage(1);
         if (Input.GetKeyDown(KeyCode.L))
             AddExp(100);
+
     }
 
     private void noBody()
@@ -294,6 +301,8 @@ public class PlayerManager : MonoBehaviour
         UIManager.instance.HidePossessButton();
         UIManager.instance.HideReleaseButton();
 
+        rangeProjector.gameObject.SetActive(false);
+
     }
 
     public void essaiPossession()
@@ -318,7 +327,10 @@ public class PlayerManager : MonoBehaviour
                 playerRenderer.SetActive(false);
                 StatUpdateWithMonster();
 
+                rangeProjector.gameObject.SetActive(true);
+
                 //UI
+                UIManager.instance.StartPossessAniamtion();
                 UIManager.instance.UpdateInfoText("");
                 UIManager.instance.UpdateStatusExp();
                 UIManager.instance.HidePossessButton();
@@ -397,7 +409,7 @@ public class PlayerManager : MonoBehaviour
 	void OnTriggerEnter(Collider col)
 	{
 		if(col.CompareTag("Zone"))
-			quester.DisableZone(col.gameObject.GetComponent<ZoneQuest>.id);
+			quester.DisableZone(col.gameObject.GetComponent<ZoneQuest>().id);
 	}
 
 

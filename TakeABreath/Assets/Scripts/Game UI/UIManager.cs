@@ -89,5 +89,11 @@ public class UIManager : MonoBehaviour {
     public void UpdateStatusLevel() { statusUI.UpdateLevel(); }
     public void UpdateStatusExp() { statusUI.UpdateExp(); }
     public void UpdateStatusTarget(MonsterClass target) { mainUI.healthBarTargetInfo(target); }
+    public void UpdateAttackButton(float value) { mainUI.UpdateAttackButtonFill(value); }
     #endregion
+
+    public void StartPossessAniamtion()
+    {
+        mainUI.StartPossessAnimation();
+    }
 }
