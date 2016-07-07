@@ -128,6 +128,7 @@ public class PlayerCharacter : MonoBehaviour {
                 if (isPossessingMonster) //Case where we are possessing a monster
                 {
                     possessedMonster.attackTarget = hit.collider.GetComponent<MonsterCharacter>();
+                    possessedMonster.attackTarget.GetComponent<Renderer>().material.color = Color.red;
                     UIManager.instance.DisplayAttackButton();
 
                     //Display And Update Target Monster Status
@@ -314,6 +315,7 @@ public class PlayerCharacter : MonoBehaviour {
 
     public void RemoveTarget()
     {
+        possessedMonster.attackTarget.GetComponent<Renderer>().material.color = Color.white;
         possessedMonster.attackTarget = null;
         UIManager.instance.HideAttackButton();
         UIManager.instance.HideTargetStatus();
