@@ -54,6 +54,7 @@ public class UIMain : MonoBehaviour {
     public void ButtonPossessEnable()
     {
         this._butonPossession.SetActive(true);
+        this._butonDepossession.SetActive(false);
     }
     public void ButtonPossessDisable()
     {
@@ -63,6 +64,7 @@ public class UIMain : MonoBehaviour {
     public void ButtonDepossessEnable()
     {
         this._butonDepossession.SetActive(true);
+        this._butonPossession.SetActive(false);
     }
     public void ButtonDepossessDisable()
     {
@@ -147,13 +149,22 @@ public class UIMain : MonoBehaviour {
             this._targetName.text = target.Player.PlayerStats.Name;
     }
 
+    public void LifeTargetEnable(MonsterCharacter target)
+    {
+        this._healthTargetObject.gameObject.SetActive(true);
+        this.healthBarTargetInfo(target);
+        if (!target.possessed)
+            this._targetName.text = target.monsterName;
+        else
+            this._targetName.text = UIManager.instance.player.playerName;
+    }
+
     public void healthBarTargetInfo(MonsterClass target)
     {
         if (target.Player == null)
         {
             this._healthTargetText.text = target.Sante.ToString();
             float itlife = (float)target.Sante / (float)target.SanteMax; //<== valeur entre 0 et 1
-			Debug.Log(itlife);
             _healthTargetBar.fillAmount = Mathf.Lerp(_healthTargetBar.fillAmount, itlife, 5 * Time.deltaTime);
 
             //this._healthTargetBar.transform.localScale = new Vector3(Mathf.Clamp(itlife, 0f, 1f), this._healthTargetBar.transform.localScale.y, this._healthTargetBar.transform.localScale.z);
@@ -166,6 +177,14 @@ public class UIMain : MonoBehaviour {
             _healthTargetBar.fillAmount = Mathf.Clamp(itlife, 0f, 1f);
             //this._healthTargetBar.transform.localScale = new Vector3(Mathf.Clamp(itlife, 0f, 1f), this._healthTargetBar.transform.localScale.y, this._healthTargetBar.transform.localScale.z);
         }
+    }
+
+    public void healthBarTargetInfo(MonsterCharacter target)
+    {
+            this._healthTargetText.text = target.monsterMaxHP.ToString();
+            float itlife = (float)target.monsterHP / (float)target.monsterMaxHP; //<== valeur entre 0 et 1
+            _healthTargetBar.fillAmount = Mathf.Lerp(_healthTargetBar.fillAmount, itlife, 5 * Time.deltaTime);
+            //this._healthTargetBar.transform.localScale = new Vector3(Mathf.Clamp(itlife, 0f, 1f), this._healthTargetBar.transform.localScale.y, this._healthTargetBar.transform.localScale.z);
     }
 
     public void StartPossessAnimation()

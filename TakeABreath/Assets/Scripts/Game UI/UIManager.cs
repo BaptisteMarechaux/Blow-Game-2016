@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour {
 
     public CharactereClass playerStatus;
     public PlayerManager playerManager;
+    public PlayerCharacter player;
 
     void Awake()
     {
@@ -51,6 +52,8 @@ public class UIManager : MonoBehaviour {
     public void DisplayReleaseButton() { mainUI.ButtonDepossessEnable(); }
 
     public void DisplayTargetStatus(MonsterClass target) { mainUI.LifeTargetEnable(target); }
+
+    public void DisplayTargetStatus(MonsterCharacter target) { mainUI.LifeTargetEnable(target); }
 
     public void DisplayActiveQuest(string title, string goal) { questUI.ShowActiveQuest(title, goal); }
 
@@ -89,6 +92,7 @@ public class UIManager : MonoBehaviour {
 	public void UpdateStatusUI() { statusUI.UpdateLevel();statusUI.UpdateExp(); }
     public void UpdateStatusLevel() { statusUI.UpdateLevel(); }
     public void UpdateStatusExp() { statusUI.UpdateExp(); }
+    public void UpdateStatusTarget(MonsterCharacter target) { mainUI.healthBarTargetInfo(target); }
     public void UpdateStatusTarget(MonsterClass target) { mainUI.healthBarTargetInfo(target); }
     public void UpdateAttackButton(float value) { mainUI.UpdateAttackButtonFill(value); }
     #endregion
@@ -97,4 +101,8 @@ public class UIManager : MonoBehaviour {
     {
         mainUI.StartPossessAnimation();
     }
+
+    #region Player
+    public void Attack() { player.Attack(); }
+    #endregion
 }
