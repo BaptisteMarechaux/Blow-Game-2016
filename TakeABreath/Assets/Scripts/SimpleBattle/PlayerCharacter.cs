@@ -259,6 +259,8 @@ public class PlayerCharacter : MonoBehaviour {
         ppm.SetValuePlayer("Intelligence", playerInt);
         ppm.SetValuePlayer("Volonte", playerRes);
         ppm.SetValuePlayer("PtsMax", ptsMax);
+
+        ppm.Save();
     }
 
     public void Attack()
@@ -316,6 +318,7 @@ public class PlayerCharacter : MonoBehaviour {
     public void RemoveTarget()
     {
         possessedMonster.attackTarget.GetComponent<Renderer>().material.color = Color.white;
+        possessedMonster.attackTarget.isAttacked = false;
         possessedMonster.attackTarget = null;
         UIManager.instance.HideAttackButton();
         UIManager.instance.HideTargetStatus();

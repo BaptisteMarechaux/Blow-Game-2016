@@ -89,7 +89,7 @@ public class UIManager : MonoBehaviour {
 
     #region update
 	public void UpdateInfoText(string val) { mainUI.InfoTextUpdate(val); }
-	public void UpdateStatusUI() { statusUI.UpdateLevel();statusUI.UpdateExp(); }
+	public void UpdateStatusUI() { statusUI.UpdateLevel();statusUI.UpdateExp(); statusUI.UpdateLife(); }
     public void UpdateStatusLevel() { statusUI.UpdateLevel(); }
     public void UpdateStatusExp() { statusUI.UpdateExp(); }
     public void UpdateStatusTarget(MonsterCharacter target) { mainUI.healthBarTargetInfo(target); }

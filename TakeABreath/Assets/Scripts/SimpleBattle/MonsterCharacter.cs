@@ -43,6 +43,8 @@ public class MonsterCharacter : MonoBehaviour {
     public CapsuleCollider monsterCollider;
 
     public bool possessed;
+
+    public bool isAttacked;
     // Use this for initialization
     void Start () {
 	    if(monsterCollider == null)
@@ -121,6 +123,7 @@ public class MonsterCharacter : MonoBehaviour {
         if(attacker != null)
         {
             attackTarget = attacker;
+            isAttacked = true;
         }
     }
 
