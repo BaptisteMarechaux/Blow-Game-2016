@@ -247,7 +247,7 @@ public class PlayerManager : MonoBehaviour
             UIManager.instance.DisplayPossessButton();
             UIManager.instance.HideAttackButton();
 
-            rangeProjector.orthographicSize = MonstrePossede.Attack.Range;
+            
         }
         else if (_target != null && !inPossession)
         {
@@ -259,7 +259,7 @@ public class PlayerManager : MonoBehaviour
         {
             this.MonstrePossede.transform.position = playerPosition.position;
             this.MonstrePossede.transform.rotation = playerPosition.rotation;
-
+            rangeProjector.orthographicSize = MonstrePossede.Attack.Range;
             UIManager.instance.UpdateAttackButton(MonstrePossede.Attack._timer / MonstrePossede.Attack.Cooldown);
         }
 
