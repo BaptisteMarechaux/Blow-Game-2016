@@ -17,7 +17,7 @@ public class PlayerCharacter : MonoBehaviour {
     [SerializeField]
     public Camera cam;
 
-    public BookQuest boolQuest;
+    public BookQuest bookQuest;
 
     Ray ray;
     RaycastHit hit;
@@ -86,6 +86,7 @@ public class PlayerCharacter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        ray = cam.ScreenPointToRay(Input.mousePosition);
         PossessionProcess();
 
         UIManager.instance.UpdateStatusUI();
@@ -98,6 +99,18 @@ public class PlayerCharacter : MonoBehaviour {
                 RemoveTarget();
             }
         }
+
+        /*To Cast a Spell with possessed monster*/
+        if(isPossessingMonster)
+        {
+            if(Input.GetKeyDown(KeyCode.P))
+            {
+                possessedMonster.CastSpell(0);
+            }
+        }
+
+        //Manage Quests ~ Not the best place to do that
+        QuestProcess();
 	}
 
     void OnEnable()
@@ -117,12 +130,28 @@ public class PlayerCharacter : MonoBehaviour {
         ///---------------------------------
     }
 
+    void QuestProcess()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, questerLayerMask))
+            {
+                Quester q = hit.collider.GetComponent<Quester>();
+                if (quester != null && quester.QuestId == 2)
+                {
+                    quester.Talk();
+                }
+            }
+        }
+
+    }
+
     void PossessionProcess()
     {
         //On Click Events---------------------------------------------------------
         if(Input.GetMouseButtonDown(0))
         {
-            ray = cam.ScreenPointToRay(Input.mousePosition);
+            //ray = cam.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, 100.0f, monsterLayerMask))
             {
                 if (isPossessingMonster) //Case where we are possessing a monster
@@ -308,6 +337,19 @@ public class PlayerCharacter : MonoBehaviour {
         cameraShake.shakeDuration = 0.1f;
         StartCoroutine("TakeDamageWait");
         totalHP -= amount - (totalDef / 3);
+
+        if (totalHP <= possessedMonster.monsterMaxHP)
+        {
+            possessedMonster.TakeDamages(possessedMonster.monsterHP - totalHP);
+        }
+    }
+
+    void TakeSpellDamages(int amount)
+    {
+        cameraShake.enabled = true;
+        cameraShake.shakeDuration = 0.1f;
+        StartCoroutine("TakeDamageWait");
+        totalHP -= amount - (totalRes / 3);
 
         if (totalHP <= possessedMonster.monsterMaxHP)
         {

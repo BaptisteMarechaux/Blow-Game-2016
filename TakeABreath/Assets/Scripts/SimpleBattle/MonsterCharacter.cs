@@ -45,6 +45,11 @@ public class MonsterCharacter : MonoBehaviour {
     public bool possessed;
 
     public bool isAttacked;
+
+    [SerializeField]
+    Spell[] spells;
+
+    public Spell[] spellInstances;
     // Use this for initialization
     void Start () {
 	    if(monsterCollider == null)
@@ -54,6 +59,17 @@ public class MonsterCharacter : MonoBehaviour {
             {
                 monsterCollider = new CapsuleCollider();
             }
+        }
+
+        spellInstances = new Spell[spells.Length];
+        for(int i = 0; i < spellInstances.Length; i++)
+        {
+            if(spells[i] != null)
+            {
+                spellInstances[i] = Instantiate<Spell>(spells[i]);
+                spellInstances[i].Initialize(gameObject);
+            }
+            
         }
 
         monsterHP = monsterMaxHP;
@@ -127,6 +143,24 @@ public class MonsterCharacter : MonoBehaviour {
         }
     }
 
+    void TakeSpellDamages(int amount, MonsterCharacter attacker = null)
+    {
+        monsterHP -= amount - (monsterRes / 3);
+        if (monsterHP <= 0)
+        {
+            DisableAI();
+            isAlive = false;
+            mainMeshRenderer.enabled = false;
+            mainCollider.enabled = false;
+        }
+
+        if (attacker != null)
+        {
+            attackTarget = attacker;
+            isAttacked = true;
+        }
+    }
+
     public void Possess()
     {
         attackTarget = null;
@@ -142,5 +176,29 @@ public class MonsterCharacter : MonoBehaviour {
         IA.enabled = false;
     }
 
-   
+    public void CastSpell(int index)
+    {
+        if(spellInstances.Length > index)
+        {
+            if (spellInstances[index] != null)
+            {
+                spellInstances[index].LaunchSpell();
+            }
+        }
+        
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        //Spell Management
+        if (col.gameObject.layer == 17) //Layer for spells
+        {
+            Spell usedSpell = col.gameObject.GetComponent<Spell>();
+            Debug.Log(usedSpell);
+            if (usedSpell.owner != gameObject)
+            {
+                TakeSpellDamages(usedSpell.power, usedSpell.owner.GetComponent<MonsterCharacter>());
+            }
+        }
+    }
 }

@@ -8,10 +8,20 @@ public class Spell : MonoBehaviour {
     [SerializeField]
     protected string spellDescription;
     [SerializeField]
-    protected int power;
+    public int power;
     [SerializeField]
     protected float cooldown; //value in seconds
 
     [SerializeField]
-    protected GameObject owner;
+    public GameObject owner;
+
+    public virtual void LaunchSpell()
+    {
+        
+    }
+
+    public virtual void Initialize(GameObject _owner)
+    {
+
+    }
 }
