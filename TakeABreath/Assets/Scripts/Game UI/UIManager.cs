@@ -100,6 +100,7 @@ public class UIManager : MonoBehaviour {
     public void StartPossessAniamtion()
     {
         mainUI.StartPossessAnimation();
+       
     }
 
     #region Player
