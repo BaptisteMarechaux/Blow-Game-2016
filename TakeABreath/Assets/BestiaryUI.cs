@@ -25,7 +25,7 @@ public class BestiaryUI : MonoBehaviour {
 	    for(int i=0;i<bestiary.monsters.Length;i++)
         {
             bestiaryItems[i] = Instantiate<GameObject>(bestiaryItemPrefab).GetComponent<BestiaryListItem>();
-            bestiaryItems[i].transform.parent = contentNode.transform;
+            bestiaryItems[i].transform.SetParent(contentNode.transform, true);
             bestiaryItems[i].listItemRectTransform.localPosition = new Vector3(0, 0, 0);
             bestiaryItems[i].listItemRectTransform.localScale = Vector3.one;
             bestiaryItems[i].listItemRectTransform.offsetMin = new Vector2(0, -i*100+400);

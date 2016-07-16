@@ -10,7 +10,7 @@ public class Chouette_forest : MonoBehaviour {
     [SerializeField]
     private Transform joueur;
     [SerializeField]
-    private PlayerManager player;
+    private PlayerCharacter player;
     [SerializeField]
     private float vitesse = 1f;
     [SerializeField]
@@ -84,7 +84,7 @@ public class Chouette_forest : MonoBehaviour {
         }
 		if (questId == 1) 
 		{
-			if (player.MonstrePossede != null && player.MonstrePossede.Name == "Ilona") 
+			if (player.possessedMonster != null && player.possessedMonster.monsterName == "Ilona") 
 			{
 				QuestFinish();
 			}
@@ -103,7 +103,7 @@ public class Chouette_forest : MonoBehaviour {
 		}
 		if (questId == 5) 
 		{
-			if (player.MonstrePossede != null && player.MonstrePossede.Name == "Quabi") 
+			if (player.possessedMonster != null && player.possessedMonster.monsterName == "Quabi") 
 			{
 				QuestFinish();
 			}
@@ -123,7 +123,7 @@ public class Chouette_forest : MonoBehaviour {
 
    	public void QuestFinish()
     {
-        player.AddExp(quests[questId].getExp());
+        player.AddExperience(quests[questId].getExp());
         questId++;
 		if(questId < quests.Count)
         	managerUI.DisplayActiveQuest(quests[questId].getTitle(), quests[questId].getDescription());
