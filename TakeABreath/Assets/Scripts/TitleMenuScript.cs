@@ -49,6 +49,11 @@ public class TitleMenuScript : MonoBehaviour {
             btClient.onClick.AddListener(delegate { nss.LaunchClient(); });
         }
         inputFieldMatcName.onValueChanged.AddListener(ValueChangeCheck);
+
+        if (PlayerPrefs.HasKey("VisitedLevels") == false)
+        {
+            PlayerPrefs.SetInt("VisitedLevels", 0);
+        }
     }
 
     // Méthode de définition du mode grand écran
@@ -66,7 +71,12 @@ public class TitleMenuScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-	
+	    if(Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            PlayerPrefs.SetInt("First Play", 0);
+            PlayerPrefs.SetInt("VisitedLevels", 0);
+            PlayerPrefs.Save();
+        }
 	}
 
     // Méthode appellée pour quitter l'application
@@ -112,6 +122,15 @@ public class TitleMenuScript : MonoBehaviour {
 
     public void StartSoloMode()
     {
-        SceneManager.LoadScene(2);
+        if(PlayerPrefs.GetInt("First Play") != 1)
+        {
+            
+            SceneManager.LoadScene(1);
+        }
+        else
+        {
+            SceneManager.LoadScene(2);
+        }
+        
     }
 }

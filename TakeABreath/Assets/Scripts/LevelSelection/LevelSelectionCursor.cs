@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 
@@ -29,10 +30,15 @@ public class LevelSelectionCursor : MonoBehaviour {
 
     [SerializeField]
     GameObject notAvailText;
+
+    public Image startBlackImage;
+    public Text startBlackImageText;
     
 	void Start () {
         levelDes.ChangeLevelInfos(0);
-	}
+        StartCoroutine("StartSceneRoutine");
+        
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -89,7 +95,30 @@ public class LevelSelectionCursor : MonoBehaviour {
         }
         else
         {
-            SceneManager.LoadScene(levels[sel]);
+            if(PlayerPrefs.GetInt("VisitedLevels") < sel)
+            {
+                notAvailText.SetActive(false);
+                notAvailText.SetActive(true);
+            }
+            else
+            {
+                SceneManager.LoadScene(levels[sel]);
+            }
+            
+            
         }
+    }
+
+    public void SelectActiveIndexLevel()
+    {
+        SelectLevel(usedIndex);
+    }
+
+    IEnumerator StartSceneRoutine()
+    {
+        yield return new WaitForSeconds(1.0f);
+        startBlackImage.CrossFadeAlpha(0, 1.5f, true);
+        startBlackImageText.CrossFadeAlpha(0, 1.5f, true);
+        yield return null;
     }
 }
