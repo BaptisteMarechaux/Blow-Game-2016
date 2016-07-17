@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
 
@@ -18,6 +19,8 @@ public class UIManager : MonoBehaviour {
     UIMain mainUI;
     [SerializeField]
     BestiaryUI bestiaryUI;
+    [SerializeField]
+    UIStatsMenu uIStatusMenu;
 
     public CharactereClass playerStatus;
     public PlayerManager playerManager;
@@ -95,6 +98,7 @@ public class UIManager : MonoBehaviour {
     public void UpdateStatusTarget(MonsterCharacter target) { mainUI.healthBarTargetInfo(target); }
     public void UpdateStatusTarget(MonsterClass target) { mainUI.healthBarTargetInfo(target); }
     public void UpdateAttackButton(float value) { mainUI.UpdateAttackButtonFill(value); }
+    public void UpdatePauseMenuStatus() { uIStatusMenu.UpdatePauseMenuStatus();}
     #endregion
 
     public void StartPossessAniamtion()
@@ -106,4 +110,6 @@ public class UIManager : MonoBehaviour {
     #region Player
     public void Attack() { player.Attack(); }
     #endregion
+
+    public void GoToTitleMenu() { SceneManager.LoadScene(0); }
 }

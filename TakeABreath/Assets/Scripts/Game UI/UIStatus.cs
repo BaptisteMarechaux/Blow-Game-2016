@@ -20,6 +20,7 @@ public class UIStatus : MonoBehaviour {
     [SerializeField]
     Image playerHPImage;
 
+
     // Use this for initialization
     void Start () {
         UpdateStatus();
@@ -76,4 +77,5 @@ public class UIStatus : MonoBehaviour {
         playerHPImage.fillAmount = Mathf.Lerp(playerHPImage.fillAmount, (float)UIManager.instance.player.totalHP / (float)UIManager.instance.player.totalMaxHP, 5 * Time.deltaTime);
         playerHPText.text = UIManager.instance.player.totalHP + "/" + UIManager.instance.player.totalMaxHP;
     }
+
 }

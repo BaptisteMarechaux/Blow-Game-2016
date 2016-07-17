@@ -86,9 +86,7 @@ public class MonsterCharacter : MonoBehaviour {
             {
                 Respawn();
                 timer = 0;
-            }
-
-            
+            }      
         }
         else
         {

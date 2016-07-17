@@ -47,25 +47,25 @@ public class introCameraBehaviour : MonoBehaviour {
     {
         blackImage.CrossFadeAlpha(0, 2.0f, true);
         mainText.text = "Dans un monde lointain";
-        while(time < 480)
+        while(time < 720)
         {
             time += 1;
-            if(time == 120)
+            if(time == 180)
             {
                 mainText.text = "Les esprits sont les rois de la nature";
             }
 
-            if(time == 240)
+            if(time == 360)
             {
                 mainText.text = "Ils suivent à la lettre les ordres de leur dvinité";
             }
 
-            if(time == 360)
+            if(time == 540)
             {
                 mainText.text = "Cependant, ils ne sont pas tous fidèles";
             }
 
-            if(time == 480)
+            if(time == 720)
             {
                 mainText.text = "Tout cela a commencé avec vous...";
             }
@@ -82,42 +82,42 @@ public class introCameraBehaviour : MonoBehaviour {
         blackImage.CrossFadeAlpha(0, 1.0f, true);
         mainText.text = "Vous possédez une capacité exceptionnelle : ";
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(4.0f);
         mainText.text = "La possession spirituelle";
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(4.0f);
         mainText.text = "Grâce à ce pouvoir, vous pouvez donc contrôler les êtres vivants";
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(4.0f);
         mainText.text = "Vous avez utilisé votre pouvoir pour prendre possession des dieux";
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(4.0f);
         blackImage.CrossFadeAlpha(1, 1, true);
         yield return new WaitForSeconds(1.0f);
         mainText.text = "Ayant échoué dans cette tentative vous vous êtes fait juger par les dieux";
         blackImage.CrossFadeAlpha(0, 1, true);
         soulImage.gameObject.SetActive(false);
         judgmentimage.gameObject.SetActive(true);
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(4.0f);
         mainText.text = "Vous êtes donc condamnés a ramper sur le monde tel qu'une âme errante";
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(4.0f);
         blackImage.CrossFadeAlpha(1, 1, true);
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(4.0f);
         mainText.text = "Choisissez la voir de la rédemption ou de la vengeance";
         destinyImage.gameObject.SetActive(true);
         judgmentimage.gameObject.SetActive(false);
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(4.0f);
         blackImage.CrossFadeAlpha(0, 1, true);
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(4.0f);
         mainText.text = "Cherchez les dieux pour accomplir votre destinée";
         blackImage.CrossFadeAlpha(1.0f, 1.0f, true);
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(4.0f);
         destinyImage.gameObject.SetActive(false);
         worldImage.gameObject.SetActive(true);
         mainText.text = "De vastes mondes vous attendent";
         blackImage.CrossFadeAlpha(0, 2, true);
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(4.0f);
         mainText.text = "Aurez la force d'explorer l'univers à la recherche des dieux ?";
         yield return new WaitForSeconds(4.0f);
         mainText.CrossFadeAlpha(0, 1, true);

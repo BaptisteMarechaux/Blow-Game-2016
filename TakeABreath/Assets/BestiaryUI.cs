@@ -18,9 +18,22 @@ public class BestiaryUI : MonoBehaviour {
 
     public delegate void clickOnMonster(int index);
     public Event monsterClicked;
+
+    [SerializeField]
+    Text selectedText;
+    [SerializeField]
+    Text selectedSpell1;
+    [SerializeField]
+    Text selectedSpell2;
+    [SerializeField]
+    Text selectedLocation;
+    [SerializeField]
+    Text selectedDescription;
+
     
 	// Use this for initialization
 	void Start () {
+        /*
         bestiaryItems = new BestiaryListItem[bestiary.monsters.Length];
 	    for(int i=0;i<bestiary.monsters.Length;i++)
         {
@@ -36,6 +49,7 @@ public class BestiaryUI : MonoBehaviour {
             //bestiaryItems[i].button.onClick.AddListener(clickOnMonster);
             
         }
+        */
 	}
 	
 	// Update is called once per frame
@@ -45,6 +59,11 @@ public class BestiaryUI : MonoBehaviour {
 
     public void selectMonster(int index)
     {
+        selectedText.text = bestiary.monsters[index].name;
+        selectedSpell1.text = bestiary.monsters[index].spells[0];
+        selectedSpell2.text = bestiary.monsters[index].spells[1];
+        selectedLocation.text = bestiary.monsters[index].location;
+        selectedDescription.text = bestiary.monsters[index].description;
 
     }
 }

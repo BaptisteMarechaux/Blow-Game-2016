@@ -53,4 +53,15 @@ public class UIStatsMenu : MonoBehaviour {
         intelligence.text = ppm.GetValue("Intelligence").ToString();
         volonte.text = ppm.GetValue("Volonte").ToString();
     }
+
+    public void UpdatePauseMenuStatus()
+    {
+        niveau.text = UIManager.instance.player.playerLevel.ToString();
+        vie.text = UIManager.instance.player.playerHP.ToString();
+        force.text = UIManager.instance.player.playerStr.ToString();
+        constitution.text = UIManager.instance.player.playerDef.ToString();
+        intelligence.text = UIManager.instance.player.playerInt.ToString();
+        volonte.text = UIManager.instance.player.playerRes.ToString();
+
+    }
 }

@@ -32,7 +32,6 @@ public class ForestLevelStartEvent : MonoBehaviour {
         {
             startCamera.transform.Translate(Vector3.left * 0.02f * 10);
             time += 0.02f;
-            Debug.Log(time);
             yield return new WaitForSeconds(0.02f);
         }
         zoneText.CrossFadeAlpha(0, 1, true);
@@ -40,8 +39,12 @@ public class ForestLevelStartEvent : MonoBehaviour {
         blackImage.CrossFadeAlpha(1, 1, true);
         yield return new WaitForSeconds(1);
         gameplayGroup.SetActive(true);
-        blackImage.CrossFadeAlpha(0, 1, true);
+        blackImage.CrossFadeAlpha(0, 2, true);
         startCamera.gameObject.SetActive(false);
+        if(PlayerPrefs.GetInt("VisitedLevels") == 0)
+        {
+            PlayerPrefs.SetInt("VisitedLevels", 1);
+        }      
         yield return null;
     }
 }

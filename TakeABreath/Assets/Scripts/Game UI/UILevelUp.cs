@@ -30,17 +30,17 @@ public class UILevelUp : MonoBehaviour {
     private int _ptsDefence = 0;
     private int _ptsInt = 0;
     private int _ptsVol = 0;
-    private CharactereClass _myPlayer;
+    private PlayerCharacter _myPlayer;
     
     void Start()
     {
-        this._myPlayer = UIManager.instance.playerStatus;
+        this._myPlayer = UIManager.instance.player;
         this._ptsForce = 0;
         this._ptsVie = 0;
         this._ptsVol = 0;
         this._ptsDefence = 0;
         this._ptsInt = 0;
-		_ptsMax = _myPlayer.PtsMax;
+		_ptsMax = _myPlayer.ptsMax;
         this.UpdateUI();
     }
 
@@ -52,7 +52,7 @@ public class UILevelUp : MonoBehaviour {
         this._ptsVol = 0;
         this._ptsDefence = 0;
         this._ptsInt = 0;
-		this._pts += UIManager.instance.playerManager.PtsMax;
+		this._pts += UIManager.instance.player.ptsMax;
         this.UpdateUI();
     }
 
@@ -183,12 +183,12 @@ public class UILevelUp : MonoBehaviour {
 
     public void Validate()
     {
-        this._myPlayer.Sante += _ptsVie;
-        this._myPlayer.SanteMax += _ptsVie;
-        this._myPlayer.Volonte += _ptsVol;
-        this._myPlayer.Intel += _ptsInt;
-        this._myPlayer.Defense += _ptsDefence;
-        this._myPlayer.Force += _ptsForce;
+        this._myPlayer.playerHP += _ptsVie;
+        this._myPlayer.playerMaxHP += _ptsVie;
+        this._myPlayer.playerRes += _ptsVol;
+        this._myPlayer.playerInt += _ptsInt;
+        this._myPlayer.playerDef += _ptsDefence;
+        this._myPlayer.playerStr += _ptsForce;
         UIManager.instance.playerManager.StatUpdateWithMonster();			
 		if (_pts > 0)
 			UIManager.instance.playerManager.PtsMax += _pts;
@@ -203,13 +203,13 @@ public class UILevelUp : MonoBehaviour {
     private void UpdateUI()
     {
 		UIManager.instance.UpdateStatusUI ();
-        this._lvlText.text = this._myPlayer.Level.ToString();
+        this._lvlText.text = this._myPlayer.playerLevel.ToString();
         this._points.text = this._pts.ToString();
-        this._vie.text = (_myPlayer.SanteMax + _ptsVie).ToString();
-        this._force.text = (_myPlayer.Force + _ptsForce).ToString();
-        this._defense.text = (_myPlayer.Defense + _ptsDefence).ToString();
-        this._intel.text = (_myPlayer.Intel + _ptsInt).ToString();
-        this._volon.text = (_myPlayer.Volonte + _ptsVol).ToString();
+        this._vie.text = (_myPlayer.playerMaxHP + _ptsVie).ToString();
+        this._force.text = (_myPlayer.playerStr + _ptsForce).ToString();
+        this._defense.text = (_myPlayer.playerDef + _ptsDefence).ToString();
+        this._intel.text = (_myPlayer.playerInt + _ptsInt).ToString();
+        this._volon.text = (_myPlayer.playerRes + _ptsVol).ToString();
     }
 
 }
