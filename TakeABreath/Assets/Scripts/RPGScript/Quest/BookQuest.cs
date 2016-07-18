@@ -16,7 +16,7 @@ public class BookQuest : MonoBehaviour {
 
     void Awake()
     {
-        quest_000 = new Quest(0,"Suivez le maître","Suivre le maître",5);
+        quest_000 = new Quest(0,"Suivez le maître","Suivre le maître ou les petites sphere jaunes",5);
 
 
         allQuests[0] = quest_000;

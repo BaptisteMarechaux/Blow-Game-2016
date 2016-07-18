@@ -104,7 +104,7 @@ public class introCameraBehaviour : MonoBehaviour {
         yield return new WaitForSeconds(4.0f);
         blackImage.CrossFadeAlpha(1, 1, true);
         yield return new WaitForSeconds(4.0f);
-        mainText.text = "Choisissez la voir de la rédemption ou de la vengeance";
+        mainText.text = "Choisissez la voie de la rédemption ou de la vengeance";
         destinyImage.gameObject.SetActive(true);
         judgmentimage.gameObject.SetActive(false);
         yield return new WaitForSeconds(4.0f);
