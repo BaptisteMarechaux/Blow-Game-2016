@@ -11,7 +11,7 @@ public class SimpleShpereGeneration : MonoBehaviour {
 
     public float[] perlinValues;
 
-    Vector3[] vertices;
+    List<Vector3> vertices;
 
     [Range(0, 6)]
     public int editorLevelOfDetail;
@@ -29,11 +29,16 @@ public class SimpleShpereGeneration : MonoBehaviour {
 
     public InNoise.NormalizeMode normalizeMode;
 
-    bool drawnMesh;
+    public bool drawnMesh;
 
     void Start()
     {
-
+        vertices = new List<Vector3>();
+        var max = (nbLong + 1) * nbLat + 2;
+        for (int i=0;i<max;i++)
+        {
+            vertices.Add(Vector3.zero);
+        }
         DrawSphere();
 
         NoiseSphere();
@@ -47,7 +52,7 @@ public class SimpleShpereGeneration : MonoBehaviour {
         }
     }
 
-    void OnValidate()
+    public void OnValidate()
     {
         if (drawnMesh)
         {
@@ -62,7 +67,7 @@ public class SimpleShpereGeneration : MonoBehaviour {
         NoiseMap = InNoise.GenerateNoiseMap(nbLat + 1 + nbLat / 2, nbLong + 1 + nbLong / 2, seed, noiseScale, octaves, persistance, lacunarity, offset, normalizeMode);
       
 
-        vertices = new Vector3[(nbLong + 1) * nbLat + 2];
+        
         MeshFilter filter = gameObject.AddComponent<MeshFilter>();
         Mesh mesh = filter.mesh;
         mesh.Clear();
@@ -88,17 +93,17 @@ public class SimpleShpereGeneration : MonoBehaviour {
                 vertices[lon + lat * (nbLong + 1) + 1] = new Vector3(sin1 * cos2, cos1, sin1 * sin2) * (radius + NoiseMap[lon, lat] * meshHeightMultiplier * meshHeightCurve.Evaluate(NoiseMap[lon, lat]));
             }
         }
-        vertices[vertices.Length - 1] = Vector3.up * -radius;
+        vertices[vertices.Count - 1] = Vector3.up * -radius;
         #endregion
 
         #region Normales		
-        Vector3[] normales = new Vector3[vertices.Length];
-        for (int n = 0; n < vertices.Length; n++)
+        Vector3[] normales = new Vector3[vertices.Count];
+        for (int n = 0; n < vertices.Count; n++)
             normales[n] = vertices[n].normalized;
         #endregion
 
         #region UVs
-        Vector2[] uvs = new Vector2[vertices.Length];
+        Vector2[] uvs = new Vector2[vertices.Count];
         uvs[0] = Vector2.up;
         uvs[uvs.Length - 1] = Vector2.zero;
         for (int lat = 0; lat < nbLat; lat++)
@@ -107,7 +112,7 @@ public class SimpleShpereGeneration : MonoBehaviour {
         #endregion
 
         #region Triangles
-        int nbFaces = vertices.Length;
+        int nbFaces = vertices.Count;
         int nbTriangles = nbFaces * 2;
         int nbIndexes = nbTriangles * 3;
         int[] triangles = new int[nbIndexes];
@@ -142,13 +147,13 @@ public class SimpleShpereGeneration : MonoBehaviour {
         //Bottom Cap
         for (int lon = 0; lon < nbLong; lon++)
         {
-            triangles[i++] = vertices.Length - 1;
-            triangles[i++] = vertices.Length - (lon + 2) - 1;
-            triangles[i++] = vertices.Length - (lon + 1) - 1;
+            triangles[i++] = vertices.Count - 1;
+            triangles[i++] = vertices.Count - (lon + 2) - 1;
+            triangles[i++] = vertices.Count - (lon + 1) - 1;
         }
         #endregion
 
-        mesh.vertices = vertices;
+        mesh.vertices = vertices.ToArray();
         mesh.normals = normales;
         mesh.uv = uvs;
         mesh.triangles = triangles;
@@ -177,72 +182,11 @@ public class SimpleShpereGeneration : MonoBehaviour {
         collider.sharedMesh = GetComponent<MeshFilter>().mesh;
     }
 
-    void UpdateMesh()
+    public void UpdateMesh()
     {
         float[,] NoiseMap = new float[nbLat + 1 + nbLat / 2, nbLong + 1 + nbLong / 2];
 
         NoiseMap = InNoise.GenerateNoiseMap(nbLat + 1 + nbLat / 2, nbLong + 1 + nbLong / 2, seed, noiseScale, octaves, persistance, lacunarity, offset, normalizeMode);
-        /*
-        System.Random pnrg = new System.Random(seed);
-        Vector2[] octaveOffsets = new Vector2[octaves];
-        for (int a = 0; a < octaves; a++)
-        {
-            float offsetX = pnrg.Next(-100000, 100000) + offset.x;
-            float offsetY = pnrg.Next(-100000, 100000) + offset.y;
-            octaveOffsets[a] = new Vector2(offsetX, offsetY);
-        }
-
-        noiseScale = noiseScale < 0 ? 0.0001f : noiseScale;
-
-        float maxNoiseHeight = float.MinValue;
-        float minNoiseHeight = float.MaxValue;
-
-        float halfWidth = nbLat / 2f;
-        float halfHeight = nbLong / 2f;
-
-        for (int y = 0; y < nbLat + 1 + nbLat / 2; y++)
-        {
-            for (int x = 0; x < nbLong + 1 + nbLong / 2; x++)
-            {
-                float amplitude = 1;
-                float frequency = 1;
-                float noiseHeight = 0;
-
-                for (int a = 0; a < octaves; a++)
-                {
-                    float sampleX = (x - halfWidth) / noiseScale * frequency + octaveOffsets[a].x;
-                    float sampleY = (y - halfHeight) / noiseScale * frequency + octaveOffsets[a].y;
-
-                    float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
-                    noiseHeight += perlinValue * amplitude;
-                    //NoiseMap[x, y] = perlinValue;
-
-                    amplitude *= persistance;
-                    frequency *= lacunarity;
-                }
-
-                if (noiseHeight > maxNoiseHeight)
-                {
-                    maxNoiseHeight = noiseHeight;
-                }
-                else if (noiseHeight < minNoiseHeight)
-                {
-                    minNoiseHeight = noiseHeight;
-                }
-
-                NoiseMap[x, y] = noiseHeight;
-
-            }
-        }
-
-        for (int y = 0; y < nbLat + 1 + nbLat / 2; y++)
-        {
-            for (int x = 0; x < nbLong + 1 + nbLong / 2; x++)
-            {
-                NoiseMap[x, y] = Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, NoiseMap[x, y]);
-            }
-        }
-        */
 
         float _pi = Mathf.PI;
         float _2pi = _pi * 2f;
@@ -263,13 +207,15 @@ public class SimpleShpereGeneration : MonoBehaviour {
                 vertices[lon + lat * (nbLong + 1) + 1] = new Vector3(sin1 * cos2, cos1, sin1 * sin2) * (radius + NoiseMap[lon, lat] * meshHeightMultiplier * meshHeightCurve.Evaluate(NoiseMap[lon, lat]));
             }
         }
-        vertices[vertices.Length - 1] = Vector3.up * -radius;
+        vertices[vertices.Count - 1] = Vector3.up * -radius;
 
+        /*
         List<Vector3> vList = new List<Vector3>();
-        for (int i = 0; i < vertices.Length; i++)
+        for (int i = 0; i < vertices.Count; i++)
         {
             vList.Add(vertices[i]);
         }
-        GetComponent<MeshFilter>().mesh.SetVertices(vList);
+        */
+        GetComponent<MeshFilter>().mesh.SetVertices(vertices);
     }
 }

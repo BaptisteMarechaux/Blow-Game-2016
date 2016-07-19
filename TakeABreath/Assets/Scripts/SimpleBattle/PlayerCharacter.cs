@@ -82,6 +82,8 @@ public class PlayerCharacter : MonoBehaviour {
         UIManager.instance.UpdateStatusExp();
         UIManager.instance.UpdateInfoText("");
 
+        playerHP = playerMaxHP;
+
 	}
 	
 	// Update is called once per frame
@@ -331,17 +333,24 @@ public class PlayerCharacter : MonoBehaviour {
         }
     }
 
-    void TakeDamages(int amount)
+    public void TakeDamages(int amount)
     {
         cameraShake.enabled = true;
         cameraShake.shakeDuration = 0.1f;
-        StartCoroutine("TakeDamageWait");
-        totalHP -= amount - (totalDef / 3);
+        //StartCoroutine("TakeDamageWait");
+        var difference = amount - (totalDef / 3);
+        if (difference <= 0)
+            difference = 1;
+        totalHP -= difference;
 
+        /*
         if (totalHP <= possessedMonster.monsterMaxHP)
         {
             possessedMonster.TakeDamages(possessedMonster.monsterHP - totalHP);
-        }
+        }*/
+
+        if (totalHP <= 0)
+            UIManager.instance.GameOver();
     }
 
     void TakeSpellDamages(int amount)
@@ -376,8 +385,6 @@ public class PlayerCharacter : MonoBehaviour {
         possessedMonster.transform.parent = transform;
         AddExperience(possessedMonster.possessionExp);
         playerRenderer.SetActive(false);
-
-        Debug.Log(rangeProjector.orthographicSize);
         Debug.Log(possessedMonster.simpleAttackRange);
         rangeProjector.orthographicSize = 0;
         rangeProjector.gameObject.SetActive(true);

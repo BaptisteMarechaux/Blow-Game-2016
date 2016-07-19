@@ -33,6 +33,8 @@ public class LevelSelectionCursor : MonoBehaviour {
 
     public Image startBlackImage;
     public Text startBlackImageText;
+
+    public GameObject loadingImage;
     
 	void Start () {
         levelDes.ChangeLevelInfos(0);
@@ -102,6 +104,7 @@ public class LevelSelectionCursor : MonoBehaviour {
             }
             else
             {
+                loadingImage.SetActive(true);
                 SceneManager.LoadScene(levels[sel]);
             }
             

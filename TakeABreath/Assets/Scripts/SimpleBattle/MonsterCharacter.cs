@@ -102,7 +102,7 @@ public class MonsterCharacter : MonoBehaviour {
     void Respawn()
     {
         isAlive = true;
-        mainMeshRenderer.enabled = true;
+        //mainMeshRenderer.enabled = true;
         mainCollider.enabled = true;
         EnableAI();
         if (IA.EstAgresse)
@@ -124,21 +124,32 @@ public class MonsterCharacter : MonoBehaviour {
 
     public void TakeDamages(int amount, MonsterCharacter attacker=null)
     {
-        monsterHP -= amount - (monsterDef / 3);
-
-        if(monsterHP <= 0)
+        if (possessed)
         {
-            DisableAI();
-            isAlive = false;
-            mainMeshRenderer.enabled = false;
-            mainCollider.enabled = false;
+            UIManager.instance.UpdateStatusUI();
+            UIManager.instance.player.TakeDamages(amount);
         }
-
-        if(attacker != null)
+        else
         {
-            attackTarget = attacker;
-            isAttacked = true;
+            monsterHP -= amount - (monsterDef / 3);
+            //Prendre le cas où le monstre est possédé pour actualiser la vie du joueur
+
+
+            if (monsterHP <= 0)
+            {
+                DisableAI();
+                isAlive = false;
+                //mainMeshRenderer.enabled = false;
+                mainCollider.enabled = false;
+            }
+
+            if (attacker != null)
+            {
+                attackTarget = possessed == true ? null : attacker;
+                isAttacked = true;
+            }
         }
+        
     }
 
     void TakeSpellDamages(int amount, MonsterCharacter attacker = null)
@@ -148,7 +159,7 @@ public class MonsterCharacter : MonoBehaviour {
         {
             DisableAI();
             isAlive = false;
-            mainMeshRenderer.enabled = false;
+            //mainMeshRenderer.enabled = false;
             mainCollider.enabled = false;
         }
 

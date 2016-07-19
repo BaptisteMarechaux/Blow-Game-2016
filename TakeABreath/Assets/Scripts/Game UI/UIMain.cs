@@ -30,6 +30,8 @@ public class UIMain : MonoBehaviour {
     [SerializeField]
     Text MonsterPossessionBigText; //Texte qui va apparaitre au niveau central quand on possède un monstre pour bien faire comprendre qu'on possède un monstre
 
+    public GameObject gameOverPanel;
+
     private float rate = 3.5f;
 
     void Start()

@@ -57,11 +57,11 @@ public class UIStatsMenu : MonoBehaviour {
     public void UpdatePauseMenuStatus()
     {
         niveau.text = UIManager.instance.player.playerLevel.ToString();
-        vie.text = UIManager.instance.player.playerHP.ToString();
-        force.text = UIManager.instance.player.playerStr.ToString();
-        constitution.text = UIManager.instance.player.playerDef.ToString();
-        intelligence.text = UIManager.instance.player.playerInt.ToString();
-        volonte.text = UIManager.instance.player.playerRes.ToString();
+        vie.text = UIManager.instance.player.totalHP.ToString();
+        force.text = UIManager.instance.player.totalStr.ToString();
+        constitution.text = UIManager.instance.player.totalDef.ToString();
+        intelligence.text = UIManager.instance.player.totalInt.ToString();
+        volonte.text = UIManager.instance.player.totalRes.ToString();
 
     }
 }

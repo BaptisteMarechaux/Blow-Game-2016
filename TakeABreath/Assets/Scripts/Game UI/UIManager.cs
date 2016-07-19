@@ -2,11 +2,14 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.CinematicEffects;
 
 public class UIManager : MonoBehaviour {
 
     public static UIManager instance;
 
+    [SerializeField]
+    Camera mainCamera;
     [SerializeField]
     UIStatus statusUI;
     [SerializeField]
@@ -26,6 +29,8 @@ public class UIManager : MonoBehaviour {
     public PlayerManager playerManager;
     public PlayerCharacter player;
 
+    public LensAberrations lensAberrations;
+
     void Awake()
     {
         if (instance == null)
@@ -41,7 +46,16 @@ public class UIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+	    if(player.totalHP < player.totalMaxHP/2)
+        {
+            lensAberrations.vignette.color = Color.red;
+            lensAberrations.vignette.intensity = 1;
+        }
+        else
+        {
+            lensAberrations.vignette.color = Color.black;
+            lensAberrations.vignette.intensity = 0.39f;
+        }
 	}
 
 
@@ -112,4 +126,17 @@ public class UIManager : MonoBehaviour {
     #endregion
 
     public void GoToTitleMenu() { SceneManager.LoadScene(0); }
+
+    public void GameOver()
+    {
+        mainUI.gameOverPanel.SetActive(true);
+        StartCoroutine("GameOverWait");
+    }
+
+    IEnumerator GameOverWait()
+    {
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(0);
+        yield return null;
+    }
 }

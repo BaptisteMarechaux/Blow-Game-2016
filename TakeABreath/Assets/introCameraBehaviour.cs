@@ -57,7 +57,7 @@ public class introCameraBehaviour : MonoBehaviour {
 
             if(time == 360)
             {
-                mainText.text = "Ils suivent à la lettre les ordres de leur dvinité";
+                mainText.text = "Ils suivent à la lettre les ordres de leur divinité";
             }
 
             if(time == 540)
@@ -99,7 +99,7 @@ public class introCameraBehaviour : MonoBehaviour {
         soulImage.gameObject.SetActive(false);
         judgmentimage.gameObject.SetActive(true);
         yield return new WaitForSeconds(4.0f);
-        mainText.text = "Vous êtes donc condamnés a ramper sur le monde tel qu'une âme errante";
+        mainText.text = "Vous êtes donc condamné a ramper sur le monde tel qu'une âme errante";
 
         yield return new WaitForSeconds(4.0f);
         blackImage.CrossFadeAlpha(1, 1, true);

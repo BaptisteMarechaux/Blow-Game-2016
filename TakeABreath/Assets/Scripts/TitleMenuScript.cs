@@ -133,4 +133,9 @@ public class TitleMenuScript : MonoBehaviour {
         }
         
     }
+
+    public void StartPresentation()
+    {
+        SceneManager.LoadScene("SoutenanceScene");
+    }
 }
